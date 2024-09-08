@@ -12,7 +12,7 @@ Este repositório contém o projeto de industrial do 2º ano de DS para ETEC Hor
 
 - [❌] **EndPoints da API**: Implementar os Endpoints da API rest do Spring Boot para a classificação dos jogadores, definindo os métodos GET, POST e PUT
 - [❌] **Tratamento de erros da API**: Implementar tratamento de erros da requisição para um código mais flexível
-- 
+
 ### 3. **Desenvolvimento Frontend e Lógica do Game**
 
 - [❌] **Integração com a API**: Implementar a lógica para realizar a conexão com a API para a classificação dos jogadores
