@@ -12,13 +12,12 @@ Este repositório contém o projeto de industrial do 2º ano de DS para ETEC Hor
 
 - [❌] **EndPoints da API**: Implementar os Endpoints da API rest do Spring Boot para a classificação dos jogadores, definindo os métodos GET, POST e PUT
 - [❌] **Tratamento de erros da API**: Implementar tratamento de erros da requisição para um código mais flexível
-
-### 3. **Desenvolvimento da Lógica do Game**
-
-- [❌] **Peças e Pontuação**: Desenvolver a lógica de disposição das peças, junção dos pares e pontuação das peças
-- [❌] **Funcionalidades do Game**: Criar as funcionalidades de dicas, abandono de partida, salvar score e afins
-
-### 4. **Desenvolvimento Frontend**
+- 
+### 3. **Desenvolvimento Frontend e Lógica do Game**
 
 - [❌] **Integração com a API**: Implementar a lógica para realizar a conexão com a API para a classificação dos jogadores
 - [❌] **Interface do Usuário**: Desenvolver a tela e as funcionalidades do .NET MAUI para consumir a API REST e os seus endpoints
+- [❌] **Peças e Pontuação**: Desenvolver a lógica de disposição das peças, junção dos pares e pontuação das peças
+- [❌] **Funcionalidades do Game**: Criar as funcionalidades de dicas, abandono de partida, salvar score e afins
+
+
