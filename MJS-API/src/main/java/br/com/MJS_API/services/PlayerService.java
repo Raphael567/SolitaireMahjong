@@ -1,6 +1,7 @@
 package br.com.MJS_API.services;
 
 import br.com.MJS_API.entities.Player;
+import br.com.MJS_API.exceptions.PlayerNotFoundException;
 import br.com.MJS_API.repositories.PlayerRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +22,9 @@ public class PlayerService {
     }
 
     // Exibe um jogador específico
-    public Optional<Player> getPlayerById(Long id) {
-        return playerRepository.findById(id);
+    public Player getPlayerById(Long id) {
+        return playerRepository.findById(id)
+                .orElseThrow(() -> new PlayerNotFoundException("Player with id " + id + " not found"));
     }
 
     // Cria um jogador
@@ -36,7 +38,9 @@ public class PlayerService {
         if (playerRepository.existsById(id)) {
             player.setId(id);
             return playerRepository.save(player);
-        } throw new RuntimeException("Player not found");
+        } else {
+            throw new PlayerNotFoundException("Player with id " + id + " not found");
+        }
     }
 
     // Deleta um jogador
@@ -45,7 +49,7 @@ public class PlayerService {
         if (playerRepository.existsById(id)) {
             playerRepository.deleteById(id);
         } else {
-            throw new RuntimeException("Player not found");
+            throw new PlayerNotFoundException("Player with id " + id + " not found");
         }
     }
 

@@ -3,6 +3,8 @@ package br.com.MJS_API.controllers;
 import br.com.MJS_API.entities.Player;
 import br.com.MJS_API.services.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,37 +17,43 @@ public class PlayerController {
     private PlayerService playerService;
 
     @GetMapping
-    public List<Player> getAllPlayers() {
-        return playerService.getAllPlayers();
+    public ResponseEntity<List<Player>> getAllPlayers() {
+        List<Player> players = playerService.getAllPlayers();
+        return new ResponseEntity<>(players, HttpStatus.OK);
     }
 
     // Exibe um jogador específico
     @GetMapping("/{id}")
-    public Optional<Player> getPlayerById(@PathVariable Long id) {
-        return playerService.getPlayerById(id);
+    public ResponseEntity<Player> getPlayerById(@PathVariable Long id) {
+        Player player = playerService.getPlayerById(id);
+        return new ResponseEntity<>(player, HttpStatus.OK);
     }
 
     // Cria um jogador
     @PostMapping
-    public Player createPlayer(@RequestBody Player player) {
-        return  playerService.createPlayer(player);
+    public ResponseEntity<Player> createPlayer(@RequestBody Player player) {
+        Player newPlayer = playerService.createPlayer(player);
+        return new ResponseEntity<>(player, HttpStatus.CREATED);
     }
 
     // Atualiza um jogador
     @PutMapping("/{id}")
-    public Player updatePlayer(@PathVariable Long id, @RequestBody Player player) {
-        return playerService.updatePlayer(id, player);
+    public ResponseEntity<Player> updatePlayer(@PathVariable Long id, @RequestBody Player player) {
+        Player updatedPlayer = playerService.updatePlayer(id, player);
+        return new ResponseEntity<>(updatedPlayer, HttpStatus.OK);
     }
 
     // Deleta um jogador
     @DeleteMapping("/{id}")
-    public void deletePlayer(@PathVariable Long id) {
+    public ResponseEntity<Void> deletePlayer(@PathVariable Long id) {
         playerService.deletePlayer(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     // Exibe jogadores com pontuação maior ou igual a uma pontuação específica
     @GetMapping("/ranking")
-    public List<Player> getPlayersByScore(@RequestParam(defaultValue = "0") int pontuacao) {
-        return playerService.getPlayersByPontuacao(pontuacao);
+    public ResponseEntity<List<Player>> getPlayersByScore(@RequestParam(defaultValue = "0") int pontuacao) {
+        List<Player> players = playerService.getPlayersByPontuacao(pontuacao);
+        return new ResponseEntity<>(players, HttpStatus.OK);
     }
 }
