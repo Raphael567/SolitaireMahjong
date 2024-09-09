@@ -5,12 +5,12 @@ Este repositório contém o projeto de industrial do 2º ano de DS para ETEC Hor
 
 ### 1. **Configuração do Banco de Dados**
 
-- [❌] **Script-SQL**: Criar o script SQL para configurar o banco de dados, com as tabelas e os dados inseridos para teste corretamente
-- [❌] **Configuração**: Ajustar as configurações de conexão com o banco de dados
+- [✔] **Script-SQL**: Criar o script SQL para configurar o banco de dados, com as tabelas e os dados inseridos para teste corretamente
+- [✔] **Configuração**: Ajustar as configurações de conexão com o banco de dados
 
 ### 2. **Desenvolvimento Backend**
 
-- [❌] **EndPoints da API**: Implementar os Endpoints da API rest do Spring Boot para a classificação dos jogadores, definindo os métodos GET, POST, PUT e DELETE
+- [✔] **EndPoints da API**: Implementar os Endpoints da API rest do Spring Boot para a classificação dos jogadores, definindo os métodos GET, POST, PUT e DELETE
 - [❌] **Tratamento de erros da API**: Implementar tratamento de erros da requisição para um código mais flexível
 
 ### 3. **Desenvolvimento Frontend e Lógica do Game**
