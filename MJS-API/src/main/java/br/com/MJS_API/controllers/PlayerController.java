@@ -33,7 +33,7 @@ public class PlayerController {
     @PostMapping
     public ResponseEntity<Player> createPlayer(@RequestBody Player player) {
         Player newPlayer = playerService.createPlayer(player);
-        return new ResponseEntity<>(player, HttpStatus.CREATED);
+        return new ResponseEntity<>(newPlayer, HttpStatus.CREATED);
     }
 
     // Atualiza um jogador

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:SolitaireMahjongApp.ViewModels"
+             x:Class="SolitaireMahjongApp.Views.PlayerView"
+             Title="PlayerView">
+
+    <VerticalStackLayout>
+        <Label Text="Ranking dos jogadores" FontSize="24" Padding="10" ></Label>
+
+        <ListView ItemsSource="{Binding Players}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextCell Text="{Binding Name}" Detail="{Binding Score}"/>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <Entry Text="{Binding PlayerName}" Placeholder="Nome do Jogador"></Entry>
+        <Entry Text="{Binding PlayerScore}" Placeholder="Pontuação do Jogador" Keyboard="Numeric"></Entry>
+
+        <VerticalStackLayout Spacing="50">
+            <Button Text="Criar Jogador" Command="{Binding CreatePlayerCommand}"></Button>
+            <Button Text="Atualizar Ranking" Command="{Binding LoadPlayerCommand}"></Button>
+        </VerticalStackLayout>
+        
+    </VerticalStackLayout>
+</ContentPage>

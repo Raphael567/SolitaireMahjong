@@ -24,7 +24,7 @@ public class PlayerService {
     // Exibe um jogador específico
     public Player getPlayerById(Long id) {
         return playerRepository.findById(id)
-                .orElseThrow(() -> new PlayerNotFoundException("Player with id " + id + " not found"));
+                .orElseThrow(() -> new PlayerNotFoundException("Player with ID " + id + " not found"));
     }
 
     // Cria um jogador
@@ -39,7 +39,7 @@ public class PlayerService {
             player.setId(id);
             return playerRepository.save(player);
         } else {
-            throw new PlayerNotFoundException("Player with id " + id + " not found");
+            throw new RuntimeException("Player not found");
         }
     }
 
@@ -49,7 +49,7 @@ public class PlayerService {
         if (playerRepository.existsById(id)) {
             playerRepository.deleteById(id);
         } else {
-            throw new PlayerNotFoundException("Player with id " + id + " not found");
+            throw new RuntimeException("Player not found");
         }
     }
 
