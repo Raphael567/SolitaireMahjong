@@ -1,8 +1,10 @@
 ﻿using Microsoft.Extensions.Logging;
 using SolitaireMahjongApp.Services;
 using SolitaireMahjongApp.ViewModels;
+using SolitaireMahjongApp.Views;
 using System;
 using System.Net.Http;
+using System.Net.Http.Headers;
 
 namespace SolitaireMahjongApp
 {
@@ -24,10 +26,20 @@ namespace SolitaireMahjongApp
 #endif
             builder.Services.AddHttpClient<PlayerService>(client =>
             {
-                client.BaseAddress = new Uri("https://localhost:8080");
+                client.BaseAddress = new Uri("http://localhost:8080");
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            })
+            .ConfigurePrimaryHttpMessageHandler(() =>
+            {
+                return new HttpClientHandler
+                {
+                    ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
+                };
             });
 
             builder.Services.AddTransient<PlayerViewModel>();
+            builder.Services.AddTransient<PlayerView>();
 
             return builder.Build();
         }

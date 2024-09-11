@@ -8,11 +8,12 @@ using System.Threading.Tasks;
 namespace SolitaireMahjongApp.ViewModels
 {
     public partial class PlayerViewModel : ObservableObject
-    {
+    {   
         private readonly PlayerService _playerService;
 
-        public PlayerViewModel()
+        public PlayerViewModel(PlayerService playerService)
         {
+            _playerService = playerService;
             LoadPlayerCommand = new AsyncRelayCommand(LoadPlayerAsync);
             CreatePlayerCommand = new AsyncRelayCommand(CreatePlayerAsync);
         }
@@ -22,9 +23,6 @@ namespace SolitaireMahjongApp.ViewModels
 
         [ObservableProperty]
         private string _playerName;
-
-        [ObservableProperty]
-        private int _playerScore;
 
         public IAsyncRelayCommand LoadPlayerCommand { get; }
         public IAsyncRelayCommand CreatePlayerCommand { get; }
@@ -39,7 +37,7 @@ namespace SolitaireMahjongApp.ViewModels
             var newPlayer = new Player
             {
                 Name = PlayerName,
-                Score = PlayerScore
+                Score = 0
             };
 
             await _playerService.CreatePlayerAsync(newPlayer);

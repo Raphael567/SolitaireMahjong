@@ -19,7 +19,7 @@ public class GlobaExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleGlobalExcpetion(Exception ex) {
+    public ResponseEntity<ErrorResponse> handleGlobalExcepetion(Exception ex) {
         ErrorResponse errorResponse = new ErrorResponse("Internal Server Error", ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR.value());
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }

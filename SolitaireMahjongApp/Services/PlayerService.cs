@@ -19,12 +19,12 @@ namespace SolitaireMahjongApp.Services
 
         public async Task<List<Player>> GetAllPlayersAsync()
         {
-            return await _httpClient.GetFromJsonAsync<List<Player>>("https://localhost:8080/player");
+            return await _httpClient.GetFromJsonAsync<List<Player>>("http://localhost:8080/players");
         }
 
         public async Task<Player> CreatePlayerAsync(Player player)
         {
-            var response = await _httpClient.PostAsJsonAsync<Player>("https://localhost:8080/player", player);
+            var response = await _httpClient.PostAsJsonAsync<Player>("http://localhost:8080/players", player);
             response.EnsureSuccessStatusCode();
             return await response.Content.ReadFromJsonAsync<Player>();
         }

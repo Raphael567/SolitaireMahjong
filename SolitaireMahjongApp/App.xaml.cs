@@ -16,8 +16,6 @@ namespace SolitaireMahjongApp
                 {
                     Debugger.Break();
                 }
-                // Optionally, log the exception or display a message
-                Console.WriteLine($"Unhandled exception: {e.ExceptionObject}");
             };
         }
     }
