@@ -6,10 +6,10 @@ namespace SolitaireMahjongApp.Views
 {
     public partial class PlayerView : ContentPage
     {
-        public PlayerView(PlayerViewModel viewModel)
+        public PlayerView()
         {
             InitializeComponent();
-            BindingContext = viewModel;
+            BindingContext = new PlayerViewModel();
         }
     }
 }

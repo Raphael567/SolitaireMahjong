@@ -8,14 +8,16 @@ using System.Threading.Tasks;
 namespace SolitaireMahjongApp.ViewModels
 {
     public partial class PlayerViewModel : ObservableObject
-    {   
+    {
         private readonly PlayerService _playerService;
 
-        public PlayerViewModel(PlayerService playerService)
+        public PlayerViewModel()
         {
-            _playerService = playerService;
+            _playerService = new PlayerService();
             LoadPlayerCommand = new AsyncRelayCommand(LoadPlayerAsync);
             CreatePlayerCommand = new AsyncRelayCommand(CreatePlayerAsync);
+
+            Task.Run(async () => await LoadPlayerAsync());
         }
 
         [ObservableProperty]
@@ -34,14 +36,31 @@ namespace SolitaireMahjongApp.ViewModels
 
         private async Task CreatePlayerAsync()
         {
-            var newPlayer = new Player
+            try
             {
-                Name = PlayerName,
-                Score = 0
-            };
+                var existingPlayer = _players.FirstOrDefault(player => player.nome == PlayerName);
 
-            await _playerService.CreatePlayerAsync(newPlayer);
-            await LoadPlayerAsync();
+                if(existingPlayer != null)
+                {
+                    await Application.Current.MainPage.DisplayAlert("Erro", "Jogador já existe", "OK");
+                }
+                else
+                {
+                    var newPlayer = new Player
+                    {
+                        nome = PlayerName,
+                        pontuacao = 0
+                    };
+
+                    await _playerService.CreatePlayerAsync(newPlayer);
+                    await LoadPlayerAsync();
+                }
+            }
+            catch
+            {
+                await Application.Current.MainPage.DisplayAlert("Erro", "Erro ao criar jogador", "OK");
+            }
+
         }
     }
 }

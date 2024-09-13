@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SolitaireMahjongApp.Models
+﻿namespace SolitaireMahjongApp.Models
 {
     public class Player
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public int Score { get; set; }
-        public DateTime? RegistrationDate { get; set; }
+        public int id { get; set; }
+        public string nome { get; set; }
+        public int pontuacao { get; set; }
+        public DateTime? dataRegistro { get; set; }
     }
 }

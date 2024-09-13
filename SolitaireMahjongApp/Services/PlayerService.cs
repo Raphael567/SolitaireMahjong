@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Json;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace SolitaireMahjongApp.Services
@@ -12,21 +13,32 @@ namespace SolitaireMahjongApp.Services
     {
         private readonly HttpClient _httpClient;
 
-        public PlayerService(HttpClient httpClient)
+        public PlayerService()
         {
-            _httpClient = httpClient;
+            _httpClient = new HttpClient();
+            _httpClient.BaseAddress = new Uri("http://localhost:8080");
         }
 
         public async Task<List<Player>> GetAllPlayersAsync()
         {
-            return await _httpClient.GetFromJsonAsync<List<Player>>("http://localhost:8080/players");
+            HttpResponseMessage response = await _httpClient.GetAsync("players/ranking");
+
+            if (response.IsSuccessStatusCode)
+            {
+                string json = await response.Content.ReadAsStringAsync();
+                return JsonSerializer.Deserialize<List<Player>>(json);
+            }
+
+            return new List<Player>();
         }
 
-        public async Task<Player> CreatePlayerAsync(Player player)
+        public async Task CreatePlayerAsync(Player player)
         {
-            var response = await _httpClient.PostAsJsonAsync<Player>("http://localhost:8080/players", player);
+            string json = JsonSerializer.Serialize(player);
+            StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await _httpClient.PostAsync("players", content);
             response.EnsureSuccessStatusCode();
-            return await response.Content.ReadFromJsonAsync<Player>();
         }
     }
 }

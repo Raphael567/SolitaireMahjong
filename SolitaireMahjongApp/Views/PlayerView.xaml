@@ -1,27 +1,81 @@
-<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:viewModels="clr-namespace:SolitaireMahjongApp.ViewModels"
+             xmlns:viewmodels="clr-namespace:SolitaireMahjongApp.ViewModels"
              x:Class="SolitaireMahjongApp.Views.PlayerView"
-             Title="PlayerView">
+             BackgroundColor="Black">
 
-    <VerticalStackLayout>
-        <Label Text="Ranking dos jogadores" FontSize="24" Padding="10" />
+    <ScrollView>
+        <VerticalStackLayout Padding="20" MaximumWidthRequest="1000">
 
-        <ListView ItemsSource="{Binding Players}">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <TextCell Text="{Binding Name}" Detail="{Binding Score}" />
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+            <!-- Título -->
+            <Label Text="Ranking dos jogadores"
+                   FontSize="28"
+                   Padding="10"
+                   FontAttributes="Bold"
+                   TextColor="White"
+                   HorizontalOptions="Center"/>
 
-        <Entry Text="{Binding PlayerName}" Placeholder="Nome do Jogador" />
+            <!-- Lista de jogadores -->
+            <ScrollView>
+                <Frame BackgroundColor="#222"
+                       CornerRadius="5"
+                       HasShadow="False"
+                       HeightRequest="300">
+                    <CollectionView ItemsSource="{Binding Players}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid ColumnDefinitions="*,*"
+                                      RowDefinitions="Auto">
+                                    <Label Text="{Binding nome}"
+                                           TextColor="White"
+                                           FontSize="18"
+                                           HorizontalOptions="Start"
+                                           Grid.Column="0"
+                                           Padding="5"/>
 
-        <VerticalStackLayout Spacing="50">
-            <Button Text="Criar Jogador" Command="{Binding CreatePlayerCommand}" />
-            <Button Text="Atualizar Ranking" Command="{Binding LoadPlayerCommand}" />
+                                    <Label Text="{Binding pontuacao}"
+                                           TextColor="White"
+                                           FontSize="18"
+                                           HorizontalOptions="End"
+                                           Grid.Column="1"
+                                           Padding="5"/>
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </Frame>
+            </ScrollView>
+
+            <!-- Entrada para nome do jogador -->
+            <Entry Text="{Binding PlayerName}"
+                   Placeholder="Digite seu nome"
+                   FontSize="18"
+                   BackgroundColor="#333"
+                   TextColor="White"
+                   PlaceholderColor="Gray"
+                   HorizontalOptions="FillAndExpand"
+                   Margin="0,20,0,20"/>
+
+            <!-- Botões de ações -->
+            <HorizontalStackLayout HorizontalOptions="Center" Spacing="20">
+                <Button Text="Atualizar Ranking" 
+                        Command="{Binding LoadPlayerCommand}"
+                        WidthRequest="150"
+                        HeightRequest="50"
+                        BackgroundColor="#7A52FF"
+                        TextColor="White"
+                        CornerRadius="10"/>
+
+                <Button Text="Criar Jogador"
+                        Command="{Binding CreatePlayerCommand}"
+                        WidthRequest="150"
+                        HeightRequest="50"
+                        BackgroundColor="#7A52FF"
+                        TextColor="White"
+                        CornerRadius="10"/>
+            </HorizontalStackLayout>
+
         </VerticalStackLayout>
-
-    </VerticalStackLayout>
+    </ScrollView>
+    
 </ContentPage>

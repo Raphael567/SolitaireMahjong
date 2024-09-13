@@ -24,22 +24,22 @@ namespace SolitaireMahjongApp
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
-            builder.Services.AddHttpClient<PlayerService>(client =>
-            {
-                client.BaseAddress = new Uri("http://localhost:8080");
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            })
-            .ConfigurePrimaryHttpMessageHandler(() =>
-            {
-                return new HttpClientHandler
-                {
-                    ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
-                };
-            });
+            //builder.Services.AddHttpClient<PlayerService>(client =>
+            //{
+            //    client.BaseAddress = new Uri("http://localhost:8080");
+            //    client.DefaultRequestHeaders.Accept.Clear();
+            //    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            //})
+            //.ConfigurePrimaryHttpMessageHandler(() =>
+            //{
+            //    return new HttpClientHandler
+            //    {
+            //        ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
+            //    };
+            //});
 
-            builder.Services.AddTransient<PlayerViewModel>();
-            builder.Services.AddTransient<PlayerView>();
+            //builder.Services.AddTransient<PlayerViewModel>();
+            //builder.Services.AddTransient<PlayerView>();
 
             return builder.Build();
         }
