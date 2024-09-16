@@ -29,7 +29,7 @@
 
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Button 
+                        <Button
                             Text="{Binding Name}"
                             BackgroundColor="{Binding Color}"
                             Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.TileCommand}"
