@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SolitaireMahjongApp.Views.MahjongView"
+             Title="MahjongView">
+    <ScrollView>
+        <VerticalStackLayout Padding="0" Margin="0">
+            <Grid RowDefinitions="Auto" ColumnDefinitions="*,*" Padding="10" Margin="0,0,0,10">
+                <Label Text="{Binding TimerText}"
+                       TextColor="White"
+                       FontSize="24"
+                       HorizontalOptions="Start"
+                       VerticalOptions="Center"
+                       Grid.Column="0" />
+
+                <Label Text="{Binding ScoreText}"
+                       TextColor="White"
+                       FontSize="24"
+                       HorizontalOptions="End"
+                       VerticalOptions="Center"
+                       Grid.Column="1" />
+            </Grid>
+
+            <CollectionView ItemsSource="{Binding Tiles}" SelectionMode="None" VerticalOptions="FillAndExpand">
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical" Span="8"
+                                     VerticalItemSpacing="10"/>
+                </CollectionView.ItemsLayout>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Button 
+                            Text="{Binding Name}"
+                            BackgroundColor="{Binding Color}"
+                            Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.TileCommand}"
+                            CommandParameter="{Binding .}"
+                            WidthRequest="100"
+                            HeightRequest="150"/>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
