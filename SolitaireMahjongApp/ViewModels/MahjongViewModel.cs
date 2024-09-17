@@ -39,7 +39,7 @@ namespace SolitaireMahjongApp.ViewModels
         private void GenerateTiles()
         {
             // Gerar pares de peças
-            for (int i = 1; i <= 8; i++)  // Exemplo com 8 pares
+            for (int i = 1; i <= 2; i++)  // Exemplo com 8 pares
             {
                 Tiles.Add(new Tile { Name = $"Tile{i}", Color = Colors.LightGray });
                 Tiles.Add(new Tile { Name = $"Tile{i}", Color = Colors.LightGray });
@@ -60,7 +60,7 @@ namespace SolitaireMahjongApp.ViewModels
 
         private async void StartTimer()
         {
-            while (_timeLeft > 0)
+            while (_timeLeft > 0 && Tiles.Count != 0)
             {
                 await Task.Delay(1000);
                 _timeLeft--;
@@ -75,50 +75,73 @@ namespace SolitaireMahjongApp.ViewModels
 
         private void OnTileClicked(Tile tile)
         {
+
+            if (_firstTileSelected == tile)
+            {
+                return;
+            }
+
             if (_firstTileSelected == null)
             {
                 _firstTileSelected = tile;
-                _firstTileSelected.Color = Colors.Blue;
+                tile.Color = Colors.Blue;
             }
             else if (_secondTileSelected == null)
             {
                 _secondTileSelected = tile;
-                _secondTileSelected.Color = Colors.Blue;
+                tile.Color = Colors.Blue;
 
                 CheckForMatch();
             }
         }
 
-        private void CheckForMatch()
+        private async void CheckForMatch()
         {
             if (_firstTileSelected != null && _secondTileSelected != null)
             {
                 if (_firstTileSelected.Name == _secondTileSelected.Name)
                 {
+
+                    var _firstTileToRemove = _firstTileSelected;
+                    var _secondTileToRemove = _secondTileSelected;
+
                     // Remover as peças correspondentes
-                    Tiles.Remove(_firstTileSelected);
-                    Tiles.Remove(_secondTileSelected);
+                    Tiles.Remove(_firstTileToRemove);
+                    Tiles.Remove(_secondTileToRemove);
 
                     // Atualizar a pontuação
                     _score += 1;
                     ScoreText = $"Score: {_score}";
+
+                    if (Tiles.Count == 0)
+                    {
+                        GameWin();
+                    }
+
+                    _firstTileSelected = null;
+                    _secondTileSelected = null;
                 }
                 else
                 {
                     // Resetar a cor se não houver correspondência
                     _firstTileSelected.Color = Colors.LightGray;
-                    _secondTileSelected.Color = Colors.LightGray;
-                }
 
-                _firstTileSelected = null;
-                _secondTileSelected = null;
+                    _firstTileSelected = _secondTileSelected;
+                    _secondTileSelected = null;
+
+                }
             }
         }
 
         private void GameOver()
         {
-            // Lógica de fim de jogo (exibir mensagem ou reiniciar)
-            Console.WriteLine("Game Over!");
+            Application.Current.MainPage.DisplayAlert("Game Over", "O tempo acabou", "OK");
+            Tiles.Clear();
+        }
+
+        private void GameWin()
+        {
+            Application.Current.MainPage.DisplayAlert("Você Ganhou", "Todas as peças foram removidas", "OK");
         }
     }
 }
