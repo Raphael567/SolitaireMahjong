@@ -8,6 +8,8 @@ CREATE TABLE Player (
 	data_registro DATETIME DEFAULT GETDATE()
 );
 
+drop table Player
+
 CREATE TABLE Peca (
 	peca_id BIGINT NOT NULL IDENTITY PRIMARY KEY,
 	cor VARCHAR(20) NOT NULL,

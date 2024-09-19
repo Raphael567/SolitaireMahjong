@@ -33,19 +33,10 @@
                         <Button
                             Text="{Binding Name}"
                             BackgroundColor="{Binding Color}"
-                            IsVisible="{Binding IsExposed}"
                             Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.TileCommand}"
                             CommandParameter="{Binding .}"
                             WidthRequest="100"
                             HeightRequest="150">
-                            <Button.Triggers>
-                                <DataTrigger TargetType="Button" Binding="{Binding IsExposed}" Value="True">
-                                    <Setter Property="BackgroundColor" Value="LightGray"/>
-                                </DataTrigger>
-                                <DataTrigger TargetType="Button" Binding="{Binding IsExposed}" Value="False">
-                                    <Setter Property="BackgroundColor" Value="Transparent"/>
-                                </DataTrigger>
-                            </Button.Triggers>
                         </Button>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>

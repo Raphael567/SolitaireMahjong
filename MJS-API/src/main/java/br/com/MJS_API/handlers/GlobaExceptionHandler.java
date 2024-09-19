@@ -1,6 +1,7 @@
 package br.com.MJS_API.handlers;
 
 import br.com.MJS_API.exceptions.ErrorResponse;
+import br.com.MJS_API.exceptions.PecaNotFoundException;
 import br.com.MJS_API.exceptions.PlayerNotFoundException;
 import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,12 @@ public class GlobaExceptionHandler {
     @ExceptionHandler(PlayerNotFoundException.class)
     public ResponseEntity<ErrorResponse> handlePlayerNotFoundException(PlayerNotFoundException ex) {
         ErrorResponse errorResponse = new ErrorResponse("Player not found", ex.getMessage(), HttpStatus.NOT_FOUND.value());
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(PecaNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handlePecaNotFoundException(PecaNotFoundException ex) {
+        ErrorResponse errorResponse = new ErrorResponse("Peca not found", ex.getMessage(), HttpStatus.NOT_FOUND.value());
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 

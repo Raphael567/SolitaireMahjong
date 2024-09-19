@@ -1,12 +1,14 @@
 package br.com.MJS_API.services;
 
 import br.com.MJS_API.entities.Peca;
+import br.com.MJS_API.exceptions.PecaNotFoundException;
 import br.com.MJS_API.repositories.PecaRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PecaService {
@@ -14,14 +16,26 @@ public class PecaService {
     private PecaRepository pecaRepository;
 
     public List<Peca> getAllPecas() {
-        return pecaRepository.findAll();
+        try {
+            return pecaRepository.findAll();
+        } catch (Exception e) {
+            throw new RuntimeException("Error while trying to get all pieces");
+        }
     }
 
-    public Peca getPecaBySimbolo(String simbolo) {
-        return pecaRepository.findBySimbolo(simbolo);
+    public List<Peca> getPecaBySimbolo(String simbolo) {
+        List<Peca> pecas = pecaRepository.findBySimbolo(simbolo);
+        if(pecas.isEmpty()) {
+            throw new PecaNotFoundException("Peça with symbol " + simbolo + " not found");
+        }
+        return pecas;
     }
 
-    public Peca getPecaByCor(String cor) {
-        return pecaRepository.findByCor(cor);
+    public List<Peca> getPecaByCor(String cor) {
+        List<Peca> pecas = pecaRepository.findByCor(cor);
+        if(pecas.isEmpty()) {
+            throw new PecaNotFoundException("Peça with symbol " + cor + " not found");
+        }
+        return pecas;
     }
 }

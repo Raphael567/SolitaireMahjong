@@ -3,7 +3,11 @@ package br.com.MJS_API.repositories;
 import br.com.MJS_API.entities.Peca;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import javax.swing.text.html.Option;
+import java.util.List;
+import java.util.Optional;
+
 public interface PecaRepository extends JpaRepository<Peca, Long> {
-    Peca findBySimbolo(String simbolo);
-    Peca findByCor(String cor);
+    List<Peca> findBySimbolo(String simbolo);
+    List<Peca> findByCor(String cor);
 }

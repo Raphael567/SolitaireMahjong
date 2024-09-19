@@ -1,11 +1,9 @@
 package br.com.MJS_API.entities;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import org.springframework.stereotype.Service;
+import lombok.Data;
 
-@Getter
-@Service
+@Data
 @Entity
 @Table(name = "Peca")
 public class Peca {

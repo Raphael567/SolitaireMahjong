@@ -16,18 +16,21 @@ public class PecaController {
     private PecaService pecaService;
 
     @GetMapping
-    public List<Peca> getAllPecas(){
-        return pecaService.getAllPecas();
+    public ResponseEntity<List<Peca>> getAllPecas(){
+        List<Peca> pecas = pecaService.getAllPecas();
+        return new ResponseEntity<>(pecas, HttpStatus.OK);
     }
 
-    @GetMapping
-    public Peca getPecaBySimbolo(String simbolo){
-        return pecaService.getPecaBySimbolo(simbolo);
+    @GetMapping("/simbolo/{simbolo}")
+    public ResponseEntity<List<Peca>> getPecaBySimbolo(@PathVariable String simbolo){
+        List<Peca> pecas = pecaService.getPecaBySimbolo(simbolo);
+        return new ResponseEntity<>(pecas, HttpStatus.OK);
     }
 
-    @GetMapping
-    public Peca getPecaByCor(String cor){
-        return pecaService.getPecaByCor(cor);
+    @GetMapping("/cor/{cor}")
+    public ResponseEntity<List<Peca>> getPecaByCor(@PathVariable String cor){
+        List<Peca> pecas = pecaService.getPecaByCor(cor);
+        return new ResponseEntity<>(pecas, HttpStatus.OK);
     }
 
 }
