@@ -38,24 +38,67 @@ namespace SolitaireMahjongApp.ViewModels
 
         private void GenerateTiles()
         {
+            var tempTiles = new ObservableCollection<Tile>();
+
             // Gerar pares de peças
-            for (int i = 1; i <= 2; i++)  // Exemplo com 8 pares
+            for (int i = 1; i <= 8; i++)  // Exemplo com 8 pares
             {
-                Tiles.Add(new Tile { Name = $"Tile{i}", Color = Colors.LightGray });
-                Tiles.Add(new Tile { Name = $"Tile{i}", Color = Colors.LightGray });
+                tempTiles.Add(new Tile { Name = $"Tile{i}", Color = Colors.LightGray });
+                tempTiles.Add(new Tile { Name = $"Tile{i}", Color = Colors.LightGray });
             }
 
-            //Embaralhar as peças
-            var shuffledTiles = Tiles.OrderBy(t => Guid.NewGuid()).ToList();
+            // Embaralhar as peças
+            var shuffledTiles = tempTiles.OrderBy(t => Guid.NewGuid()).ToList();
 
-            Tiles = new ObservableCollection<Tile>(shuffledTiles);
-
-            // Adiciona as peças embaralhadas ao Tiles
-            Tiles.Clear();
-            foreach(var tile in shuffledTiles)
+            // Configurar o layout das peças em um grid piramidal
+            int index = 0;
+            for (int row = 0; row < 7; row++) // 7 camadas
             {
-                Tiles.Add(tile);
+                for (int col = 0; col <= row; col++)
+                {
+                    if (index < shuffledTiles.Count)
+                    {
+                        var tile = shuffledTiles[index++];
+                        tile.Row = row;
+                        tile.Column = col;
+                        tile.IsExposed = row == 6;
+                        Tiles.Add(tile);
+                    }
+                }
             }
+        }
+
+        private void UpdateTileExposure()
+        {
+            foreach (var tile in Tiles)
+            {
+                tile.IsExposed = true; // Inicializar todas as peças como não expostas
+            }
+
+            //// Verificar todas as camadas de cima para baixo
+            //for (int row = 6; row >= 0; row--) // Camada mais baixa primeiro
+            //{
+            //    for (int col = 0; col <= row; col++)
+            //    {
+            //        var tile = Tiles.FirstOrDefault(t => t.Row == row && t.Column == col);
+            //        if (tile != null)
+            //        {
+            //            if (row == 6) // A camada mais baixa, sempre exposta
+            //            {
+            //                tile.IsExposed = true;
+            //            }
+            //            else
+            //            {
+            //                // Verificar se há peças bloqueando acima (tanto à esquerda quanto à direita)
+            //                var pieceAboveLeft = Tiles.FirstOrDefault(t => t.Row == row + 1 && t.Column == col);
+            //                var pieceAboveRight = Tiles.FirstOrDefault(t => t.Row == row + 1 && t.Column == col + 1);
+
+            //                // Peça exposta se nenhuma peça estiver bloqueando à esquerda e à direita
+            //                tile.IsExposed = (pieceAboveLeft == null && pieceAboveRight == null);
+            //            }
+            //        }
+            //    }
+            //}
         }
 
         private async void StartTimer()
@@ -99,7 +142,8 @@ namespace SolitaireMahjongApp.ViewModels
         {
             if (_firstTileSelected != null && _secondTileSelected != null)
             {
-                if (_firstTileSelected.Name == _secondTileSelected.Name)
+                if (_firstTileSelected.Name == _secondTileSelected.Name && 
+                    _firstTileSelected.isExposed && _secondTileSelected.isExposed)
                 {
 
                     var _firstTileToRemove = _firstTileSelected;
@@ -109,9 +153,12 @@ namespace SolitaireMahjongApp.ViewModels
                     Tiles.Remove(_firstTileToRemove);
                     Tiles.Remove(_secondTileToRemove);
 
+                    UpdateTileExposure();
+
                     // Atualizar a pontuação
                     _score += 1;
                     ScoreText = $"Score: {_score}";
+
 
                     if (Tiles.Count == 0)
                     {

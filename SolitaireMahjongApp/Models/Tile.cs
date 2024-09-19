@@ -9,5 +9,12 @@ namespace SolitaireMahjongApp.Models
 
         [ObservableProperty]
         public Color color;
+
+        [ObservableProperty]
+        public bool isExposed;
+
+        public int Row;
+
+        public int Column;
     }
 }
