@@ -4,6 +4,7 @@ import br.com.MJS_API.entities.Peca;
 import br.com.MJS_API.services.PecaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,4 +34,12 @@ public class PecaController {
         return new ResponseEntity<>(pecas, HttpStatus.OK);
     }
 
+    @GetMapping("/image/{id}")
+    public ResponseEntity<byte[]> getPecaImage(@PathVariable Long id) {
+        Peca peca = pecaService.getPecaById(id);
+        byte[] imageBytes = pecaService.loadImageBytes(peca.getNomeImagem());
+        return ResponseEntity.ok()
+                .contentType(MediaType.IMAGE_PNG)
+                .body(imageBytes);
+    }
 }

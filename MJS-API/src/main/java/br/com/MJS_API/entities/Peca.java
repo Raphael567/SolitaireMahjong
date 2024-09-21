@@ -17,4 +17,7 @@ public class Peca {
     private String simbolo;
 
     private int pontuacao;
+
+    @Column(name = "imagem")
+    private String nomeImagem;
 }

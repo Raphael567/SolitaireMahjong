@@ -1,6 +1,7 @@
 package br.com.MJS_API.handlers;
 
 import br.com.MJS_API.exceptions.ErrorResponse;
+import br.com.MJS_API.exceptions.ImageNotFoundException;
 import br.com.MJS_API.exceptions.PecaNotFoundException;
 import br.com.MJS_API.exceptions.PlayerNotFoundException;
 import org.apache.coyote.Response;
@@ -22,6 +23,12 @@ public class GlobaExceptionHandler {
     @ExceptionHandler(PecaNotFoundException.class)
     public ResponseEntity<ErrorResponse> handlePecaNotFoundException(PecaNotFoundException ex) {
         ErrorResponse errorResponse = new ErrorResponse("Peca not found", ex.getMessage(), HttpStatus.NOT_FOUND.value());
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(ImageNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleImageNotFoundException(ImageNotFoundException ex) {
+        ErrorResponse errorResponse = new ErrorResponse("Image not found", ex.getMessage(), HttpStatus.NOT_FOUND.value());
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
