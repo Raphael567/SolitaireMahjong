@@ -4,7 +4,6 @@ import br.com.MJS_API.entities.Peca;
 import br.com.MJS_API.exceptions.ImageNotFoundException;
 import br.com.MJS_API.exceptions.PecaNotFoundException;
 import br.com.MJS_API.repositories.PecaRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

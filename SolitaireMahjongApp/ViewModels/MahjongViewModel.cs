@@ -2,8 +2,10 @@
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Maui.Graphics;
 using SolitaireMahjongApp.Models;
+using SolitaireMahjongApp.Services;
 using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -13,6 +15,8 @@ namespace SolitaireMahjongApp.ViewModels
 {
     public partial class MahjongViewModel : ObservableObject
     {
+        private readonly TileService _tileService;
+
         [ObservableProperty]
         private string timerText = "Time 2:00";
 
@@ -20,7 +24,10 @@ namespace SolitaireMahjongApp.ViewModels
         private string scoreText = "Score: 0";
 
         [ObservableProperty]
-        private ObservableCollection<Tile> tiles = new ObservableCollection<Tile>();
+        private ObservableCollection<Tile> _tiles;
+
+        //[ObservableProperty]
+        //private ObservableCollection<Tile> tiles = new ObservableCollection<Tile>();
 
         private Tile _firstTileSelected = null;
         private Tile _secondTileSelected = null;
@@ -31,47 +38,36 @@ namespace SolitaireMahjongApp.ViewModels
 
         public MahjongViewModel()
         {
+            _tileService = new TileService();
             TileCommand = new RelayCommand<Tile>(OnTileClicked);
-            GenerateTiles();
-            StartTimer();
+            LoadTilesCommand = new AsyncRelayCommand(LoadTilesAsync);
+            //StartTimer();
         }
 
-        private void GenerateTiles()
-        {
-            // Gerar pares de peças
-            for (int i = 1; i <= 2; i++)  // Exemplo com 8 pares
-            {
-                Tiles.Add(new Tile { Name = $"Tile{i}", Color = Colors.LightGray });
-                Tiles.Add(new Tile { Name = $"Tile{i}", Color = Colors.LightGray });
-            }
+        public IAsyncRelayCommand LoadTilesCommand { get; }
 
-            //Embaralhar as peças
-            var shuffledTiles = Tiles.OrderBy(t => Guid.NewGuid()).ToList();
+        private async Task LoadTilesAsync()
+        {
+            var tilesFromApi = await _tileService.GetTilesAsync();
+            var shuffledTiles = tilesFromApi.OrderBy(t => Guid.NewGuid()).ToList();
 
             Tiles = new ObservableCollection<Tile>(shuffledTiles);
-
-            // Adiciona as peças embaralhadas ao Tiles
-            Tiles.Clear();
-            foreach (var tile in shuffledTiles)
-            {
-                Tiles.Add(tile);
-            }
         }
 
-        private async void StartTimer()
-        {
-            while (_timeLeft > 0 && Tiles.Count != 0)
-            {
-                await Task.Delay(1000);
-                _timeLeft--;
-                TimerText = $"Time {TimeSpan.FromSeconds(_timeLeft):mm\\:ss}";
+        //private async void StartTimer()
+        //{
+        //    while (_timeLeft > 0 && Tiles.Count != 0)
+        //    {
+        //        await Task.Delay(1000);
+        //        _timeLeft--;
+        //        TimerText = $"Time {TimeSpan.FromSeconds(_timeLeft):mm\\:ss}";
 
-                if (_timeLeft == 0)
-                {
-                    GameOver();
-                }
-            }
-        }
+        //        if (_timeLeft == 0)
+        //        {
+        //            GameOver();
+        //        }
+        //    }
+        //}
 
         private void OnTileClicked(Tile tile)
         {
@@ -99,7 +95,8 @@ namespace SolitaireMahjongApp.ViewModels
         {
             if (_firstTileSelected != null && _secondTileSelected != null)
             {
-                if (_firstTileSelected.Name == _secondTileSelected.Name)
+                if (_firstTileSelected.simbolo == _secondTileSelected.simbolo
+                    && _firstTileSelected.cor == _secondTileSelected.cor)
                 {
 
                     var _firstTileToRemove = _firstTileSelected;
@@ -128,7 +125,6 @@ namespace SolitaireMahjongApp.ViewModels
 
                     _firstTileSelected = _secondTileSelected;
                     _secondTileSelected = null;
-
                 }
             }
         }
@@ -137,6 +133,10 @@ namespace SolitaireMahjongApp.ViewModels
         {
             Application.Current.MainPage.DisplayAlert("Game Over", "O tempo acabou", "OK");
             Tiles.Clear();
+            _timeLeft = 120;
+            _score = 0;
+            ScoreText = $"Score: {_score}";
+            LoadTilesAsync();
         }
 
         private void GameWin()

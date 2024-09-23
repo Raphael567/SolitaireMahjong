@@ -18,6 +18,8 @@ CREATE TABLE Peca (
 	imagem VARCHAR(255) NOT NULL
 );
 
+select * from Peca
+
 drop table Peca
 
 INSERT INTO Player (nome, pontuacao) VALUES ('Carlos Silva', 1500);
@@ -25,37 +27,97 @@ INSERT INTO Player (nome) VALUES ('Ana Souza');
 INSERT INTO Player (nome, pontuacao) VALUES ('Mariana Oliveira', 2000);
 INSERT INTO Player (nome) VALUES ('Pedro Mendes');
 
-INSERT INTO Peca (cor, simbolo, pontuacao) VALUES ('Vermelho', 'Leque', 1);
-INSERT INTO Peca (cor, simbolo, pontuacao) VALUES ('Vermelho', 'Luminária', 1);
-INSERT INTO Peca (cor, simbolo, pontuacao) VALUES ('Vermelho', 'Dragão', 1);
-INSERT INTO Peca (cor, simbolo, pontuacao) VALUES ('Vermelho', 'Caractere', 1);
-INSERT INTO Peca (cor, simbolo, pontuacao) VALUES ('Vermelho', 'Flor', 1);
-INSERT INTO Peca (cor, simbolo, pontuacao) VALUES ('Vermelho', 'Carpa', 1);
+-- Vermelho
+INSERT INTO Peca (cor, simbolo, pontuacao, imagem) VALUES ('Vermelho', 'Leque', 1, 'leque_vermelho.png');
+INSERT INTO Peca (cor, simbolo, pontuacao, imagem) VALUES ('Vermelho', 'Leque', 1, 'leque_vermelho.png');
 
+INSERT INTO Peca (cor, simbolo, pontuacao, imagem) VALUES ('Vermelho', 'Luminária', 1, 'luminaria_vermelho.png');
+INSERT INTO Peca (cor, simbolo, pontuacao, imagem) VALUES ('Vermelho', 'Luminária', 1, 'luminaria_vermelho.png');
+
+INSERT INTO Peca (cor, simbolo, pontuacao, imagem) VALUES ('Vermelho', 'Dragão', 1, 'dragao_vermelho.png');
+INSERT INTO Peca (cor, simbolo, pontuacao, imagem) VALUES ('Vermelho', 'Dragão', 1, 'dragao_vermelho.png');
+
+INSERT INTO Peca (cor, simbolo, pontuacao, imagem) VALUES ('Vermelho', 'Caractere', 1, 'caractere_vermelho.png');
+INSERT INTO Peca (cor, simbolo, pontuacao, imagem) VALUES ('Vermelho', 'Caractere', 1, 'caractere_vermelho.png');
+
+INSERT INTO Peca (cor, simbolo, pontuacao, imagem) VALUES ('Vermelho', 'Flor', 1, 'flor_vermelho.png');
+INSERT INTO Peca (cor, simbolo, pontuacao, imagem) VALUES ('Vermelho', 'Flor', 1, 'flor_vermelho.png');
+
+INSERT INTO Peca (cor, simbolo, pontuacao, imagem) VALUES ('Vermelho', 'Carpa', 1, 'carpa_vermelho.png');
+INSERT INTO Peca (cor, simbolo, pontuacao, imagem) VALUES ('Vermelho', 'Carpa', 1, 'carpa_vermelho.png');
+
+-- Amarelo
 INSERT INTO Peca (cor, simbolo, pontuacao, imagem) VALUES ('Amarelo', 'Leque', 2, 'leque_amarelo.png');
+INSERT INTO Peca (cor, simbolo, pontuacao, imagem) VALUES ('Amarelo', 'Leque', 2, 'leque_amarelo.png');
+
 INSERT INTO Peca (cor, simbolo, pontuacao, imagem) VALUES ('Amarelo', 'Luminária', 2, 'luminaria_amarelo.png');
+INSERT INTO Peca (cor, simbolo, pontuacao, imagem) VALUES ('Amarelo', 'Luminária', 2, 'luminaria_amarelo.png');
+
 INSERT INTO Peca (cor, simbolo, pontuacao, imagem) VALUES ('Amarelo', 'Dragão', 2, 'dragao_amarelo.png');
--- INSERT INTO Peca (cor, simbolo, pontuacao, imagem) VALUES ('Amarelo', 'Caractere', 2, 'caractere_amarelo.png');
+INSERT INTO Peca (cor, simbolo, pontuacao, imagem) VALUES ('Amarelo', 'Dragão', 2, 'dragao_amarelo.png');
+
+INSERT INTO Peca (cor, simbolo, pontuacao, imagem) VALUES ('Amarelo', 'Caractere', 2, 'caractere_amarelo.png');
+INSERT INTO Peca (cor, simbolo, pontuacao, imagem) VALUES ('Amarelo', 'Caractere', 2, 'caractere_amarelo.png');
+
 INSERT INTO Peca (cor, simbolo, pontuacao, imagem) VALUES ('Amarelo', 'Flor', 2, 'flor_amarelo.png');
+INSERT INTO Peca (cor, simbolo, pontuacao, imagem) VALUES ('Amarelo', 'Flor', 2, 'flor_amarelo.png');
+
+INSERT INTO Peca (cor, simbolo, pontuacao, imagem) VALUES ('Amarelo', 'Carpa', 2, 'carpa_amarelo.png');
 INSERT INTO Peca (cor, simbolo, pontuacao, imagem) VALUES ('Amarelo', 'Carpa', 2, 'carpa_amarelo.png');
 
+-- Azul
 INSERT INTO Peca (cor, simbolo, pontuacao, imagem) VALUES ('Azul', 'Leque', 3, 'leque_azul.png');
+INSERT INTO Peca (cor, simbolo, pontuacao, imagem) VALUES ('Azul', 'Leque', 3, 'leque_azul.png');
+
 INSERT INTO Peca (cor, simbolo, pontuacao, imagem) VALUES ('Azul', 'Luminária', 3, 'luminaria_azul.png');
+INSERT INTO Peca (cor, simbolo, pontuacao, imagem) VALUES ('Azul', 'Luminária', 3, 'luminaria_azul.png');
+
 INSERT INTO Peca (cor, simbolo, pontuacao, imagem) VALUES ('Azul', 'Dragão', 3, 'dragao_azul.png');
--- INSERT INTO Peca (cor, simbolo, pontuacao, imagem) VALUES ('Azul', 'Caractere', 3, 'caractere_azul.png');
+INSERT INTO Peca (cor, simbolo, pontuacao, imagem) VALUES ('Azul', 'Dragão', 3, 'dragao_azul.png');
+
+INSERT INTO Peca (cor, simbolo, pontuacao, imagem) VALUES ('Azul', 'Caractere', 3, 'caractere_azul.png');
+INSERT INTO Peca (cor, simbolo, pontuacao, imagem) VALUES ('Azul', 'Caractere', 3, 'caractere_azul.png');
+
 INSERT INTO Peca (cor, simbolo, pontuacao, imagem) VALUES ('Azul', 'Flor', 3, 'flor_azul.png');
+INSERT INTO Peca (cor, simbolo, pontuacao, imagem) VALUES ('Azul', 'Flor', 3, 'flor_azul.png');
+
+INSERT INTO Peca (cor, simbolo, pontuacao, imagem) VALUES ('Azul', 'Carpa', 3, 'carpa_azul.png');
 INSERT INTO Peca (cor, simbolo, pontuacao, imagem) VALUES ('Azul', 'Carpa', 3, 'carpa_azul.png');
 
-INSERT INTO Peca (cor, simbolo, pontuacao) VALUES ('Verde', 'Leque', 5);
-INSERT INTO Peca (cor, simbolo, pontuacao) VALUES ('Verde', 'Luminária', 5);
-INSERT INTO Peca (cor, simbolo, pontuacao) VALUES ('Verde', 'Dragão', 5);
-INSERT INTO Peca (cor, simbolo, pontuacao) VALUES ('Verde', 'Caractere', 5);
-INSERT INTO Peca (cor, simbolo, pontuacao) VALUES ('Verde', 'Flor', 5);
-INSERT INTO Peca (cor, simbolo, pontuacao) VALUES ('Verde', 'Carpa', 5);
+-- Verde
+INSERT INTO Peca (cor, simbolo, pontuacao, imagem) VALUES ('Verde', 'Leque', 5, 'leque_verde.png');
+INSERT INTO Peca (cor, simbolo, pontuacao, imagem) VALUES ('Verde', 'Leque', 5, 'leque_verde.png');
 
+INSERT INTO Peca (cor, simbolo, pontuacao, imagem) VALUES ('Verde', 'Luminária', 5, 'luminaria_verde.png');
+INSERT INTO Peca (cor, simbolo, pontuacao, imagem) VALUES ('Verde', 'Luminária', 5, 'luminaria_verde.png');
+
+INSERT INTO Peca (cor, simbolo, pontuacao, imagem) VALUES ('Verde', 'Dragão', 5, 'dragao_verde.png');
+INSERT INTO Peca (cor, simbolo, pontuacao, imagem) VALUES ('Verde', 'Dragão', 5, 'dragao_verde.png');
+
+INSERT INTO Peca (cor, simbolo, pontuacao, imagem) VALUES ('Verde', 'Caractere', 5, 'caractere_verde.png');
+INSERT INTO Peca (cor, simbolo, pontuacao, imagem) VALUES ('Verde', 'Caractere', 5, 'caractere_verde.png');
+
+INSERT INTO Peca (cor, simbolo, pontuacao, imagem) VALUES ('Verde', 'Flor', 5, 'flor_verde.png');
+INSERT INTO Peca (cor, simbolo, pontuacao, imagem) VALUES ('Verde', 'Flor', 5, 'flor_verde.png');
+
+INSERT INTO Peca (cor, simbolo, pontuacao, imagem) VALUES ('Verde', 'Carpa', 5, 'carpa_verde.png');
+INSERT INTO Peca (cor, simbolo, pontuacao, imagem) VALUES ('Verde', 'Carpa', 5, 'carpa_verde.png');
+
+-- Roxo
 INSERT INTO Peca (cor, simbolo, pontuacao, imagem) VALUES ('Roxo', 'Leque', 10, 'leque_roxo.png');
+INSERT INTO Peca (cor, simbolo, pontuacao, imagem) VALUES ('Roxo', 'Leque', 10, 'leque_roxo.png');
+
 INSERT INTO Peca (cor, simbolo, pontuacao, imagem) VALUES ('Roxo', 'Luminária', 10, 'luminaria_roxo.png');
+INSERT INTO Peca (cor, simbolo, pontuacao, imagem) VALUES ('Roxo', 'Luminária', 10, 'luminaria_roxo.png');
+
 INSERT INTO Peca (cor, simbolo, pontuacao, imagem) VALUES ('Roxo', 'Dragão', 10, 'dragao_roxo.png');
--- INSERT INTO Peca (cor, simbolo, pontuacao, imagem) VALUES ('Roxo', 'Caractere', 10, 'caractere_roxo.png');
+INSERT INTO Peca (cor, simbolo, pontuacao, imagem) VALUES ('Roxo', 'Dragão', 10, 'dragao_roxo.png');
+
+INSERT INTO Peca (cor, simbolo, pontuacao, imagem) VALUES ('Roxo', 'Caractere', 10, 'caractere_roxo.png');
+INSERT INTO Peca (cor, simbolo, pontuacao, imagem) VALUES ('Roxo', 'Caractere', 10, 'caractere_roxo.png');
+
 INSERT INTO Peca (cor, simbolo, pontuacao, imagem) VALUES ('Roxo', 'Flor', 10, 'flor_roxo.png');
+INSERT INTO Peca (cor, simbolo, pontuacao, imagem) VALUES ('Roxo', 'Flor', 10, 'flor_roxo.png');
+
+INSERT INTO Peca (cor, simbolo, pontuacao, imagem) VALUES ('Roxo', 'Carpa', 10, 'carpa_roxo.png');
 INSERT INTO Peca (cor, simbolo, pontuacao, imagem) VALUES ('Roxo', 'Carpa', 10, 'carpa_roxo.png');
