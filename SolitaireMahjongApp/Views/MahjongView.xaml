@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SolitaireMahjongApp.Views.MahjongView"
+             xmlns:local="clr-namespace:SolitaireMahjongApp.Views"
              Title="MahjongView">
 
     <ScrollView>
@@ -22,18 +23,20 @@
                        VerticalOptions="Center"
                        Grid.Column="1" />
             </Grid>
+            
             <Button Text="Carregar peças" Command="{Binding LoadTilesCommand}"/>
-            <AbsoluteLayout VerticalOptions="FillAndExpand" HorizontalOptions="Center" BindableLayout.ItemsSource="{Binding Tiles}" Margin="0,120,0,0">
+
+            <AbsoluteLayout VerticalOptions="FillAndExpand" HorizontalOptions="Center" BindableLayout.ItemsSource="{Binding Tiles}" Margin="0,0,0,100">
                 <BindableLayout.ItemTemplate>
                     <DataTemplate>
                         <ImageButton
                             Source="{Binding CaminhoImagem}"
-                            BackgroundColor="{Binding Color}"
+                            BackgroundColor="Transparent"
                             Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.TileCommand}"
                             CommandParameter="{Binding .}"
                             AbsoluteLayout.LayoutBounds="{Binding LayoutBounds}"
-                            WidthRequest="100"
-                            HeightRequest="150"/>
+                            WidthRequest="80"
+                            HeightRequest="100"/>
                     </DataTemplate>
                 </BindableLayout.ItemTemplate>
             </AbsoluteLayout>

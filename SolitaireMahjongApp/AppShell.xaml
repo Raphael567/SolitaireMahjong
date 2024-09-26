@@ -9,14 +9,15 @@
 
     <TabBar>
         <ShellContent
+            Title="Mahjong Solitaire"
+            ContentTemplate="{DataTemplate local:MahjongView}"
+            Route="MahjongView" />
+        
+        <ShellContent
             Title="Exibir jogadores"
             ContentTemplate="{DataTemplate local:PlayerView}"
             Route="PlayerView" />
 
-        <ShellContent
-            Title="Mahjong Solitaire"
-            ContentTemplate="{DataTemplate local:MahjongView}"
-            Route="MahjongView" />
     </TabBar>
 
 </Shell>

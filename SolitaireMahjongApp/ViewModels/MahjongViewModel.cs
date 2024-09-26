@@ -19,21 +19,18 @@ namespace SolitaireMahjongApp.ViewModels
         private readonly TileService _tileService;
 
         [ObservableProperty]
-        private string timerText = "Time 2:00";
+        private string timerText;
 
         [ObservableProperty]
-        private string scoreText = "Score: 0";
+        private string scoreText;
 
         [ObservableProperty]
         private ObservableCollection<Tile> _tiles;
 
-        //[ObservableProperty]
-        //private ObservableCollection<Tile> tiles = new ObservableCollection<Tile>();
-
         private Tile _firstTileSelected = null;
         private Tile _secondTileSelected = null;
         private int _score = 0;
-        private int _timeLeft = 120; // 2 minutos em segundos
+        private int _timeLeft = 20000; // 2 minutos em segundos
 
         public ICommand TileCommand { get; }
 
@@ -42,7 +39,12 @@ namespace SolitaireMahjongApp.ViewModels
             _tileService = new TileService();
             TileCommand = new RelayCommand<Tile>(OnTileClicked);
             LoadTilesCommand = new AsyncRelayCommand(LoadTilesAsync);
-            //StartTimer();
+
+            Task.Run(async () =>
+            {
+                await LoadTilesAsync();
+                StartTimer();
+            });
         }
 
         public IAsyncRelayCommand LoadTilesCommand { get; }
@@ -54,57 +56,138 @@ namespace SolitaireMahjongApp.ViewModels
 
             Tiles = new ObservableCollection<Tile>();
 
-            // Definindo o número de peças por camada
-            int[] tilesPerLayer = { 40, 16, 4 }; // Número de peças por camada
-            int layers = tilesPerLayer.Length; // Total de camadas
-            double tileWidth = 100; // Largura da peça
-            double tileHeight = 150; // Altura da peça
-            double zSpacing = 10; // Espaçamento entre as camadas
+            int[,] layer1 = new int[,]
+            {
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            };
 
-            // Calcular o centro do layout
+            int[,] layer2 = new int[,]
+            {
+                { 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0 },
+                { 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0 },
+                { 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0 },
+                { 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0 },
+                { 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0 },
+                { 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0 },
+                { 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0 },
+                { 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0 }
+            };
+
+            int[,] layer3 = new int[,]
+            {
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            };
+
+            int[,] layer4 = new int[,]
+            {
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            };
+
+            int[,] layer5 = new int[,]
+            {
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            };
+
+            int[,] layer6 = new int[,]
+            {
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            };
+
+            // Define a organização das camadas
+            var layers = new List<int[,]>
+            {
+                layer1, // Camada 1
+                layer2, // Camada 2
+                layer3, // Camada 3
+                layer4, // Camada 4
+                layer5, // Camada 5
+                layer6  // Camada 6
+            };
+
+            int tileWidth = 60;
+            int tileHeight = 75;
+            int zSpacing = 5; // Espaçamento entre as camadas
+
+            //Ajusta ao centro da tela
             double centerX = 300;
             double centerY = 400;
 
-            for (int layer = 0; layer < layers; layer++)
+            int tileIndex = 0;
+            for (int z = 0; z < layers.Count; z++)
             {
-                for (int index = 0; index < tilesPerLayer[layer]; index++)
+                var layer = layers[z];
+                for (int y = 0; y < layer.GetLength(0); y++)
                 {
-                    int tileIndex = layer == 0
-                        ? index // Para a camada 1, usa o índice diretamente
-                        : index + (tilesPerLayer.Take(layer).Sum()); // Para camadas superiores, soma as peças das camadas anteriores
+                    for (int x = 0; x < layer.GetLength(1); x++)
+                    {
+                        if (layer[y, x] == 1 && tileIndex < shuffledTiles.Count)
+                        {
+                            var tile = shuffledTiles[tileIndex];
+                            tileIndex++;
 
-                    // Verifica se há peças suficientes
-                    if (tileIndex >= shuffledTiles.Count)
-                        break;
+                            double posX = centerX - (layer.GetLength(1) * tileWidth / 2) + x * tileWidth;
+                            double posY = centerY - (layer.GetLength(0) * tileHeight / 2) + y * tileHeight - z * zSpacing;
 
-                    var tile = shuffledTiles[tileIndex];
+                            tile.LayoutBounds = new Rect(posX, posY, tileWidth, tileHeight);
 
-                    // Calcula a posição X e Y com base na camada e no índice
-                    double x = centerX - (layer == 0 ? 6 : (layer == 1 ? 4 : 2)) * tileWidth / 2 + (index % (layer == 0 ? 6 : (layer == 1 ? 4 : 2))) * tileWidth;
-                    double y = centerY - (layer == 0 ? 6 : (layer == 1 ? 4 : 2)) * tileHeight / 2 + (index / (layer == 0 ? 6 : (layer == 1 ? 4 : 2))) * tileHeight - (layer * zSpacing);
-
-                    // Define os limites de layout
-                    tile.LayoutBounds = new Rect(x, y, tileWidth, tileHeight);
-
-                    Tiles.Add(tile);
+                            Tiles.Add(tile);
+                        }
+                    }
                 }
             }
         }
 
-        //private async void StartTimer()
-        //{
-        //    while (_timeLeft > 0 && Tiles.Count != 0)
-        //    {
-        //        await Task.Delay(1000);
-        //        _timeLeft--;
-        //        TimerText = $"Time {TimeSpan.FromSeconds(_timeLeft):mm\\:ss}";
+        private async void StartTimer()
+        {
+            while (_timeLeft > 0 && Tiles.Count != 0)
+            {
+                await Task.Delay(1000);
+                _timeLeft--;
+                TimerText = $"Time {TimeSpan.FromSeconds(_timeLeft):mm\\:ss}";
 
-        //        if (_timeLeft == 0)
-        //        {
-        //            GameOver();
-        //        }
-        //    }
-        //}
+                if (_timeLeft == 0)
+                {
+                    GameOver();
+                }
+            }
+        }
 
         private void OnTileClicked(Tile tile)
         {
