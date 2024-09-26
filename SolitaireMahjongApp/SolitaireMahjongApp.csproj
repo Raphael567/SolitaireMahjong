@@ -58,6 +58,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <AndroidResource Remove="NovaPasta1\**" />
+	  <Compile Remove="NovaPasta1\**" />
+	  <EmbeddedResource Remove="NovaPasta1\**" />
+	  <MauiCss Remove="NovaPasta1\**" />
+	  <MauiXaml Remove="NovaPasta1\**" />
+	  <None Remove="NovaPasta1\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
 		<PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />

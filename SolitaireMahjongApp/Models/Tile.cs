@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Microsoft.Maui.Controls.Shapes;
 
 namespace SolitaireMahjongApp.Models
 {
@@ -11,6 +12,8 @@ namespace SolitaireMahjongApp.Models
         public string nomeImagem { get; set; }
 
         public string CaminhoImagem => $"http://localhost:8080/pecas/image/{id}";
+
+        public Rect LayoutBounds { get; set; }
 
         [ObservableProperty]
         public Color color;

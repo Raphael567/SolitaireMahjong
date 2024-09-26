@@ -7,6 +7,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Xml.Linq;
@@ -51,7 +52,43 @@ namespace SolitaireMahjongApp.ViewModels
             var tilesFromApi = await _tileService.GetTilesAsync();
             var shuffledTiles = tilesFromApi.OrderBy(t => Guid.NewGuid()).ToList();
 
-            Tiles = new ObservableCollection<Tile>(shuffledTiles);
+            Tiles = new ObservableCollection<Tile>();
+
+            // Definindo o número de peças por camada
+            int[] tilesPerLayer = { 40, 16, 4 }; // Número de peças por camada
+            int layers = tilesPerLayer.Length; // Total de camadas
+            double tileWidth = 100; // Largura da peça
+            double tileHeight = 150; // Altura da peça
+            double zSpacing = 10; // Espaçamento entre as camadas
+
+            // Calcular o centro do layout
+            double centerX = 300;
+            double centerY = 400;
+
+            for (int layer = 0; layer < layers; layer++)
+            {
+                for (int index = 0; index < tilesPerLayer[layer]; index++)
+                {
+                    int tileIndex = layer == 0
+                        ? index // Para a camada 1, usa o índice diretamente
+                        : index + (tilesPerLayer.Take(layer).Sum()); // Para camadas superiores, soma as peças das camadas anteriores
+
+                    // Verifica se há peças suficientes
+                    if (tileIndex >= shuffledTiles.Count)
+                        break;
+
+                    var tile = shuffledTiles[tileIndex];
+
+                    // Calcula a posição X e Y com base na camada e no índice
+                    double x = centerX - (layer == 0 ? 6 : (layer == 1 ? 4 : 2)) * tileWidth / 2 + (index % (layer == 0 ? 6 : (layer == 1 ? 4 : 2))) * tileWidth;
+                    double y = centerY - (layer == 0 ? 6 : (layer == 1 ? 4 : 2)) * tileHeight / 2 + (index / (layer == 0 ? 6 : (layer == 1 ? 4 : 2))) * tileHeight - (layer * zSpacing);
+
+                    // Define os limites de layout
+                    tile.LayoutBounds = new Rect(x, y, tileWidth, tileHeight);
+
+                    Tiles.Add(tile);
+                }
+            }
         }
 
         //private async void StartTimer()
@@ -121,7 +158,7 @@ namespace SolitaireMahjongApp.ViewModels
                 else
                 {
                     // Resetar a cor se não houver correspondência
-                    _firstTileSelected.Color = Colors.LightGray;
+                    _firstTileSelected.Color = Colors.Transparent;
 
                     _firstTileSelected = _secondTileSelected;
                     _secondTileSelected = null;
