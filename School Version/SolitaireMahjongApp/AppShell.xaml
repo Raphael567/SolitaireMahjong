@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="SolitaireMahjongApp.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:SolitaireMahjongApp.Views"
+    Shell.FlyoutBehavior="Disabled"
+    Title="SolitaireMahjongApp">
+
+    <TabBar>
+        <ShellContent
+            Title="Mahjong Solitaire"
+            ContentTemplate="{DataTemplate local:MahjongView}"
+            Route="MahjongView" />
+        
+        <ShellContent
+            Title="Exibir jogadores"
+            ContentTemplate="{DataTemplate local:PlayerView}"
+            Route="PlayerView" />
+
+    </TabBar>
+
+</Shell>

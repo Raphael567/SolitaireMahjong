@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SolitaireMahjongApp.Views.MahjongView"
+             xmlns:local="clr-namespace:SolitaireMahjongApp.Views"
+             Title="MahjongView">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="0" Margin="0">
+
+            <Grid RowDefinitions="Auto" ColumnDefinitions="*,*" Padding="10" Margin="0,0,0,10">
+                <Label Text="{Binding TimerText}"
+                       TextColor="Black"
+                       FontSize="24"
+                       HorizontalOptions="Start"
+                       VerticalOptions="Center"
+                       Grid.Column="0" />
+
+                <Label Text="{Binding ScoreText}"
+                       TextColor="Black"
+                       FontSize="24"
+                       HorizontalOptions="End"
+                       VerticalOptions="Center"
+                       Grid.Column="1" />
+            </Grid>
+            
+            <Button Text="Carregar peças" Command="{Binding LoadTilesCommand}"/>
+
+            <AbsoluteLayout VerticalOptions="FillAndExpand" HorizontalOptions="Center" BindableLayout.ItemsSource="{Binding Tiles}" Margin="0,0,0,100">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate>
+                        <ImageButton
+                            Source="{Binding CaminhoImagem}"
+                            BackgroundColor="Transparent"
+                            Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.TileCommand}"
+                            CommandParameter="{Binding .}"
+                            AbsoluteLayout.LayoutBounds="{Binding LayoutBounds}"
+                            WidthRequest="80"
+                            HeightRequest="100"/>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </AbsoluteLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
