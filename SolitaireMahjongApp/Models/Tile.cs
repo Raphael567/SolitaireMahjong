@@ -14,6 +14,7 @@ namespace SolitaireMahjongApp.Models
         public string CaminhoImagem => $"http://localhost:8080/pecas/image/{id}";
 
         public Rect LayoutBounds { get; set; }
+        public bool IsFree { get; set; }
 
         [ObservableProperty]
         public Color color;
