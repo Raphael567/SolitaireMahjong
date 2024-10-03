@@ -30,7 +30,7 @@ namespace SolitaireMahjongApp.ViewModels
         private Tile _firstTileSelected = null;
         private Tile _secondTileSelected = null;
         private int _score = 0;
-        private int _timeLeft = 20000; // 2 minutos em segundos
+        private int _timeLeft = 120; // 2 minutos em segundos
 
         public ICommand TileCommand { get; }
 
@@ -227,7 +227,29 @@ namespace SolitaireMahjongApp.ViewModels
                     Tiles.Remove(_secondTileToRemove);
 
                     // Atualizar a pontuação
-                    _score += 1;
+                    switch (_firstTileSelected.cor)
+                    {
+                        case "Vermelho":
+                            _score += 1;
+                            break;
+
+                        case "Amarelo":
+                            _score += 2;
+                            break;
+
+                        case "Azul":
+                            _score += 3;
+                            break;
+
+                        case "Verde":
+                            _score += 5;
+                            break;
+
+                        case "Roxo":
+                            _score += 10;
+                            break;
+                    }
+
                     ScoreText = $"Score: {_score}";
 
                     if (Tiles.Count == 0)

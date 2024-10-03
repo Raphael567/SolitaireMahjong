@@ -8,8 +8,6 @@ CREATE TABLE Player (
 	data_registro DATETIME DEFAULT GETDATE()
 );
 
-drop table Player
-
 CREATE TABLE Peca (
 	peca_id BIGINT NOT NULL IDENTITY PRIMARY KEY,
 	cor VARCHAR(20) NOT NULL,
@@ -17,10 +15,6 @@ CREATE TABLE Peca (
 	pontuacao INT NOT NULL,
 	imagem VARCHAR(255) NOT NULL
 );
-
-select * from Peca
-
-drop table Peca
 
 INSERT INTO Player (nome, pontuacao) VALUES ('Carlos Silva', 1500);
 INSERT INTO Player (nome) VALUES ('Ana Souza');
