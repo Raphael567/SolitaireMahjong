@@ -39,11 +39,11 @@ namespace SolitaireMahjongApp.ViewModels
             layers = tilesLayers();
             tileMap = new Dictionary<(int layer, int row, int col), Tile>();
 
-            Task.Run(async () =>
-            {
-                await LoadTilesAsync();
-                StartTimer();
-            });
+            //Task.Run(async () =>
+            //{
+            //    await LoadTilesAsync();
+            //    StartTimer();
+            //});
         }
 
         public IAsyncRelayCommand LoadTilesCommand { get; }

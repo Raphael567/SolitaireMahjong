@@ -19,6 +19,7 @@ namespace SolitaireMahjongApp
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+                    fonts.AddFont("ZCOOLKuaiLe-Regular.ttf", "zCool");
                 });
 
 #if DEBUG

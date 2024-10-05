@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SolitaireMahjongApp.Views.RankingView"
+             Title="RankingView"
+             BackgroundImageSource="full_background.png">
+
+    <VerticalStackLayout Padding="20">
+
+        <ImageButton Source="voltar_btn.png"
+                     Command="{Binding NavigateBackCommand}" 
+                     WidthRequest="120"
+                     HorizontalOptions="Start"
+                     BackgroundColor="Transparent"/>
+
+        <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" ColumnSpacing="50">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+
+            <Image
+                Source="tiles_image2.png"
+                Grid.Column="1"
+                HorizontalOptions="EndAndExpand"
+                VerticalOptions="FillAndExpand"
+                Aspect="AspectFill"/>
+
+            <VerticalStackLayout HorizontalOptions="Center" Margin="0,50,0,0">
+                <!-- Título -->
+                <Label Text="Ranking"
+                       FontSize="120"
+                       HorizontalOptions="Center"
+                       FontFamily="zCool"
+                       FontAttributes="Bold"
+                       TextColor="DarkGreen"/>
+
+                <!-- Lista de jogadores -->
+                <ScrollView>
+                    <CollectionView ItemsSource="{Binding Players}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    
+                                    <Frame BackgroundColor="#FFFCE2"
+                                           BorderColor="Transparent"
+                                           CornerRadius="0"
+                                           HasShadow="False"
+                                           WidthRequest="500"
+                                           HeightRequest="{OnIdiom Desktop=80, Tablet=50, Phone=30}"
+                                           Padding="10"
+                                           Margin="0,30,0,5">
+                                        <Grid>
+                                            <Label Text="{Binding nome}"
+                                                   TextColor="Black"
+                                                   FontSize="35"
+                                                   FontFamily="zCool"
+                                                   HorizontalOptions="Start"
+                                                   Grid.Column="0"
+                                                   Padding="5"
+                                                   LineBreakMode="NoWrap"/>
+
+                                            <Label Text="{Binding pontuacao}"
+                                                   TextColor="Black"
+                                                   FontSize="35"
+                                                   FontFamily="zCool"
+                                                   HorizontalOptions="End"
+                                                   Grid.Column="1"
+                                                   Padding="5"
+                                                   LineBreakMode="NoWrap"/>
+                                        </Grid>
+                                    </Frame>
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </ScrollView>
+
+                <!-- Botões de ações -->
+                <HorizontalStackLayout HorizontalOptions="Center" Spacing="20">
+                    <Button Text="Atualizar Ranking" 
+                         Command="{Binding LoadPlayersCommand}"
+                         WidthRequest="150"
+                         HeightRequest="50"
+                         BackgroundColor="#7A52FF"
+                         TextColor="White"
+                         CornerRadius="10"/>
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+        </Grid>
+    </VerticalStackLayout>
+</ContentPage>
