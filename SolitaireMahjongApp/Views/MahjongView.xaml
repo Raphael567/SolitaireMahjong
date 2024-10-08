@@ -25,13 +25,14 @@
             </Grid>
             
             <Button Text="Carregar peças" Command="{Binding LoadTilesCommand}"/>
+            <Button Text="Dica(Coisa de bicha)" Command="{Binding HintCommand}"/>
 
             <AbsoluteLayout VerticalOptions="FillAndExpand" HorizontalOptions="Center" BindableLayout.ItemsSource="{Binding Tiles}" Margin="0,0,0,100">
                 <BindableLayout.ItemTemplate>
                     <DataTemplate>
                         <ImageButton
                             Source="{Binding CaminhoImagem}"
-                            BackgroundColor="Transparent"
+                            BackgroundColor="{Binding Color}"
                             Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.TileCommand}"
                             CommandParameter="{Binding .}"
                             AbsoluteLayout.LayoutBounds="{Binding LayoutBounds}"

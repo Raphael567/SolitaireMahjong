@@ -35,18 +35,20 @@ namespace SolitaireMahjongApp.ViewModels
             _tileService = new TileService();
             TileCommand = new RelayCommand<Tile>(OnTileClicked);
             LoadTilesCommand = new AsyncRelayCommand(LoadTilesAsync);
+            HintCommand = new AsyncRelayCommand(ShowHint);
 
             layers = tilesLayers();
             tileMap = new Dictionary<(int layer, int row, int col), Tile>();
 
-            //Task.Run(async () =>
-            //{
-            //    await LoadTilesAsync();
-            //    StartTimer();
-            //});
+            Task.Run(async () =>
+            {
+                await LoadTilesAsync();
+                StartTimer();
+            });
         }
 
         public IAsyncRelayCommand LoadTilesCommand { get; }
+        public IAsyncRelayCommand HintCommand { get; }
 
         public List<int[,]> tilesLayers()
         {
@@ -225,6 +227,67 @@ namespace SolitaireMahjongApp.ViewModels
             }
         }
 
+        public List<(Tile, Tile)> GetFreeTiles()
+        {
+            var freeTiles = new List<(Tile, Tile)>();
+
+            foreach (var tile in Tiles)
+            {
+                var tilePos = tileMap.FirstOrDefault(x => x.Value.id == tile.id).Key;
+                if (IsTileFree(layers, tilePos.layer, tilePos.row, tilePos.col))
+                {
+                    freeTiles.Add((tile, tile));
+                }
+            }
+
+            var pairs = new List<(Tile, Tile)>();
+
+            for (int i = 0; i < freeTiles.Count; i++)
+            {
+                for (int j = i + 1; j < freeTiles.Count; j++)
+                {
+                    if(freeTiles[i].Item1.simbolo == freeTiles[j].Item1.simbolo && freeTiles[i].Item1.cor == freeTiles[j].Item1.cor)
+                        pairs.Add((freeTiles[i].Item1, freeTiles[j].Item2));
+                }
+            }
+
+            return pairs;
+        }
+
+        private (Tile, Tile)? lastHintPair = null;
+        public Task<(Tile, Tile)?> ShowHint()
+        {
+            if(lastHintPair != null)
+            {
+                lastHintPair.Value.Item1.Color = Colors.Transparent;
+                lastHintPair.Value.Item2.Color = Colors.Transparent;
+
+                lastHintPair = null;
+            }
+
+            var freeTilesPairs = GetFreeTiles();
+
+            if (freeTilesPairs.Count > 0)
+            {
+                var random = new Random();
+                int index = random.Next(freeTilesPairs.Count);
+                var hintPair = freeTilesPairs[index];
+
+                hintPair.Item1.Color = Colors.Green;
+                hintPair.Item2.Color = Colors.Green;
+
+                lastHintPair = hintPair;
+                _score--;
+                ScoreText = _score.ToString();
+
+                return Task.FromResult<(Tile, Tile)?>(hintPair);
+            }
+
+            Application.Current.MainPage.DisplayAlert("Sem dicas", "Não há mais jogadas disponíveis", "OK");
+
+            return Task.FromResult<(Tile, Tile)?>(null);
+        }
+
         public bool IsTileFree(List<int[,]> layers, int layer, int row, int col)
         {
             // Verifica se a peça está bloqueada lateralmente (esquerda e direita)
@@ -387,6 +450,7 @@ namespace SolitaireMahjongApp.ViewModels
 
         private async void StartTimer()
         {
+            Debug.WriteLine("Iniciando o temporizador.");
             while (_timeLeft > 0 && Tiles.Count != 0)
             {
                 await Task.Delay(1000);
