@@ -25,6 +25,8 @@ namespace SolitaireMahjongApp.ViewModels
         private Tile _secondTileSelected = null;
         private int _score = 0;
         private int _timeLeft = 20000; // 2 minutos em segundos
+        private bool isGameOver = false;
+
         private List<int[,]> layers;
         private Dictionary<(int layer, int row, int col), Tile> tileMap;
         private (Tile, Tile)? lastHintPair = null;
@@ -51,88 +53,9 @@ namespace SolitaireMahjongApp.ViewModels
         public IAsyncRelayCommand LoadTilesCommand { get; }
         public IAsyncRelayCommand HintCommand { get; }
 
-        public List<int[,]> tilesLayers()
-        {
-
-            int[,] layer1 = new int[,]
-            {
-                { 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 },
-                { 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0 },
-                { 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0 },
-                { 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0 },
-                { 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0 },
-                { 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0 },
-                { 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0 },
-                { 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0 }
-            };
-
-            int[,] layer2 = new int[,]
-            {
-                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-                { 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0 },
-                { 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0 },
-                { 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0 },
-                { 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0 },
-                { 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0 },
-                { 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0 },
-                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-            };
-
-            int[,] layer3 = new int[,]
-            {
-                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-                { 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0 },
-                { 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0 },
-                { 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0 },
-                { 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0 },
-                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-            };
-
-            int[,] layer4 = new int[,]
-            {
-                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-                { 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0 },
-                { 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0 },
-                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-            };
-
-            int[,] layer5 = new int[,]
-            {
-                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-                { 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-            };
-
-            // Define a organização das camadas
-            var layers = new List<int[,]>
-            {
-                layer1, // Camada 1
-                layer2, // Camada 2
-                layer3, // Camada 3
-                layer4, // Camada 4
-                layer5, // Camada 5
-            };
-
-            return layers;
-        }
-
-
         private async Task<List<Tile>> ShuffleTiles()
         {
-            var tilesFromApi = await _tileService.GetTilesAsync();
-            var shuffledTiles = tilesFromApi.OrderBy(t => Guid.NewGuid()).ToList();
+            var shuffledTiles = Tiles.OrderBy(t => Guid.NewGuid()).ToList();
 
             return shuffledTiles;
         }
@@ -141,9 +64,10 @@ namespace SolitaireMahjongApp.ViewModels
         {
             var tilesFromApi = await _tileService.GetTilesAsync();
             var shuffledTiles = tilesFromApi.OrderBy(t => Guid.NewGuid()).ToList();
+            var layerManager = new LayerManager();
 
             Tiles = new ObservableCollection<Tile>();
-            layers = tilesLayers();
+            layers = layerManager.GetRandomLayer();
 
             // Mapeia as peças
             MapTilesToLayers(shuffledTiles, layers);
@@ -154,12 +78,13 @@ namespace SolitaireMahjongApp.ViewModels
             tileMap.Clear();
 
             int tileIndex = 0;
+
             Debug.WriteLine("Iniciando o mapeamento das peças...");
 
             if (shuffledTiles.Count != 144) // Verifica se está recebendo todas as 144 peças
             {
                 Debug.WriteLine($"Número incorreto de peças recebidas da API: {shuffledTiles.Count} (esperado: 144)");
-                return; // Impedir o mapeamento se o número de peças não for o esperado
+                return;
             }
 
             for (int layer = 0; layer < layers.Count; layer++)
@@ -185,6 +110,7 @@ namespace SolitaireMahjongApp.ViewModels
             }
 
             Debug.WriteLine("Mapeamento completo.");
+            Debug.WriteLine(tileMap.Count);
 
             // Configura o layout após o mapeamento
             SetTileLayout(layers);
@@ -194,7 +120,7 @@ namespace SolitaireMahjongApp.ViewModels
         {
             int tileWidth = 60;
             int tileHeight = 75;
-            int zSpacing = 5; // Espaçamento entre as camadas
+            int zSpacing = 10; // Espaçamento entre as camadas
 
             // Ajusta ao centro da tela
             double centerX = 300;
@@ -213,6 +139,8 @@ namespace SolitaireMahjongApp.ViewModels
                             if (tilePosition.Value != null)
                             {
                                 var tile = tilePosition.Value;
+
+                                tile.Color = Colors.Transparent;
 
                                 double posX = centerX - (layer.GetLength(1) * tileWidth / 2) + x * tileWidth;
                                 double posY = centerY - (layer.GetLength(0) * tileHeight / 2) + y * tileHeight - z * zSpacing;
@@ -304,6 +232,7 @@ namespace SolitaireMahjongApp.ViewModels
                 mappedTile.Color = Colors.Blue;
                 Debug.WriteLine($"Primeira peça selecionada: Layer: {mappedTile.Layer}, Row: {mappedTile.Row}, Col: {mappedTile.Col}");
             }
+
             else if (_secondTileSelected == null)
             {
                 _secondTileSelected = mappedTile;
@@ -354,14 +283,15 @@ namespace SolitaireMahjongApp.ViewModels
                         // Atualizar a pontuação
                         _score += tile.pontuacao;
                         ScoreText = $"Score: {_score}";
+                        
+                        CheckGameOver();
 
                         // Verificar se o jogo foi ganho
-                        if (Tiles.Count == 0)
+                        if (Tiles.Count == 0 && !isGameOver)
                         {
                             Application.Current.MainPage.DisplayAlert("Você Ganhou", "Todas as peças foram removidas", "OK");
                         }
 
-                        CheckGameOver();
 
                         _firstTileSelected = null;
                         _secondTileSelected = null;
@@ -458,33 +388,59 @@ namespace SolitaireMahjongApp.ViewModels
                 await Task.Delay(1000);
                 _timeLeft--;
                 TimerText = $"Time {TimeSpan.FromSeconds(_timeLeft):mm\\:ss}";
+            }
+        }
 
-                if (_timeLeft == 0)
+        private async void CheckGameOver()
+        {
+            var freeTilesPairs = GetFreeTiles();
+
+            //freeTilesPairs.Clear();
+
+            if (freeTilesPairs.Count == 0)
+            {
+                isGameOver = true;
+
+                bool shufle = await Application.Current.MainPage.DisplayAlert(
+                              "Jogo encerrado",
+                              "Não há mais pares disponíveis. Deseja embaralhar as peças?",
+                              "Embaralhar",
+                              "Encerrar Jogo");
+
+                if(shufle)
                 {
-                    GameOver();
+                    isGameOver = false;
+                    _score = 0;
+                    ScoreText = $"Score: {_score}";
+
+                    var shuffledTiles = await ShuffleTiles();
+
+                    Tiles.Clear();
+
+                    MapTilesToLayers(shuffledTiles, layers);
                 }
+                else
+                    GameOver();
+
+            }
+
+            else if (_timeLeft == 0)
+            {
+                isGameOver = true;
+
+                Application.Current.MainPage.DisplayAlert("Game Over", "O tempo acabou", "OK");
+                GameOver();
             }
         }
 
         private void GameOver()
         {
-            Application.Current.MainPage.DisplayAlert("Game Over", "O tempo acabou", "OK");
+            isGameOver = true;
             Tiles.Clear();
             _timeLeft = 120;
             _score = 0;
             ScoreText = $"Score: {_score}";
             LoadTilesAsync();
-        }
-
-        public void CheckGameOver()
-        {
-            var freeTilesPairs = GetFreeTiles();
-
-            if (freeTilesPairs.Count < 0)
-            {
-                Application.Current.MainPage.DisplayAlert("Jogo encerrado", "Não há mais pares disponíveis", "OK");
-                GameOver();
-            }
         }
     }
 }

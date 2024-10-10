@@ -4,9 +4,9 @@
              x:Class="SolitaireMahjongApp.Views.MahjongView"
              xmlns:local="clr-namespace:SolitaireMahjongApp.Views"
              Title="MahjongView">
-
+    
     <ScrollView>
-        <VerticalStackLayout Padding="0" Margin="0">
+        <VerticalStackLayout>
 
             <Grid RowDefinitions="Auto" ColumnDefinitions="*,*" Padding="10" Margin="0,0,0,10">
                 <Label Text="{Binding TimerText}"
@@ -24,9 +24,11 @@
                        Grid.Column="1" />
             </Grid>
             
-            <Button Text="Carregar peças" Command="{Binding LoadTilesCommand}"/>
-            <Button Text="Dica(Coisa de bicha)" Command="{Binding HintCommand}"/>
-
+            <HorizontalStackLayout Spacing="20" HorizontalOptions="Center" HeightRequest="50">
+                <Button Text="Carregar peças" Command="{Binding LoadTilesCommand}" WidthRequest="200" FontFamily="zCool" FontSize="20"/>
+                <Button Text="Dica" Command="{Binding HintCommand}" WidthRequest="150" FontFamily="zCool" FontSize="20"/>
+            </HorizontalStackLayout>
+            
             <AbsoluteLayout VerticalOptions="FillAndExpand" HorizontalOptions="Center" BindableLayout.ItemsSource="{Binding Tiles}" Margin="0,0,0,100">
                 <BindableLayout.ItemTemplate>
                     <DataTemplate>
@@ -37,7 +39,8 @@
                             CommandParameter="{Binding .}"
                             AbsoluteLayout.LayoutBounds="{Binding LayoutBounds}"
                             WidthRequest="80"
-                            HeightRequest="100"/>
+                            HeightRequest="100">
+                        </ImageButton>
                     </DataTemplate>
                 </BindableLayout.ItemTemplate>
             </AbsoluteLayout>
