@@ -26,7 +26,7 @@
                 VerticalOptions="FillAndExpand"
                 Aspect="AspectFill"/>
 
-            <VerticalStackLayout HorizontalOptions="Center" Margin="0,50,0,0">
+            <VerticalStackLayout HorizontalOptions="Center" Spacing="50">
                 <!-- Título -->
                 <Label Text="Ranking"
                        FontSize="120"
@@ -36,47 +36,44 @@
                        TextColor="DarkGreen"/>
 
                 <!-- Lista de jogadores -->
-                <ScrollView>
-                    <CollectionView ItemsSource="{Binding Players}">
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate>
-                                <Grid>
-                                    
-                                    <Frame BackgroundColor="#FFFCE2"
-                                           BorderColor="Transparent"
-                                           CornerRadius="0"
-                                           HasShadow="False"
-                                           WidthRequest="500"
-                                           HeightRequest="{OnIdiom Desktop=80, Tablet=50, Phone=30}"
-                                           Padding="10"
-                                           Margin="0,30,0,5">
-                                        <Grid>
-                                            <Label Text="{Binding nome}"
-                                                   TextColor="Black"
-                                                   FontSize="35"
-                                                   FontFamily="zCool"
-                                                   HorizontalOptions="Start"
-                                                   Grid.Column="0"
-                                                   Padding="5"
-                                                   LineBreakMode="NoWrap"/>
+                <CollectionView ItemsSource="{Binding Players}" HeightRequest="500" VerticalOptions="FillAndExpand">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Frame BackgroundColor="#FFFCE2"
+                                        BorderColor="Transparent"
+                                        CornerRadius="0"
+                                        HasShadow="False"
+                                        WidthRequest="500"
+                                        HeightRequest="{OnIdiom Desktop=80, Tablet=50, Phone=30}"
+                                        Padding="10"
+                                        Margin="0,30,0,5">
+                                    <Grid>
+                                        <Label Text="{Binding nome}"
+                                                TextColor="Black"
+                                                FontSize="35"
+                                                FontFamily="zCool"
+                                                HorizontalOptions="Start"
+                                                Grid.Column="0"
+                                                Padding="5"
+                                                LineBreakMode="NoWrap"/>
 
-                                            <Label Text="{Binding pontuacao}"
-                                                   TextColor="Black"
-                                                   FontSize="35"
-                                                   FontFamily="zCool"
-                                                   HorizontalOptions="End"
-                                                   Grid.Column="1"
-                                                   Padding="5"
-                                                   LineBreakMode="NoWrap"/>
-                                        </Grid>
-                                    </Frame>
-                                </Grid>
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
-                </ScrollView>
+                                        <Label Text="{Binding pontuacao}"
+                                                TextColor="Black"
+                                                FontSize="35"
+                                                FontFamily="zCool"
+                                                HorizontalOptions="End"
+                                                Grid.Column="1"
+                                                Padding="5"
+                                                LineBreakMode="NoWrap"/>
+                                    </Grid>
+                                </Frame>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
 
-                <!-- Botões de ações -->
+                    <!-- Botões de ações -->
                 <HorizontalStackLayout HorizontalOptions="Center" Spacing="20">
                     <Button Text="Atualizar Ranking" 
                          Command="{Binding LoadPlayersCommand}"

@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using SolitaireMahjongApp.Models;
 using SolitaireMahjongApp.Services;
+using SolitaireMahjongApp.Views;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Windows.Input;
@@ -11,6 +12,8 @@ namespace SolitaireMahjongApp.ViewModels
     public partial class MahjongViewModel : ObservableObject
     {
         private readonly TileService _tileService;
+        private readonly PlayerService _playerService;
+        private readonly SessionService _sessionService;
 
         [ObservableProperty]
         private string timerText;
@@ -19,13 +22,15 @@ namespace SolitaireMahjongApp.ViewModels
         private string scoreText;
 
         [ObservableProperty]
+        private Player currentPlayer;
+
+        [ObservableProperty]
         private ObservableCollection<Tile> _tiles;
 
         private Tile _firstTileSelected = null;
         private Tile _secondTileSelected = null;
         private int _score = 0;
-        private int _timeLeft = 20000; // 2 minutos em segundos
-        private bool isGameOver = false;
+        private int _timeLeft = 15; // 2 minutos em segundos
 
         private List<int[,]> layers;
         private Dictionary<(int layer, int row, int col), Tile> tileMap;
@@ -36,11 +41,15 @@ namespace SolitaireMahjongApp.ViewModels
         public MahjongViewModel()
         {
             _tileService = new TileService();
+            _playerService = new PlayerService();
+            _sessionService = new SessionService();
+
+            currentPlayer = _sessionService.currentPlayer;
+
             TileCommand = new RelayCommand<Tile>(OnTileClicked);
             LoadTilesCommand = new AsyncRelayCommand(LoadTilesAsync);
             HintCommand = new AsyncRelayCommand(ShowHint);
 
-            layers = tilesLayers();
             tileMap = new Dictionary<(int layer, int row, int col), Tile>();
 
             Task.Run(async () =>
@@ -287,7 +296,7 @@ namespace SolitaireMahjongApp.ViewModels
                         CheckGameOver();
 
                         // Verificar se o jogo foi ganho
-                        if (Tiles.Count == 0 && !isGameOver)
+                        if (Tiles.Count == 0)
                         {
                             Application.Current.MainPage.DisplayAlert("Você Ganhou", "Todas as peças foram removidas", "OK");
                         }
@@ -399,8 +408,6 @@ namespace SolitaireMahjongApp.ViewModels
 
             if (freeTilesPairs.Count == 0)
             {
-                isGameOver = true;
-
                 bool shufle = await Application.Current.MainPage.DisplayAlert(
                               "Jogo encerrado",
                               "Não há mais pares disponíveis. Deseja embaralhar as peças?",
@@ -409,7 +416,6 @@ namespace SolitaireMahjongApp.ViewModels
 
                 if(shufle)
                 {
-                    isGameOver = false;
                     _score = 0;
                     ScoreText = $"Score: {_score}";
 
@@ -426,21 +432,40 @@ namespace SolitaireMahjongApp.ViewModels
 
             else if (_timeLeft == 0)
             {
-                isGameOver = true;
-
-                Application.Current.MainPage.DisplayAlert("Game Over", "O tempo acabou", "OK");
+                Debug.WriteLine("O tempo acabou");
                 GameOver();
             }
         }
 
-        private void GameOver()
+        private async void GameOver()
         {
-            isGameOver = true;
-            Tiles.Clear();
-            _timeLeft = 120;
-            _score = 0;
-            ScoreText = $"Score: {_score}";
-            LoadTilesAsync();
+            try
+            {
+                if (currentPlayer != null)
+                {
+                    currentPlayer.pontuacao = _score;
+                    Tiles.Clear();
+                    _score = 0;
+                    ScoreText = $"Score: {_score}";
+        
+                    bool isSucess = await _playerService.UpdatePlayerAsync(currentPlayer);
+                    if (isSucess)
+                    {
+                        await Application.Current.MainPage.DisplayAlert("Fim de Jogo", "Pontuação salva com sucesso", "OK");
+                        await Application.Current.MainPage.Navigation.PushAsync(new PlayerView());
+                    }
+                    else
+                    {
+                        await Application.Current.MainPage.DisplayAlert("Erro", "Não foi possível salvar a pontuação", "OK");
+                        await Application.Current.MainPage.Navigation.PushAsync(new PlayerView());
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                await Application.Current.MainPage.DisplayAlert("Erro", $"Não foi possível salvar a pontuação {e.Message}", "OK");
+                await Application.Current.MainPage.Navigation.PushAsync(new PlayerView());
+            }
         }
     }
 }

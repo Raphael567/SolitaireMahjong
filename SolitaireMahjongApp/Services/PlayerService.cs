@@ -40,5 +40,15 @@ namespace SolitaireMahjongApp.Services
             var response = await _httpClient.PostAsync("players", content);
             response.EnsureSuccessStatusCode();
         }
+
+        public async Task<bool> UpdatePlayerAsync(Player player)
+        {
+            string json = JsonSerializer.Serialize(player);
+            StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await _httpClient.PutAsync($"players/{player.id}", content);
+
+            return response.IsSuccessStatusCode;
+        }
     }
 }

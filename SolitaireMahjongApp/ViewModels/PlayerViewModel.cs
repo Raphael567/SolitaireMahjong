@@ -9,10 +9,12 @@ namespace SolitaireMahjongApp.ViewModels
     public partial class PlayerViewModel : ObservableObject
     {
         private readonly PlayerService _playerService;
+        private readonly SessionService _sessionService;
 
         public PlayerViewModel()
         {
             _playerService = new PlayerService();
+            _sessionService = new SessionService();
             LoadPlayerCommand = new AsyncRelayCommand(LoadPlayerAsync);
             CreatePlayerCommand = new AsyncRelayCommand(CreatePlayerAsync);
             NavigateCommand = new AsyncRelayCommand(NavigateAsync);
@@ -53,8 +55,11 @@ namespace SolitaireMahjongApp.ViewModels
                         pontuacao = 0
                     };
 
-                    await _playerService.CreatePlayerAsync(newPlayer);
+                    _sessionService.currentPlayer = newPlayer;
+
+                    await _playerService.CreatePlayerAsync(_sessionService.currentPlayer);
                     await LoadPlayerAsync();
+                    await Application.Current.MainPage.Navigation.PushAsync(new MahjongView());
                 }
             }
             catch
