@@ -8,9 +8,8 @@
     Title="SolitaireMahjongApp">
 
     <TabBar>
-        
         <ShellContent
-            Title="Exibir jogadores"
+            Title="Cadastro dos jogadores"
             ContentTemplate="{DataTemplate local:PlayerView}"
             Route="PlayerView"/>
 

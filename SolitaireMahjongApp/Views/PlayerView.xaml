@@ -11,44 +11,72 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Image Source="tile_image.png"
+        <Image Source="tiles_image.png"
                Grid.Column="1"
                VerticalOptions="FillAndExpand"
-               HorizontalOptions="EndAndExpand"
-               Aspect="AspectFill"/>
+               HorizontalOptions="End"
+               Aspect="AspectFit"
+               />
 
-        <VerticalStackLayout Grid.Column="0" VerticalOptions="Center" Spacing="80">
-            <Image Source="logo.png" 
-                   WidthRequest="{OnIdiom Phone=300, Tablet=500, Desktop=600}"/>
+        <VerticalStackLayout Grid.Column="0" VerticalOptions="Center" Spacing="65">
+            <Image Source="logo.png"
+                   VerticalOptions="Start"
+                   WidthRequest="{OnIdiom Phone=100, Tablet=200, Desktop=400}"
+                   Aspect="AspectFit"
+                   Margin="0,35,0,0"/>
+            
+            <VerticalStackLayout Spacing="25" HorizontalOptions="Center">
+                <Frame BackgroundColor="#fdfbe3"
+                       Padding="0"
+                       BorderColor="Transparent" 
+                       CornerRadius="10"
+                       HasShadow="False"
+                       WidthRequest="{OnIdiom Phone=50, Tablet=250, Desktop=450}"
+                       HeightRequest="{OnIdiom Phone=36, Tablet=46, Desktop=56}">
 
-            <Entry Text="{Binding PlayerName}" 
-                   Placeholder="Nome" PlaceholderColor="#99FFFFFF" 
-                   FontSize="35" 
-                   FontFamily="zCool" TextColor="White" 
-                   HorizontalOptions="Center" 
-                   WidthRequest="{OnIdiom Phone=300, Tablet=500, Desktop=600}"/>
+                    <AbsoluteLayout>
+                        <Entry Text="{Binding PlayerName}"
+                                   Placeholder="Insira seu nome..." 
+                                   PlaceholderColor="#989ca0" 
+                                   FontSize="{OnIdiom Phone=14, Tablet=17, Desktop=20}" 
+                                   FontFamily="zCool" 
+                                   TextColor="#5f646b" 
+                                   HorizontalOptions="FillAndExpand"
+                                   AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
+                                    AbsoluteLayout.LayoutFlags="All"
+                               />
+                        <Image Source="padrao_lateral.png"
+                               Aspect="AspectFit"
+                               WidthRequest="{OnIdiom Phone=14, Tablet=17, Desktop=40}"
+                               AbsoluteLayout.LayoutBounds="1, 0.2, 50, 50"
+                               AbsoluteLayout.LayoutFlags="PositionProportional"
+                               />
+                    </AbsoluteLayout>
+                </Frame>
+                    <HorizontalStackLayout HorizontalOptions="Center" Spacing="45" Margin="0,10,0,50">
+                    <Button Command="{Binding CreatePlayerCommand}"
+                            Text="Jogar" 
+                            FontSize="{OnIdiom Phone=14, Tablet=17, Desktop=20}" 
+                            FontFamily="zCool"
+                            TextColor="#5f646b"
+                            CornerRadius="8" 
+                            BackgroundColor="#fdfbe3" 
+                            HorizontalOptions="Center" 
+                            WidthRequest="{OnIdiom Phone=90, Tablet=140, Desktop=150}" 
+                            HeightRequest="{OnIdiom Phone=90, Tablet=140, Desktop=50}"/>
 
-            <HorizontalStackLayout HorizontalOptions="Center" Spacing="30">
-                <Button Command="{Binding CreatePlayerCommand}"
-                        Text="Jogar" 
-                        FontSize="40" 
-                        FontFamily="zCool" 
-                        CornerRadius="20" 
-                        BackgroundColor="White" 
-                        HorizontalOptions="Center" 
-                        WidthRequest="{OnIdiom Phone=90, Tablet=140, Desktop=190}" 
-                        HeightRequest="100"/>
-
-                <Button Command="{Binding NavigateCommand}"
-                        Text="Ranking" 
-                        FontSize="40" 
-                        FontFamily="zCool" 
-                        CornerRadius="20" 
-                        BackgroundColor="White" 
-                        HorizontalOptions="Center" 
-                        WidthRequest="{OnIdiom Phone=90, Tablet=140, Desktop=190}" 
-                        HeightRequest="100"/>
-            </HorizontalStackLayout>
+                    <Button Command="{Binding NavigateCommand}"
+                            Text="Ranking" 
+                            FontSize="{OnIdiom Phone=14, Tablet=17, Desktop=20}" 
+                            FontFamily="zCool" 
+                            TextColor="#5f646b"
+                            CornerRadius="8" 
+                            BackgroundColor="#fdfbe3" 
+                            HorizontalOptions="Center"
+                            WidthRequest="{OnIdiom Phone=90, Tablet=140, Desktop=190}" 
+                            HeightRequest="{OnIdiom Phone=90, Tablet=140, Desktop=50}"/>
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
         </VerticalStackLayout>
     </Grid>
 </ContentPage>
