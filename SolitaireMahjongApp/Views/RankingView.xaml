@@ -28,15 +28,19 @@
 
             <VerticalStackLayout HorizontalOptions="Center" Spacing="50">
                 <!-- Título -->
-                <Label Text="Ranking"
-                       FontSize="120"
-                       HorizontalOptions="Center"
-                       FontFamily="zCool"
-                       FontAttributes="Bold"
-                       TextColor="DarkGreen"/>
+                <Frame BackgroundColor="Transparent" BorderColor="Transparent">
+                    <Label Text="Ranking"
+                        
+                        FontSize="120"
+                        HorizontalOptions="Center"
+                        FontFamily="zCool"
+                        FontAttributes="Bold"
+                        TextColor="#2B4872"/>   
 
+                </Frame>
+               
                 <!-- Lista de jogadores -->
-                <CollectionView ItemsSource="{Binding Players}" HeightRequest="500" VerticalOptions="FillAndExpand">
+                <CollectionView ItemsSource="{Binding Players}" HeightRequest="583" VerticalOptions="FillAndExpand">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Grid>
@@ -44,17 +48,50 @@
                                         BorderColor="Transparent"
                                         CornerRadius="0"
                                         HasShadow="False"
-                                        WidthRequest="500"
-                                        HeightRequest="{OnIdiom Desktop=80, Tablet=50, Phone=30}"
+                                        WidthRequest="583"
+                                        HeightRequest="85"
                                         Padding="10"
                                         Margin="0,30,0,5">
                                     <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="130"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="60"/>
+                                            <ColumnDefinition Width="140"/>
+                                            <!-- fazer um len do 1 nome + um pouco de esp -->
+                                        </Grid.ColumnDefinitions>
+                                        
+                                        <Label Text="1"
+                                            TextColor="White"
+                                            BackgroundColor="#2B4872"
+                                            FontSize="35"
+                                            FontFamily="ZCOOLKuaiLe"
+                                            HeightRequest="84" 
+                                            WidthRequest="109"            
+                                            HorizontalOptions="Start"
+                                            VerticalOptions="Center"
+                                            HorizontalTextAlignment="Center"
+                                            VerticalTextAlignment="Center"
+                                            LineBreakMode="NoWrap"/>
+
                                         <Label Text="{Binding nome}"
                                                 TextColor="Black"
                                                 FontSize="35"
                                                 FontFamily="zCool"
                                                 HorizontalOptions="Start"
                                                 Grid.Column="0"
+                                                Padding="5"
+                                                LineBreakMode="NoWrap"/>
+
+                                        <Label 
+                                                BackgroundColor="Black"
+                                                WidthRequest="1.5"
+                                                HeightRequest="70"
+                                                FontSize="35"
+                                                FontFamily="zCool"
+                                                HorizontalOptions="Center"
+                                                VerticalOptions="Center"
+                                                Grid.Column="2"
                                                 Padding="5"
                                                 LineBreakMode="NoWrap"/>
 
