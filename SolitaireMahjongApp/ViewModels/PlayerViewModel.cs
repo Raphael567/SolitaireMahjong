@@ -59,7 +59,7 @@ namespace SolitaireMahjongApp.ViewModels
 
                     await _playerService.CreatePlayerAsync(_sessionService.currentPlayer);
                     await LoadPlayerAsync();
-                    await Application.Current.MainPage.Navigation.PushAsync(new MahjongView());
+                    await Application.Current.MainPage.Navigation.PushAsync(new MahjongView(_sessionService));
                 }
             }
             catch
@@ -68,30 +68,9 @@ namespace SolitaireMahjongApp.ViewModels
             }
         }
 
-
         private async Task NavigateAsync()
         {
-            // Navega para a nova página
             await Application.Current.MainPage.Navigation.PushAsync(new RankingView());
         }
-
-        //private void OnSizeChanged(object sender, EventArgs e)
-        //{
-        //    // Obtém a largura da tela
-        //    double width = Application.Current.MainPage.Width;
-
-        //    if (width > 600)
-        //    {
-        //        // Modo para telas menores
-        //        mainStack.Spacing = 40;  // Diminui o espaçamento
-        //        mainStack.WidthRequest = 2;  // Ajusta a largura do stack layout
-        //    }
-        //    else
-        //    {
-        //        // Modo para telas maiores
-        //        mainStack.Spacing = 80;  // Aumenta o espaçamento
-        //        mainStack.WidthRequest = 500;  // Ajusta a largura do stack layout
-        //    }
-        //}
     }
 }

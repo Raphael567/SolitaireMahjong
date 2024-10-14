@@ -5,6 +5,7 @@ using SolitaireMahjongApp.Services;
 using SolitaireMahjongApp.Views;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Windows.Input;
 
 namespace SolitaireMahjongApp.ViewModels
@@ -38,13 +39,14 @@ namespace SolitaireMahjongApp.ViewModels
 
         public ICommand TileCommand { get; }
 
-        public MahjongViewModel()
+        public MahjongViewModel(SessionService sessionService)
         {
             _tileService = new TileService();
             _playerService = new PlayerService();
-            _sessionService = new SessionService();
+            _sessionService = sessionService;
 
             currentPlayer = _sessionService.currentPlayer;
+            Debug.WriteLine($"Jogador atual: {currentPlayer?.nome}");
 
             TileCommand = new RelayCommand<Tile>(OnTileClicked);
             LoadTilesCommand = new AsyncRelayCommand(LoadTilesAsync);
@@ -398,6 +400,12 @@ namespace SolitaireMahjongApp.ViewModels
                 _timeLeft--;
                 TimerText = $"Time {TimeSpan.FromSeconds(_timeLeft):mm\\:ss}";
             }
+
+            if (_timeLeft == 0)
+            {
+                Debug.WriteLine("O tempo acabou.");
+                CheckGameOver();
+            }
         }
 
         private async void CheckGameOver()
@@ -441,30 +449,62 @@ namespace SolitaireMahjongApp.ViewModels
         {
             try
             {
-                if (currentPlayer != null)
+                Debug.WriteLine("Tentando encerrar o jogo...");
+
+                if (currentPlayer == null)
                 {
-                    currentPlayer.pontuacao = _score;
-                    Tiles.Clear();
-                    _score = 0;
-                    ScoreText = $"Score: {_score}";
-        
-                    bool isSucess = await _playerService.UpdatePlayerAsync(currentPlayer);
-                    if (isSucess)
+                    Debug.WriteLine("currentPlayer é nulo.");
+                    return;
+                }
+
+                currentPlayer.pontuacao = _score;
+                Tiles.Clear();
+                _score = 0;
+                ScoreText = $"Score: {_score}";
+
+                bool isSuccess = await _playerService.UpdatePlayerAsync(currentPlayer);
+                if (isSuccess)
+                {
+                    Debug.WriteLine("Pontuação salva com sucesso.");
+                    Application.Current.Dispatcher.Dispatch(async () =>
                     {
                         await Application.Current.MainPage.DisplayAlert("Fim de Jogo", "Pontuação salva com sucesso", "OK");
-                        await Application.Current.MainPage.Navigation.PushAsync(new PlayerView());
-                    }
-                    else
+                    });
+                }
+                else
+                {
+                    Debug.WriteLine("Erro ao salvar a pontuação.");
+                    Application.Current.Dispatcher.Dispatch(async () =>
                     {
                         await Application.Current.MainPage.DisplayAlert("Erro", "Não foi possível salvar a pontuação", "OK");
-                        await Application.Current.MainPage.Navigation.PushAsync(new PlayerView());
-                    }
+                    });
                 }
+
+                Debug.WriteLine("Navegando para PlayerView...");
+                Application.Current.Dispatcher.Dispatch(async () =>
+                {
+                    await Application.Current.MainPage.Navigation.PushAsync(new PlayerView());
+                });
+            }
+            catch (COMException comEx)
+            {
+                Debug.WriteLine($"COMException: {comEx.Message}");
+                Application.Current.Dispatcher.Dispatch(async () =>
+                {
+                    await Application.Current.MainPage.DisplayAlert("Erro", $"Erro ao encerrar o jogo: {comEx.Message}", "OK");
+                });
             }
             catch (Exception e)
             {
-                await Application.Current.MainPage.DisplayAlert("Erro", $"Não foi possível salvar a pontuação {e.Message}", "OK");
-                await Application.Current.MainPage.Navigation.PushAsync(new PlayerView());
+                Debug.WriteLine($"Exception: {e.Message}");
+                Application.Current.Dispatcher.Dispatch(async () =>
+                {
+                    await Application.Current.MainPage.DisplayAlert("Erro", $"Não foi possível salvar a pontuação: {e.Message}", "OK");
+                });
+            }
+            finally
+            {
+                Debug.WriteLine("Finalizando o jogo.");
             }
         }
     }
