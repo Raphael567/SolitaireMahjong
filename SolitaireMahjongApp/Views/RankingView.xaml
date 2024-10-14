@@ -174,7 +174,7 @@
                                                VerticalTextAlignment="Center"
                                                LineBreakMode="NoWrap"/>
 
-                                        <Label Text="João da Silva"
+                                        <Label Text="{Binding nome}"
                                            TextColor="Black"
                                            FontSize="35"
                                            FontFamily="zCool"
@@ -197,7 +197,7 @@
                                            Padding="5"
                                            LineBreakMode="NoWrap"/>
 
-                                        <Label Text="100"
+                                        <Label Text="{Binding pontuacao}"
                                            TextColor="Black"
                                             FontSize="45"
                                             FontFamily="zCool"
