@@ -7,12 +7,12 @@
 
     <ScrollView>
         <VerticalStackLayout Padding="20, 0, 0 , 20">
-            <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" ColumnSpacing="80">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1.4*"/>
                     <ColumnDefinition Width="2*"/>
                 </Grid.ColumnDefinitions>
-                
+
 
                 <!--Imagem das peças-->
                 <Image
@@ -25,13 +25,13 @@
                 <VerticalStackLayout HorizontalOptions="Center" >
                     <ImageButton Source="voltar_btn.png"
                                 Command="{Binding NavigateBackCommand}" 
-                                WidthRequest="130"
+                                WidthRequest="170"
                                 Margin="0, 30, 0 , 30"
                                 HorizontalOptions="Start"
                                 VerticalOptions="Center"                               
                                 BackgroundColor="Transparent"/>
                     <!-- Título -->
-                    <HorizontalStackLayout>
+                    <HorizontalStackLayout HorizontalOptions="Center" HeightRequest="130">
                         <AbsoluteLayout>
                             <Label Text="R"
                                FontSize="109"
@@ -141,17 +141,17 @@
 
 
                     <!-- Lista de jogadores -->
-                    <CollectionView ItemsSource="{Binding Players}" HeightRequest="582" VerticalOptions="FillAndExpand">
+                    <CollectionView ItemsSource="{Binding Players}" VerticalOptions="FillAndExpand">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
                                 <Frame BackgroundColor="#FFFCE2"
-                                    BorderColor="Transparent"
-                                    CornerRadius="0"
-                                    HasShadow="False"
-                                    WidthRequest="582"
-                                    HeightRequest="{OnIdiom Desktop=81, Tablet=50, Phone=30}"
-                                    Padding="0"
-                                    Margin="0,15,0,5">
+                                        BorderColor="Transparent"
+                                        CornerRadius="0"
+                                        HasShadow="False"
+                                        WidthRequest="582"
+                                        HeightRequest="{OnIdiom Desktop=81, Tablet=50, Phone=30}"
+                                        Padding="0"
+                                        Margin="0,20,0,15">
 
                                     <Grid BackgroundColor="#FFFCE2">
                                         <Grid.ColumnDefinitions>
@@ -174,18 +174,21 @@
                                                VerticalTextAlignment="Center"
                                                LineBreakMode="NoWrap"/>
 
-                                        <Label Text="{Binding nome}"
+                                        <Label Text="João da Silva"
                                            TextColor="Black"
                                            FontSize="35"
                                            FontFamily="zCool"
                                            HorizontalOptions="Start"
-                                           Grid.Column="0"
+                                           VerticalOptions="Center"
+                                           HorizontalTextAlignment="Center"
+                                           VerticalTextAlignment="Center"
+                                           Grid.Column="1"
                                            Padding="5"
                                            LineBreakMode="NoWrap"/>
 
                                         <Label BackgroundColor="Black"
                                            WidthRequest="1"
-                                           HeightRequest="65"
+                                           HeightRequest="35"
                                            FontSize="35"
                                            FontFamily="zCool"
                                            HorizontalOptions="Center"
@@ -194,14 +197,17 @@
                                            Padding="5"
                                            LineBreakMode="NoWrap"/>
 
-                                        <Label Text="{Binding pontuacao}"
-                                               TextColor="Black"
-                                               FontSize="35"
-                                               FontFamily="zCool"
-                                               HorizontalOptions="End"
-                                               Grid.Column="1"
-                                               Padding="5"
-                                               LineBreakMode="NoWrap"/>
+                                        <Label Text="100"
+                                           TextColor="Black"
+                                            FontSize="45"
+                                            FontFamily="zCool"
+                                            HorizontalOptions="Start"
+                                            VerticalOptions="Center"
+                                            HorizontalTextAlignment="Center"
+                                            VerticalTextAlignment="Center"
+                                            Grid.Column="3"
+                                            Padding="5"
+                                            LineBreakMode="NoWrap"/>
                                     </Grid>
                                 </Frame>
                             </DataTemplate>
@@ -209,15 +215,21 @@
                     </CollectionView>
 
                     <!-- Botões de ações -->
-                    <HorizontalStackLayout HorizontalOptions="Center" Spacing="20">
-                        <Button Text="Atualizar Ranking" 
-                         Command="{Binding LoadPlayersCommand}"
-                         WidthRequest="150"
-                         HeightRequest="50"
-                         BackgroundColor="#7A52FF"
-                         TextColor="White"
-                         CornerRadius="10"/>
-                    </HorizontalStackLayout>
+
+
+                    <Button Text="Atualizar Ranking" 
+                                    FontSize="22"
+                                    FontAttributes="Bold"
+                                    FontFamily="zCool"
+                                    Command="{Binding LoadPlayersCommand}"
+                                    HorizontalOptions="Center"
+                                    VerticalOptions="Center"
+                                    WidthRequest="250"
+                                    HeightRequest="55"
+                                    Margin="0, 25, 0, 40"
+                                    BackgroundColor="#2B4872"
+                                    TextColor="White"
+                                    CornerRadius="10"/>
                 </VerticalStackLayout>
             </Grid>
         </VerticalStackLayout>
