@@ -5,122 +5,221 @@
              Title="RankingView"
              BackgroundImageSource="full_background.png">
 
-    <VerticalStackLayout Padding="20">
+    <ScrollView>
+        <VerticalStackLayout Padding="20, 0, 0 , 20">
+            <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1.4*"/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+                
 
-        <ImageButton Source="voltar_btn.png"
-                     Command="{Binding NavigateBackCommand}" 
-                     WidthRequest="120"
-                     HorizontalOptions="Start"
-                     BackgroundColor="Transparent"/>
+                <!--Imagem das peças-->
+                <Image
+                    Source="pedras.png"
+                    Grid.Column="1"
+                    HorizontalOptions="EndAndExpand"
+                    VerticalOptions="FillAndExpand"
+                    Aspect="AspectFill"/>
 
-        <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" ColumnSpacing="50">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="2*"/>
-            </Grid.ColumnDefinitions>
+                <VerticalStackLayout HorizontalOptions="Center" >
+                    <ImageButton Source="voltar_btn.png"
+                                Command="{Binding NavigateBackCommand}" 
+                                WidthRequest="130"
+                                Margin="0, 30, 0 , 30"
+                                HorizontalOptions="Start"
+                                VerticalOptions="Center"                               
+                                BackgroundColor="Transparent"/>
+                    <!-- Título -->
+                    <HorizontalStackLayout>
+                        <AbsoluteLayout>
+                            <Label Text="R"
+                               FontSize="109"
+                               VerticalOptions="Center"
+                               HorizontalOptions="Center"
+                               FontFamily="zCool"
+                               FontAttributes="Bold"
+                               TextColor="#FFEBC5"/>
 
-            <Image
-                Source="tiles_image2.png"
-                Grid.Column="1"
-                HorizontalOptions="EndAndExpand"
-                VerticalOptions="FillAndExpand"
-                Aspect="AspectFill"/>
+                            <Label Text="R"
+                                FontSize="105"
+                                FontFamily="zCool"
+                                FontAttributes="Bold"
+                                TextColor="#2B4872"/>
+                        </AbsoluteLayout>
+                        <AbsoluteLayout>
+                            <Label Text="A"
+                                   FontSize="109"
+                                   VerticalOptions="Center"
+                                   HorizontalOptions="Center"
+                                   FontFamily="zCool"
+                                   FontAttributes="Bold"
+                                   TextColor="#FFEBC5"/>
 
-            <VerticalStackLayout HorizontalOptions="Center" Spacing="50">
-                <!-- Título -->
-                <Frame BackgroundColor="Transparent" BorderColor="Transparent">
-                    <Label Text="Ranking"
-                        
-                        FontSize="120"
-                        HorizontalOptions="Center"
-                        FontFamily="zCool"
-                        FontAttributes="Bold"
-                        TextColor="#2B4872"/>   
+                            <Label Text="A"
+                                FontSize="105"
+                                FontFamily="zCool"
+                                FontAttributes="Bold"
+                            TextColor="#2B4872"/>
+                        </AbsoluteLayout>
+                        <AbsoluteLayout>
+                            <Label Text="N"
+                                   FontSize="109"
+                                   VerticalOptions="Center"
+                                   HorizontalOptions="Center"
+                                   FontFamily="zCool"
+                                   FontAttributes="Bold"
+                                   TextColor="#FFEBC5"/>
 
-                </Frame>
-               
-                <!-- Lista de jogadores -->
-                <CollectionView ItemsSource="{Binding Players}" HeightRequest="583" VerticalOptions="FillAndExpand">
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <Grid>
+                            <Label Text="N"
+                                FontSize="105"
+                                FontFamily="zCool"
+                                FontAttributes="Bold"
+                                TextColor="#2B4872"/>
+                        </AbsoluteLayout>
+                        <AbsoluteLayout>
+                            <Label Text="K"
+                                   FontSize="109"
+                                   VerticalOptions="Center"
+                                   HorizontalOptions="Center"
+                                   FontFamily="zCool"
+                                   FontAttributes="Bold"
+                                   TextColor="#FFEBC5"/>
+
+                            <Label Text="K"
+                                    FontSize="105"
+                                    FontFamily="zCool"
+                                    FontAttributes="Bold"
+                                    TextColor="#2B4872"/>
+                        </AbsoluteLayout>
+                        <AbsoluteLayout>
+                            <Label Text="I"
+                               FontSize="109"
+                               VerticalOptions="Center"
+                               HorizontalOptions="Center"
+                               FontFamily="zCool"
+                               FontAttributes="Bold"
+                               TextColor="#FFEBC5"/>
+
+                            <Label Text="I"
+                                FontSize="105"
+                                FontFamily="zCool"
+                                FontAttributes="Bold"
+                                TextColor="#2B4872"/>
+                        </AbsoluteLayout>
+                        <AbsoluteLayout>
+                            <Label Text="N"
+                               FontSize="109"
+                               VerticalOptions="Center"
+                               HorizontalOptions="Center"
+                               FontFamily="zCool"
+                               FontAttributes="Bold"
+                               TextColor="#FFEBC5"/>
+
+                            <Label Text="N"
+                                FontSize="105"
+                                FontFamily="zCool"
+                                FontAttributes="Bold"
+                                TextColor="#2B4872"/>
+                        </AbsoluteLayout>
+                        <AbsoluteLayout>
+                            <Label Text="G"
+                               FontSize="109"
+                               VerticalOptions="Center"
+                               HorizontalOptions="Center"
+                               FontFamily="zCool"
+                               FontAttributes="Bold"
+                               TextColor="#FFEBC5"/>
+
+                            <Label Text="G"
+                                FontSize="105"
+                                FontFamily="zCool"
+                                FontAttributes="Bold"
+                                TextColor="#2B4872"/>
+                        </AbsoluteLayout>
+                    </HorizontalStackLayout>
+
+
+                    <!-- Lista de jogadores -->
+                    <CollectionView ItemsSource="{Binding Players}" HeightRequest="582" VerticalOptions="FillAndExpand">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
                                 <Frame BackgroundColor="#FFFCE2"
-                                        BorderColor="Transparent"
-                                        CornerRadius="0"
-                                        HasShadow="False"
-                                        WidthRequest="583"
-                                        HeightRequest="85"
-                                        Padding="10"
-                                        Margin="0,30,0,5">
-                                    <Grid>
+                                    BorderColor="Transparent"
+                                    CornerRadius="0"
+                                    HasShadow="False"
+                                    WidthRequest="582"
+                                    HeightRequest="{OnIdiom Desktop=81, Tablet=50, Phone=30}"
+                                    Padding="0"
+                                    Margin="0,15,0,5">
+
+                                    <Grid BackgroundColor="#FFFCE2">
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="130"/>
-                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="1*"/>
+                                            <ColumnDefinition Width="2*"/>
                                             <ColumnDefinition Width="60"/>
-                                            <ColumnDefinition Width="140"/>
-                                            <!-- fazer um len do 1 nome + um pouco de esp -->
+                                            <ColumnDefinition Width="1*"/>
                                         </Grid.ColumnDefinitions>
-                                        
+
                                         <Label Text="1"
-                                            TextColor="White"
-                                            BackgroundColor="#2B4872"
-                                            FontSize="35"
-                                            FontFamily="ZCOOLKuaiLe"
-                                            HeightRequest="84" 
-                                            WidthRequest="109"            
-                                            HorizontalOptions="Start"
-                                            VerticalOptions="Center"
-                                            HorizontalTextAlignment="Center"
-                                            VerticalTextAlignment="Center"
-                                            LineBreakMode="NoWrap"/>
+                                               TextColor="White"
+                                               BackgroundColor="#2B4872"
+                                               FontSize="55"
+                                               FontFamily="zCool"
+                                               HeightRequest="84" 
+                                               WidthRequest="100"            
+                                               HorizontalOptions="StartAndExpand"
+                                               VerticalOptions="Center"
+                                               HorizontalTextAlignment="Center"
+                                               VerticalTextAlignment="Center"
+                                               LineBreakMode="NoWrap"/>
 
                                         <Label Text="{Binding nome}"
-                                                TextColor="Black"
-                                                FontSize="35"
-                                                FontFamily="zCool"
-                                                HorizontalOptions="Start"
-                                                Grid.Column="0"
-                                                Padding="5"
-                                                LineBreakMode="NoWrap"/>
+                                           TextColor="Black"
+                                           FontSize="35"
+                                           FontFamily="zCool"
+                                           HorizontalOptions="Start"
+                                           Grid.Column="0"
+                                           Padding="5"
+                                           LineBreakMode="NoWrap"/>
 
-                                        <Label 
-                                                BackgroundColor="Black"
-                                                WidthRequest="1.5"
-                                                HeightRequest="70"
-                                                FontSize="35"
-                                                FontFamily="zCool"
-                                                HorizontalOptions="Center"
-                                                VerticalOptions="Center"
-                                                Grid.Column="2"
-                                                Padding="5"
-                                                LineBreakMode="NoWrap"/>
+                                        <Label BackgroundColor="Black"
+                                           WidthRequest="1"
+                                           HeightRequest="65"
+                                           FontSize="35"
+                                           FontFamily="zCool"
+                                           HorizontalOptions="Center"
+                                           VerticalOptions="Center"
+                                           Grid.Column="2"
+                                           Padding="5"
+                                           LineBreakMode="NoWrap"/>
 
                                         <Label Text="{Binding pontuacao}"
-                                                TextColor="Black"
-                                                FontSize="35"
-                                                FontFamily="zCool"
-                                                HorizontalOptions="End"
-                                                Grid.Column="1"
-                                                Padding="5"
-                                                LineBreakMode="NoWrap"/>
+                                               TextColor="Black"
+                                               FontSize="35"
+                                               FontFamily="zCool"
+                                               HorizontalOptions="End"
+                                               Grid.Column="1"
+                                               Padding="5"
+                                               LineBreakMode="NoWrap"/>
                                     </Grid>
                                 </Frame>
-                            </Grid>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
 
                     <!-- Botões de ações -->
-                <HorizontalStackLayout HorizontalOptions="Center" Spacing="20">
-                    <Button Text="Atualizar Ranking" 
+                    <HorizontalStackLayout HorizontalOptions="Center" Spacing="20">
+                        <Button Text="Atualizar Ranking" 
                          Command="{Binding LoadPlayersCommand}"
                          WidthRequest="150"
                          HeightRequest="50"
                          BackgroundColor="#7A52FF"
                          TextColor="White"
                          CornerRadius="10"/>
-                </HorizontalStackLayout>
-            </VerticalStackLayout>
-        </Grid>
-    </VerticalStackLayout>
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+            </Grid>
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

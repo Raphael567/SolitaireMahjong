@@ -76,6 +76,7 @@
 	  <None Remove="Resources\Images\logo.png" />
 	  <None Remove="Resources\Images\mahjong_background.png" />
 	  <None Remove="Resources\Images\Padrão chinês vermelho, fundo oriental_ vetor _ Vetor Premium 1.png" />
+	  <None Remove="Resources\Images\pedras.png" />
 	  <None Remove="Resources\Images\play_btn.png" />
 	  <None Remove="Resources\Images\tiles_image.png" />
 	  <None Remove="Resources\Images\tiles_image2.png" />
