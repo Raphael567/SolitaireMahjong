@@ -398,7 +398,7 @@ namespace SolitaireMahjongApp.ViewModels
             {
                 await Task.Delay(1000);
                 _timeLeft--;
-                TimerText = $"Time {TimeSpan.FromSeconds(_timeLeft):mm\\:ss}";
+                TimerText = $"{TimeSpan.FromSeconds(_timeLeft):mm\\:ss}";
             }
 
             if (_timeLeft == 0)

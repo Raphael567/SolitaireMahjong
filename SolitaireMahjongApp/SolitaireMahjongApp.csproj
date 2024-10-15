@@ -72,7 +72,9 @@
 
 	<ItemGroup>
 	  <None Remove="Resources\Fonts\ZCOOLKuaiLe-Regular.ttf" />
+	  <None Remove="Resources\Images\carpas_fundo.png" />
 	  <None Remove="Resources\Images\full_background.png" />
+	  <None Remove="Resources\Images\fundo_agua.png" />
 	  <None Remove="Resources\Images\logo.png" />
 	  <None Remove="Resources\Images\mahjong_background.png" />
 	  <None Remove="Resources\Images\Padrão chinês vermelho, fundo oriental_ vetor _ Vetor Premium 1.png" />
