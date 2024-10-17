@@ -7,9 +7,9 @@
 
     <ScrollView>
         <VerticalStackLayout Padding="20, 0, 0 , 20">
-            <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" ColumnSpacing="80">
+            <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" ColumnSpacing="60">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1.4*"/>
+                    <ColumnDefinition Width="1.6*"/>
                     <ColumnDefinition Width="2*"/>
                 </Grid.ColumnDefinitions>
 
@@ -141,17 +141,18 @@
 
 
                     <!-- Lista de jogadores -->
-                    <CollectionView ItemsSource="{Binding Players}" VerticalOptions="FillAndExpand">
+                    <CollectionView ItemsSource="{Binding Players}" HeightRequest="500" VerticalOptions="FillAndExpand">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
-                                <Frame BackgroundColor="#FFFCE2"
+                                <VerticalStackLayout>
+                                    <Frame BackgroundColor="#FFFCE2"
                                         BorderColor="Transparent"
                                         CornerRadius="0"
                                         HasShadow="False"
-                                        WidthRequest="582"
+                                        WidthRequest="600"
                                         HeightRequest="{OnIdiom Desktop=81, Tablet=50, Phone=30}"
-                                        Padding="0"
-                                        Margin="0,20,0,15">
+                                        Padding="0" 
+                                        Margin="0,10,0,15">
 
                                     <Grid BackgroundColor="#FFFCE2">
                                         <Grid.ColumnDefinitions>
@@ -188,7 +189,7 @@
 
                                         <Label BackgroundColor="Black"
                                            WidthRequest="1"
-                                           HeightRequest="35"
+                                           HeightRequest="50"
                                            FontSize="35"
                                            FontFamily="zCool"
                                            HorizontalOptions="Center"
@@ -199,9 +200,9 @@
 
                                         <Label Text="{Binding pontuacao}"
                                            TextColor="Black"
-                                            FontSize="45"
+                                            FontSize="40"
                                             FontFamily="zCool"
-                                            HorizontalOptions="Start"
+                                            HorizontalOptions="Center"
                                             VerticalOptions="Center"
                                             HorizontalTextAlignment="Center"
                                             VerticalTextAlignment="Center"
@@ -210,6 +211,7 @@
                                             LineBreakMode="NoWrap"/>
                                     </Grid>
                                 </Frame>
+                                </VerticalStackLayout>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>

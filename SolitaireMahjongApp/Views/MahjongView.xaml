@@ -5,59 +5,60 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:SolitaireMahjongApp.Views"
     Title="MahjongView"
-    BackgroundImageSource="fundo_agua.png">
+    BackgroundColor="Black">
 
-    <VerticalStackLayout>
-        <Grid
-            Margin="0,10,0,30"
-            Padding="10"
-            RowDefinitions="Auto">
-            <HorizontalStackLayout>
-                <Button
-                    Margin="60,0,60,0"
-                    BackgroundColor="Red"
+    <ScrollView>
+        <VerticalStackLayout>
+            <Grid
+                Margin="0,10,0,1"
+                Padding="10"
+                RowDefinitions="Auto">  
+                <HorizontalStackLayout>
+                    <Button
+                        Margin="60,0,40,0"
+                        BackgroundColor="Red"
+                        FontFamily="zCool"
+                        FontSize="33"
+                        HeightRequest="77"
+                        HorizontalOptions="Start"
+                        Text="PAUSE"
+                        TextColor="White"
+                        WidthRequest="170" />
+                    <Button
+                        BackgroundColor="Transparent"
+                        Command="{Binding HintCommand}"
+                        FontFamily="zCool"
+                        FontSize="36"
+                        Text="Dica"
+                        TextColor="White" />
+                </HorizontalStackLayout>
+                <Label
+                    Grid.Column="0"
+                    Margin="0,0,30,0"
                     FontFamily="zCool"
-                    FontSize="36"
-                    HeightRequest="77"
-                    HorizontalOptions="Start"
-                    Text="PAUSE"
-                    TextColor="White"
-                    WidthRequest="187" />
-                <Button
-                    BackgroundColor="Transparent"
-                    Command="{Binding HintCommand}"
-                    FontFamily="zCool"
-                    FontSize="36"
-                    Text="Dica"
+                    FontSize="76"
+                    HorizontalOptions="EndAndExpand"
+                    Text="{Binding TimerText}"
                     TextColor="White" />
-            </HorizontalStackLayout>
-            <Label
-                Grid.Column="0"
-                Margin="0,0,30,0"
+            </Grid>
+
+            <Button
+                BackgroundColor="Red"
+                Command="{Binding LoadTilesCommand}"
                 FontFamily="zCool"
-                FontSize="96"
-                HorizontalOptions="EndAndExpand"
-                Text="{Binding TimerText}"
-                TextColor="White" />
-        </Grid>
+                FontSize="20"
+                Text="Carregar peças"
+                WidthRequest="200" />
 
-        <Button
-            BackgroundColor="Red"
-            Command="{Binding LoadTilesCommand}"
-            FontFamily="zCool"
-            FontSize="20"
-            Text="Carregar peças"
-            WidthRequest="200" />
-
-        <AbsoluteLayout
-            Margin="130,0,0,0"
-            BindableLayout.ItemsSource="{Binding Tiles}"
-            HeightRequest="200"
-            HorizontalOptions="Center"
-            VerticalOptions="FillAndExpand">
-            <BindableLayout.ItemTemplate>
-                <DataTemplate>
-                    <ImageButton
+            <AbsoluteLayout
+                Margin="130,0,0,0"
+                BindableLayout.ItemsSource="{Binding Tiles}"
+                HeightRequest="200"
+                HorizontalOptions="Center"
+                VerticalOptions="FillAndExpand">    
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate>
+                        <ImageButton
                         AbsoluteLayout.LayoutBounds="{Binding LayoutBounds}"
                         BackgroundColor="{Binding Color}"
                         Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.TileCommand}"
@@ -65,8 +66,9 @@
                         HeightRequest="100"
                         Source="{Binding CaminhoImagem}"
                         WidthRequest="80" />
-                </DataTemplate>
-            </BindableLayout.ItemTemplate>
-        </AbsoluteLayout>
-    </VerticalStackLayout>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </AbsoluteLayout>
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>
