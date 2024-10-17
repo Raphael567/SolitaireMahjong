@@ -90,10 +90,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Content Include="Resources\Images\fundo_mahjong.jpg" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
 		<PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.91" />

@@ -1,237 +1,267 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="SolitaireMahjongApp.Views.RankingView"
-             Title="RankingView"
-             BackgroundImageSource="full_background.png">
+<ContentPage
+    x:Class="SolitaireMahjongApp.Views.RankingView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="RankingView"
+    BackgroundImageSource="full_background.png">
 
     <ScrollView>
-        <VerticalStackLayout Padding="20, 0, 0 , 20">
-            <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" ColumnSpacing="60">
+        <VerticalStackLayout Padding="20,0,0,20">
+            <Grid
+                ColumnSpacing="60"
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="FillAndExpand">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1.6*"/>
-                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="1.6*" />
+                    <ColumnDefinition Width="2*" />
                 </Grid.ColumnDefinitions>
 
 
-                <!--Imagem das peças-->
+                <!--  Imagem das peças  -->
                 <Image
-                    Source="pedras.png"
                     Grid.Column="1"
+                    Aspect="AspectFill"
                     HorizontalOptions="EndAndExpand"
-                    VerticalOptions="FillAndExpand"
-                    Aspect="AspectFill"/>
+                    Source="pedras.png"
+                    VerticalOptions="FillAndExpand" />
 
-                <VerticalStackLayout HorizontalOptions="Center" >
-                    <ImageButton Source="voltar_btn.png"
-                                Command="{Binding NavigateBackCommand}" 
-                                WidthRequest="170"
-                                Margin="0, 30, 0 , 30"
-                                HorizontalOptions="Start"
-                                VerticalOptions="Center"                               
-                                BackgroundColor="Transparent"/>
-                    <!-- Título -->
-                    <HorizontalStackLayout HorizontalOptions="Center" HeightRequest="130">
+                <VerticalStackLayout HorizontalOptions="Center">
+                    <ImageButton
+                        Margin="0,30,0,30"
+                        BackgroundColor="Transparent"
+                        Command="{Binding NavigateBackCommand}"
+                        HorizontalOptions="Start"
+                        Source="voltar_btn.png"
+                        VerticalOptions="Center"
+                        WidthRequest="170" />
+                    <!--  Título  -->
+                    <HorizontalStackLayout HeightRequest="130" HorizontalOptions="Center">
                         <AbsoluteLayout>
-                            <Label Text="R"
-                               FontSize="109"
-                               VerticalOptions="Center"
-                               HorizontalOptions="Center"
-                               FontFamily="zCool"
-                               FontAttributes="Bold"
-                               TextColor="#FFEBC5"/>
-
-                            <Label Text="R"
-                                FontSize="105"
-                                FontFamily="zCool"
+                            <Label
                                 FontAttributes="Bold"
-                                TextColor="#2B4872"/>
+                                FontFamily="zCool"
+                                FontSize="109"
+                                HorizontalOptions="Center"
+                                Text="R"
+                                TextColor="#FFEBC5"
+                                VerticalOptions="Center" />
+
+                            <Label
+                                FontAttributes="Bold"
+                                FontFamily="zCool"
+                                FontSize="105"
+                                Text="R"
+                                TextColor="#2B4872" />
                         </AbsoluteLayout>
                         <AbsoluteLayout>
-                            <Label Text="A"
-                                   FontSize="109"
-                                   VerticalOptions="Center"
-                                   HorizontalOptions="Center"
-                                   FontFamily="zCool"
-                                   FontAttributes="Bold"
-                                   TextColor="#FFEBC5"/>
-
-                            <Label Text="A"
-                                FontSize="105"
-                                FontFamily="zCool"
+                            <Label
                                 FontAttributes="Bold"
-                            TextColor="#2B4872"/>
+                                FontFamily="zCool"
+                                FontSize="109"
+                                HorizontalOptions="Center"
+                                Text="A"
+                                TextColor="#FFEBC5"
+                                VerticalOptions="Center" />
+
+                            <Label
+                                FontAttributes="Bold"
+                                FontFamily="zCool"
+                                FontSize="105"
+                                Text="A"
+                                TextColor="#2B4872" />
                         </AbsoluteLayout>
                         <AbsoluteLayout>
-                            <Label Text="N"
-                                   FontSize="109"
-                                   VerticalOptions="Center"
-                                   HorizontalOptions="Center"
-                                   FontFamily="zCool"
-                                   FontAttributes="Bold"
-                                   TextColor="#FFEBC5"/>
-
-                            <Label Text="N"
-                                FontSize="105"
-                                FontFamily="zCool"
+                            <Label
                                 FontAttributes="Bold"
-                                TextColor="#2B4872"/>
+                                FontFamily="zCool"
+                                FontSize="109"
+                                HorizontalOptions="Center"
+                                Text="N"
+                                TextColor="#FFEBC5"
+                                VerticalOptions="Center" />
+
+                            <Label
+                                FontAttributes="Bold"
+                                FontFamily="zCool"
+                                FontSize="105"
+                                Text="N"
+                                TextColor="#2B4872" />
                         </AbsoluteLayout>
                         <AbsoluteLayout>
-                            <Label Text="K"
-                                   FontSize="109"
-                                   VerticalOptions="Center"
-                                   HorizontalOptions="Center"
-                                   FontFamily="zCool"
-                                   FontAttributes="Bold"
-                                   TextColor="#FFEBC5"/>
+                            <Label
+                                FontAttributes="Bold"
+                                FontFamily="zCool"
+                                FontSize="109"
+                                HorizontalOptions="Center"
+                                Text="K"
+                                TextColor="#FFEBC5"
+                                VerticalOptions="Center" />
 
-                            <Label Text="K"
-                                    FontSize="105"
-                                    FontFamily="zCool"
-                                    FontAttributes="Bold"
-                                    TextColor="#2B4872"/>
+                            <Label
+                                FontAttributes="Bold"
+                                FontFamily="zCool"
+                                FontSize="105"
+                                Text="K"
+                                TextColor="#2B4872" />
                         </AbsoluteLayout>
                         <AbsoluteLayout>
-                            <Label Text="I"
-                               FontSize="109"
-                               VerticalOptions="Center"
-                               HorizontalOptions="Center"
-                               FontFamily="zCool"
-                               FontAttributes="Bold"
-                               TextColor="#FFEBC5"/>
-
-                            <Label Text="I"
-                                FontSize="105"
-                                FontFamily="zCool"
+                            <Label
                                 FontAttributes="Bold"
-                                TextColor="#2B4872"/>
+                                FontFamily="zCool"
+                                FontSize="109"
+                                HorizontalOptions="Center"
+                                Text="I"
+                                TextColor="#FFEBC5"
+                                VerticalOptions="Center" />
+
+                            <Label
+                                FontAttributes="Bold"
+                                FontFamily="zCool"
+                                FontSize="105"
+                                Text="I"
+                                TextColor="#2B4872" />
                         </AbsoluteLayout>
                         <AbsoluteLayout>
-                            <Label Text="N"
-                               FontSize="109"
-                               VerticalOptions="Center"
-                               HorizontalOptions="Center"
-                               FontFamily="zCool"
-                               FontAttributes="Bold"
-                               TextColor="#FFEBC5"/>
-
-                            <Label Text="N"
-                                FontSize="105"
-                                FontFamily="zCool"
+                            <Label
                                 FontAttributes="Bold"
-                                TextColor="#2B4872"/>
+                                FontFamily="zCool"
+                                FontSize="109"
+                                HorizontalOptions="Center"
+                                Text="N"
+                                TextColor="#FFEBC5"
+                                VerticalOptions="Center" />
+
+                            <Label
+                                FontAttributes="Bold"
+                                FontFamily="zCool"
+                                FontSize="105"
+                                Text="N"
+                                TextColor="#2B4872" />
                         </AbsoluteLayout>
                         <AbsoluteLayout>
-                            <Label Text="G"
-                               FontSize="109"
-                               VerticalOptions="Center"
-                               HorizontalOptions="Center"
-                               FontFamily="zCool"
-                               FontAttributes="Bold"
-                               TextColor="#FFEBC5"/>
-
-                            <Label Text="G"
-                                FontSize="105"
-                                FontFamily="zCool"
+                            <Label
                                 FontAttributes="Bold"
-                                TextColor="#2B4872"/>
+                                FontFamily="zCool"
+                                FontSize="109"
+                                HorizontalOptions="Center"
+                                Text="G"
+                                TextColor="#FFEBC5"
+                                VerticalOptions="Center" />
+
+                            <Label
+                                FontAttributes="Bold"
+                                FontFamily="zCool"
+                                FontSize="105"
+                                Text="G"
+                                TextColor="#2B4872" />
                         </AbsoluteLayout>
                     </HorizontalStackLayout>
 
 
-                    <!-- Lista de jogadores -->
-                    <CollectionView ItemsSource="{Binding Players}" HeightRequest="500" VerticalOptions="FillAndExpand">
+                    <!--  Lista de jogadores  -->
+                    <CollectionView
+                        HeightRequest="500"
+                        ItemsSource="{Binding Players}"
+                        VerticalOptions="FillAndExpand">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
                                 <VerticalStackLayout>
-                                    <Frame BackgroundColor="#FFFCE2"
+                                    <Frame
+                                        Margin="0,10,0,15"
+                                        Padding="0"
+                                        BackgroundColor="#FFFCE2"
                                         BorderColor="Transparent"
                                         CornerRadius="0"
                                         HasShadow="False"
-                                        WidthRequest="600"
-                                        HeightRequest="{OnIdiom Desktop=81, Tablet=50, Phone=30}"
-                                        Padding="0" 
-                                        Margin="0,10,0,15">
+                                        HeightRequest="{OnIdiom Desktop=81,
+                                                                Tablet=50,
+                                                                Phone=30}"
+                                        WidthRequest="600">
 
-                                    <Grid BackgroundColor="#FFFCE2">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="1*"/>
-                                            <ColumnDefinition Width="2*"/>
-                                            <ColumnDefinition Width="60"/>
-                                            <ColumnDefinition Width="1*"/>
-                                        </Grid.ColumnDefinitions>
+                                        <Grid BackgroundColor="#FFFCE2">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="1*" />
+                                                <ColumnDefinition Width="2*" />
+                                                <ColumnDefinition Width="60" />
+                                                <ColumnDefinition Width="1*" />
+                                            </Grid.ColumnDefinitions>
 
-                                        <Label Text="1"
-                                               TextColor="White"
-                                               BackgroundColor="#2B4872"
-                                               FontSize="55"
-                                               FontFamily="zCool"
-                                               HeightRequest="84" 
-                                               WidthRequest="100"            
-                                               HorizontalOptions="StartAndExpand"
-                                               VerticalOptions="Center"
-                                               HorizontalTextAlignment="Center"
-                                               VerticalTextAlignment="Center"
-                                               LineBreakMode="NoWrap"/>
+                                            <Label
+                                                BackgroundColor="#2B4872"
+                                                FontFamily="zCool"
+                                                FontSize="55"
+                                                HeightRequest="84"
+                                                HorizontalOptions="StartAndExpand"
+                                                HorizontalTextAlignment="Center"
+                                                LineBreakMode="NoWrap"
+                                                Text="1"
+                                                TextColor="White"
+                                                VerticalOptions="Center"
+                                                VerticalTextAlignment="Center"
+                                                WidthRequest="100" />
 
-                                        <Label Text="{Binding nome}"
-                                           TextColor="Black"
-                                           FontSize="35"
-                                           FontFamily="zCool"
-                                           HorizontalOptions="Start"
-                                           VerticalOptions="Center"
-                                           HorizontalTextAlignment="Center"
-                                           VerticalTextAlignment="Center"
-                                           Grid.Column="1"
-                                           Padding="5"
-                                           LineBreakMode="NoWrap"/>
+                                            <Label
+                                                Grid.Column="1"
+                                                Padding="5"
+                                                FontFamily="zCool"
+                                                FontSize="35"
+                                                HorizontalOptions="Start"
+                                                HorizontalTextAlignment="Center"
+                                                LineBreakMode="NoWrap"
+                                                Text="{Binding nome}"
+                                                TextColor="Black"
+                                                VerticalOptions="Center"
+                                                VerticalTextAlignment="Center" />
 
-                                        <Label BackgroundColor="Black"
-                                           WidthRequest="1"
-                                           HeightRequest="50"
-                                           FontSize="35"
-                                           FontFamily="zCool"
-                                           HorizontalOptions="Center"
-                                           VerticalOptions="Center"
-                                           Grid.Column="2"
-                                           Padding="5"
-                                           LineBreakMode="NoWrap"/>
+                                            <Label
+                                                Grid.Column="2"
+                                                Padding="5"
+                                                BackgroundColor="Black"
+                                                FontFamily="zCool"
+                                                FontSize="35"
+                                                HeightRequest="50"
+                                                HorizontalOptions="Center"
+                                                LineBreakMode="NoWrap"
+                                                VerticalOptions="Center"
+                                                WidthRequest="1" />
 
-                                        <Label Text="{Binding pontuacao}"
-                                           TextColor="Black"
-                                            FontSize="40"
-                                            FontFamily="zCool"
-                                            HorizontalOptions="Center"
-                                            VerticalOptions="Center"
-                                            HorizontalTextAlignment="Center"
-                                            VerticalTextAlignment="Center"
-                                            Grid.Column="3"
-                                            Padding="5"
-                                            LineBreakMode="NoWrap"/>
-                                    </Grid>
-                                </Frame>
+                                            <Label
+                                                Grid.Column="3"
+                                                Padding="5"
+                                                FontFamily="zCool"
+                                                FontSize="40"
+                                                HorizontalOptions="Center"
+                                                HorizontalTextAlignment="Center"
+                                                LineBreakMode="NoWrap"
+                                                Text="{Binding pontuacao}"
+                                                TextColor="Black"
+                                                VerticalOptions="Center"
+                                                VerticalTextAlignment="Center" />
+                                        </Grid>
+                                    </Frame>
                                 </VerticalStackLayout>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>
 
-                    <!-- Botões de ações -->
+                    <!--  Botões de ações  -->
 
 
-                    <Button Text="Atualizar Ranking" 
-                                    FontSize="22"
-                                    FontAttributes="Bold"
-                                    FontFamily="zCool"
-                                    Command="{Binding LoadPlayersCommand}"
-                                    HorizontalOptions="Center"
-                                    VerticalOptions="Center"
-                                    WidthRequest="250"
-                                    HeightRequest="55"
-                                    Margin="0, 25, 0, 40"
-                                    BackgroundColor="#2B4872"
-                                    TextColor="White"
-                                    CornerRadius="10"/>
+                    <Button
+                        Margin="0,25,0,40"
+                        BackgroundColor="#2B4872"
+                        Command="{Binding LoadPlayersCommand}"
+                        CornerRadius="10"
+                        FontAttributes="Bold"
+                        FontFamily="zCool"
+                        FontSize="22"
+                        HeightRequest="55"
+                        HorizontalOptions="Center"
+                        Text="Atualizar Ranking"
+                        TextColor="White"
+                        VerticalOptions="Center"
+                        WidthRequest="250" />
                 </VerticalStackLayout>
             </Grid>
         </VerticalStackLayout>
