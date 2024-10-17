@@ -31,7 +31,7 @@ namespace SolitaireMahjongApp.ViewModels
         private Tile _firstTileSelected = null;
         private Tile _secondTileSelected = null;
         private int _score = 0;
-        private int _timeLeft = 15; // 2 minutos em segundos
+        private int _timeLeft = 20; // 2 minutos em segundos
 
         private List<int[,]> layers;
         private Dictionary<(int layer, int row, int col), Tile> tileMap;
@@ -45,8 +45,7 @@ namespace SolitaireMahjongApp.ViewModels
             _playerService = new PlayerService();
             _sessionService = sessionService;
 
-            currentPlayer = _sessionService.currentPlayer;
-            Debug.WriteLine($"Jogador atual: {currentPlayer?.nome}");
+            InitializePlayerAsync();
 
             TileCommand = new RelayCommand<Tile>(OnTileClicked);
             LoadTilesCommand = new AsyncRelayCommand(LoadTilesAsync);
@@ -64,6 +63,22 @@ namespace SolitaireMahjongApp.ViewModels
         public IAsyncRelayCommand LoadTilesCommand { get; }
         public IAsyncRelayCommand HintCommand { get; }
 
+        public async Task InitializePlayerAsync()
+        {
+            currentPlayer = _sessionService.currentPlayer;
+
+            if (currentPlayer == null || currentPlayer.id == 0)
+            {
+                await _playerService.CreatePlayerAsync(currentPlayer);
+                _sessionService.currentPlayer = currentPlayer;
+                Debug.WriteLine($"Jogador existente carregado: ID {currentPlayer.id} com o nome {currentPlayer.nome}");
+            }
+            else
+            {
+                Debug.WriteLine($"Jogador existente carregado: ID {currentPlayer.id} com o nome {currentPlayer.nome}");
+            }
+        }
+
         private async Task<List<Tile>> ShuffleTiles()
         {
             var shuffledTiles = Tiles.OrderBy(t => Guid.NewGuid()).ToList();
@@ -73,15 +88,22 @@ namespace SolitaireMahjongApp.ViewModels
 
         private async Task LoadTilesAsync()
         {
-            var tilesFromApi = await _tileService.GetTilesAsync();
-            var shuffledTiles = tilesFromApi.OrderBy(t => Guid.NewGuid()).ToList();
-            var layerManager = new LayerManager();
+            try
+            {
+                var tilesFromApi = await _tileService.GetTilesAsync();
+                var shuffledTiles = tilesFromApi.OrderBy(t => Guid.NewGuid()).ToList();
+                var layerManager = new LayerManager();
 
-            Tiles = new ObservableCollection<Tile>();
-            layers = layerManager.GetRandomLayer();
+                Tiles = new ObservableCollection<Tile>();
+                layers = layerManager.GetRandomLayer();
 
-            // Mapeia as peças
-            MapTilesToLayers(shuffledTiles, layers);
+                // Mapeia as peças
+                MapTilesToLayers(shuffledTiles, layers);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine($"Erro ao carregar peças: {ex.Message}");
+            }
         }
 
         private void MapTilesToLayers(List<Tile> shuffledTiles, List<int[,]> layers)
@@ -458,10 +480,18 @@ namespace SolitaireMahjongApp.ViewModels
                 }
 
                 currentPlayer.pontuacao = _score;
-                Tiles.Clear();
                 _score = 0;
                 ScoreText = $"Score: {_score}";
 
+                if(Tiles.Any())
+                {
+                    Application.Current.Dispatcher.Dispatch(() =>
+                    {
+                        Tiles.Clear();
+                    });
+                }
+
+                Debug.WriteLine($"Tentando salvar a pontuação do jogador com o id {currentPlayer.id}");
                 bool isSuccess = await _playerService.UpdatePlayerAsync(currentPlayer);
                 if (isSuccess)
                 {

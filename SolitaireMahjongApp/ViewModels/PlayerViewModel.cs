@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using SolitaireMahjongApp.Models;
 using SolitaireMahjongApp.Services;
 using SolitaireMahjongApp.Views;
+using System.Diagnostics;
 
 namespace SolitaireMahjongApp.ViewModels
 {
@@ -59,6 +60,7 @@ namespace SolitaireMahjongApp.ViewModels
 
                     await _playerService.CreatePlayerAsync(_sessionService.currentPlayer);
                     await LoadPlayerAsync();
+                    Debug.WriteLine($"Id do player {_sessionService.currentPlayer.id}");
                     await Application.Current.MainPage.Navigation.PushAsync(new MahjongView(_sessionService));
                 }
             }
