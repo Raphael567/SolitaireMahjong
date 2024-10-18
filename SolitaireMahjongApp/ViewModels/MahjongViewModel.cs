@@ -435,7 +435,8 @@ namespace SolitaireMahjongApp.ViewModels
         {
             var freeTilesPairs = GetFreeTiles();
 
-            freeTilesPairs.Clear();
+            // Linha para testar o embaralhmento do tabuleiro caso não haja mais pares disponíveis
+            //freeTilesPairs.Clear();
 
             if (freeTilesPairs.Count == 0)
             {
