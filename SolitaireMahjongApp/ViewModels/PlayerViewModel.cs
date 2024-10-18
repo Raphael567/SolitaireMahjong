@@ -56,11 +56,13 @@ namespace SolitaireMahjongApp.ViewModels
                         pontuacao = 0
                     };
 
-                    _sessionService.currentPlayer = newPlayer;
+                    var createdPlayer = await _playerService.CreatePlayerAsync(newPlayer);
+                    _sessionService.currentPlayer = createdPlayer;
 
-                    await _playerService.CreatePlayerAsync(_sessionService.currentPlayer);
                     await LoadPlayerAsync();
+
                     Debug.WriteLine($"Id do player {_sessionService.currentPlayer.id}");
+
                     await Application.Current.MainPage.Navigation.PushAsync(new MahjongView(_sessionService));
                 }
             }

@@ -33,13 +33,37 @@ namespace SolitaireMahjongApp.Services
             return new List<Player>();
         }
 
-        public async Task CreatePlayerAsync(Player player)
+        public async Task<Player> CreatePlayerAsync(Player player)
         {
-            string json = JsonSerializer.Serialize(player);
-            StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+            try
+            {   
+                //PlayerDTO sem Id
+                var playerDTO = new PlayerDTO
+                {
+                    nome = player.nome,
+                    pontuacao = player.pontuacao
+                };
 
-            var response = await _httpClient.PostAsync("players", content);
-            response.EnsureSuccessStatusCode();
+                string json = JsonSerializer.Serialize(playerDTO);
+                StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var response = await _httpClient.PostAsync("players", content);
+                response.EnsureSuccessStatusCode();
+
+                var createdPlayerJson = await response.Content.ReadAsStringAsync();
+
+                Debug.WriteLine($"Resposta da API: {createdPlayerJson}");
+                var createdPlayer = JsonSerializer.Deserialize<Player>(createdPlayerJson);
+
+                return createdPlayer;
+            }
+
+            catch(HttpRequestException ex)
+            {
+
+                Debug.WriteLine($"Erro ao criar jogador {ex.Message}");
+                throw;
+            }
         }
 
         public async Task<bool> UpdatePlayerAsync(Player player)

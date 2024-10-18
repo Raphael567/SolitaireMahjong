@@ -31,7 +31,8 @@ namespace SolitaireMahjongApp.ViewModels
         private Tile _firstTileSelected = null;
         private Tile _secondTileSelected = null;
         private int _score = 0;
-        private int _timeLeft = 20; // 2 minutos em segundos
+        private int _timeLeft = 20;
+        private bool shuffleTiles = false;
 
         private List<int[,]> layers;
         private Dictionary<(int layer, int row, int col), Tile> tileMap;
@@ -114,7 +115,7 @@ namespace SolitaireMahjongApp.ViewModels
 
             Debug.WriteLine("Iniciando o mapeamento das peças...");
 
-            if (shuffledTiles.Count != 144) // Verifica se está recebendo todas as 144 peças
+            if (shuffledTiles.Count != 144 && !shuffleTiles) // Verifica se está recebendo todas as 144 peças
             {
                 Debug.WriteLine($"Número incorreto de peças recebidas da API: {shuffledTiles.Count} (esperado: 144)");
                 return;
@@ -434,17 +435,17 @@ namespace SolitaireMahjongApp.ViewModels
         {
             var freeTilesPairs = GetFreeTiles();
 
-            //freeTilesPairs.Clear();
+            freeTilesPairs.Clear();
 
             if (freeTilesPairs.Count == 0)
             {
-                bool shufle = await Application.Current.MainPage.DisplayAlert(
+                shuffleTiles = await Application.Current.MainPage.DisplayAlert(
                               "Jogo encerrado",
                               "Não há mais pares disponíveis. Deseja embaralhar as peças?",
                               "Embaralhar",
                               "Encerrar Jogo");
 
-                if(shufle)
+                if(shuffleTiles)
                 {
                     _score = 0;
                     ScoreText = $"Score: {_score}";

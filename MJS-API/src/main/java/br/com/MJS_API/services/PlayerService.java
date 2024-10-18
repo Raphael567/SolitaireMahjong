@@ -33,10 +33,10 @@ public class PlayerService {
 
     // Cria um jogador
     public Player createPlayer(Player player) {
-        if (playerRepository.existsById(player.getId())) {
+        if (playerRepository.existsByNome(player.getNome())) {
             throw new RuntimeException("Player already exists");
         }
-        try {
+        try {   
             return playerRepository.save(player);
         } catch (Exception e) {
             throw new RuntimeException("Error while trying to create player");

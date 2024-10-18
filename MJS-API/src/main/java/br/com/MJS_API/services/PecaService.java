@@ -54,7 +54,7 @@ public class PecaService {
 
     public byte[] loadImageBytes(String nomeImagem) throws ImageNotFoundException {
         try {
-            Path path = Paths.get("D:/SolitaireMahjong/MJS-API/src/main/resources/images/pecas/" + nomeImagem);
+            Path path = Paths.get("F:/SolitaireMahjong/MJS-API/src/main/resources/images/pecas/" + nomeImagem);
             return Files.readAllBytes(path);
         } catch (NoSuchFileException e) {
             throw new ImageNotFoundException("Image not found", e);
