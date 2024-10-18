@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using SolitaireMahjongApp.Models;
 using SolitaireMahjongApp.Services;
 using SolitaireMahjongApp.Views;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 
 namespace SolitaireMahjongApp.ViewModels
@@ -16,11 +17,8 @@ namespace SolitaireMahjongApp.ViewModels
         {
             _playerService = new PlayerService();
             _sessionService = new SessionService();
-            LoadPlayerCommand = new AsyncRelayCommand(LoadPlayerAsync);
             CreatePlayerCommand = new AsyncRelayCommand(CreatePlayerAsync);
             NavigateCommand = new AsyncRelayCommand(NavigateAsync);
-
-            Task.Run(async () => await LoadPlayerAsync());
         }
 
         [ObservableProperty]
@@ -29,7 +27,6 @@ namespace SolitaireMahjongApp.ViewModels
         [ObservableProperty]
         private string _playerName;
 
-        public IAsyncRelayCommand LoadPlayerCommand { get; }
         public IAsyncRelayCommand CreatePlayerCommand { get; }
         public IAsyncRelayCommand NavigateCommand { get; }
 
@@ -42,6 +39,11 @@ namespace SolitaireMahjongApp.ViewModels
         {
             try
             {
+                if(_players == null)
+                {
+                    await LoadPlayerAsync();
+                }
+
                 var existingPlayer = _players.FirstOrDefault(player => player.nome == PlayerName);
 
                 if (existingPlayer != null)
@@ -65,6 +67,10 @@ namespace SolitaireMahjongApp.ViewModels
 
                     await Application.Current.MainPage.Navigation.PushAsync(new MahjongView(_sessionService));
                 }
+            }
+            catch(ArgumentNullException ex) 
+            {
+                Debug.WriteLine($"Erro ao criar jogador {ex.Message}");
             }
             catch
             {

@@ -31,7 +31,7 @@ namespace SolitaireMahjongApp.ViewModels
         private Tile _firstTileSelected = null;
         private Tile _secondTileSelected = null;
         private int _score = 0;
-        private int _timeLeft = 20;
+        private int _timeLeft = 3600;
         private bool shuffleTiles = false;
 
         private List<int[,]> layers;

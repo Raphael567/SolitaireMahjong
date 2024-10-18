@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using SolitaireMahjongApp.Models;
 using SolitaireMahjongApp.Services;
+using System.Diagnostics;
 
 namespace SolitaireMahjongApp.ViewModels
 {
@@ -19,14 +20,25 @@ namespace SolitaireMahjongApp.ViewModels
         }
 
         [ObservableProperty]
-        private List<Player> _players;
+        private List<RankedPlayer> _players;
 
         public IAsyncRelayCommand LoadPlayersCommand { get; }
         public IAsyncRelayCommand NavigateBackCommand { get; }
 
         private async Task LoadPlayersAsync()
         {
-            Players = await _playerService.GetAllPlayersAsync();
+            var players = await _playerService.GetAllPlayersAsync();
+            if (players != null && players.Count > 0)
+            {
+                Debug.WriteLine($"Total players loaded: {players.Count}");
+                var rankedPlayers = players.Select((player, index) => new RankedPlayer
+                {
+                    rank = index + 1,
+                    player = player
+                }).ToList();
+
+                Players = rankedPlayers;
+            }
         }
 
         private async Task NavigateBackAsync()

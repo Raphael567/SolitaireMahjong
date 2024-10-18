@@ -35,6 +35,7 @@
                         Source="voltar_btn.png"
                         VerticalOptions="Center"
                         WidthRequest="170" />
+                    
                     <!--  Título  -->
                     <HorizontalStackLayout HeightRequest="130" HorizontalOptions="Center">
                         <AbsoluteLayout>
@@ -195,7 +196,7 @@
                                                 HorizontalOptions="StartAndExpand"
                                                 HorizontalTextAlignment="Center"
                                                 LineBreakMode="NoWrap"
-                                                Text="1"
+                                                Text="{Binding rank}"
                                                 TextColor="White"
                                                 VerticalOptions="Center"
                                                 VerticalTextAlignment="Center"
@@ -209,7 +210,7 @@
                                                 HorizontalOptions="Start"
                                                 HorizontalTextAlignment="Center"
                                                 LineBreakMode="NoWrap"
-                                                Text="{Binding nome}"
+                                                Text="{Binding player.nome}"
                                                 TextColor="Black"
                                                 VerticalOptions="Center"
                                                 VerticalTextAlignment="Center" />
@@ -234,7 +235,7 @@
                                                 HorizontalOptions="Center"
                                                 HorizontalTextAlignment="Center"
                                                 LineBreakMode="NoWrap"
-                                                Text="{Binding pontuacao}"
+                                                Text="{Binding player.pontuacao}"
                                                 TextColor="Black"
                                                 VerticalOptions="Center"
                                                 VerticalTextAlignment="Center" />
@@ -246,8 +247,6 @@
                     </CollectionView>
 
                     <!--  Botões de ações  -->
-
-
                     <Button
                         Margin="0,25,0,40"
                         BackgroundColor="#2B4872"
