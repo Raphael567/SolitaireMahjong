@@ -36,14 +36,15 @@
 
                     <AbsoluteLayout>
                         <Entry Text="{Binding PlayerName}"
-                                   Placeholder="Insira seu nome..." 
-                                   PlaceholderColor="#989ca0" 
-                                   FontSize="{OnIdiom Phone=14, Tablet=17, Desktop=20}" 
-                                   FontFamily="zCool" 
-                                   TextColor="#5f646b" 
-                                   HorizontalOptions="FillAndExpand"
-                                   AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
-                                    AbsoluteLayout.LayoutFlags="All"
+                               MaxLength="12"
+                               Placeholder="Insira seu nome..." 
+                               PlaceholderColor="#989ca0" 
+                               FontSize="{OnIdiom Phone=14, Tablet=17, Desktop=20}" 
+                               FontFamily="zCool" 
+                               TextColor="#5f646b" 
+                               HorizontalOptions="FillAndExpand"
+                               AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
+                               AbsoluteLayout.LayoutFlags="All"
                                />
                         <Image Source="padrao_lateral.png"
                                Aspect="AspectFit"
@@ -63,7 +64,7 @@
                             BackgroundColor="#fdfbe3" 
                             HorizontalOptions="Center" 
                             WidthRequest="{OnIdiom Phone=90, Tablet=140, Desktop=150}" 
-                            HeightRequest="{OnIdiom Phone=90, Tablet=140, Desktop=50}"/>
+                            HeightRequest="{OnIdiom Phone=9, Tablet=40, Desktop=50}"/>
 
                     <Button Command="{Binding NavigateCommand}"
                             Text="Ranking" 
@@ -73,8 +74,8 @@
                             CornerRadius="8" 
                             BackgroundColor="#fdfbe3" 
                             HorizontalOptions="Center"
-                            WidthRequest="{OnIdiom Phone=90, Tablet=140, Desktop=190}" 
-                            HeightRequest="{OnIdiom Phone=90, Tablet=140, Desktop=50}"/>
+                            WidthRequest="{OnIdiom Phone=90, Tablet=140, Desktop=150}" 
+                            HeightRequest="{OnIdiom Phone=9, Tablet=40, Desktop=50}"/>
                 </HorizontalStackLayout>
             </VerticalStackLayout>
         </VerticalStackLayout>
