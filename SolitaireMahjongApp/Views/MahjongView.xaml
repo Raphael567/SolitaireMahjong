@@ -10,44 +10,48 @@
     <ScrollView>
         <VerticalStackLayout>
             <Grid
-                Margin="0,10,0,0"
+                Margin="50,0,0,0"
                 Padding="10"
                 RowDefinitions="Auto">
-                <HorizontalStackLayout>
+                <HorizontalStackLayout Spacing="50">
                     <Button
-                        Margin="80,0,50,0"
-                        BackgroundColor="Red"
+                        BackgroundColor="#FF0000"
                         FontFamily="zCool"
-                        FontSize="33"
-                        HeightRequest="77"
+                        FontSize="25"
+                        HeightRequest="65"
                         HorizontalOptions="Start"
                         Text="PAUSE"
                         TextColor="White"
-                        WidthRequest="170" />
+                        WidthRequest="150" />
                     <Button
-                        BackgroundColor="Transparent"
+                        BackgroundColor="#FF0000"
                         Command="{Binding HintCommand}"
                         FontFamily="zCool"
-                        FontSize="36"
+                        FontSize="30"
+                        HeightRequest="65"
                         Text="Dica"
-                        TextColor="White" />
+                        TextColor="White"
+                        WidthRequest="110" />
                 </HorizontalStackLayout>
-                <Button
-                    BackgroundColor="Red"
-                    Command="{Binding LoadTilesCommand}"
-                    FontFamily="zCool"
-                    FontSize="20"
-                    HeightRequest="30"
-                    Text="Carregar peças"
-                    WidthRequest="200" />
-                <Label
-                    Grid.Column="0"
-                    Margin="0,0,80,0"
-                    FontFamily="zCool"
-                    FontSize="76"
-                    HorizontalOptions="EndAndExpand"
-                    Text="{Binding TimerText}"
-                    TextColor="White" />
+                <Grid
+                    Margin="0,10,50,0"
+                    RowDefinitions="1*,1*"
+                    RowSpacing="10">
+                    <Label
+                        Grid.Row="0"
+                        FontFamily="zCool"
+                        FontSize="60"
+                        HorizontalOptions="EndAndExpand"
+                        Text="{Binding TimerText}"
+                        TextColor="White" />
+                    <Label
+                        Grid.Row="1"
+                        FontFamily="zCool"
+                        FontSize="50"
+                        HorizontalOptions="EndAndExpand"
+                        Text="{Binding ScoreText}"
+                        TextColor="White" />
+                </Grid>
             </Grid>
             <ScrollView>
                 <AbsoluteLayout
@@ -59,18 +63,28 @@
                         <DataTemplate>
                             <ImageButton
                                 x:Name="AnimatedImageButton"
-                                Clicked="AnimatedImageButton_Clicked"
                                 AbsoluteLayout.LayoutBounds="{Binding LayoutBounds}"
                                 BackgroundColor="{Binding Color}"
+                                Clicked="AnimatedImageButton_Clicked"
                                 Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.TileCommand}"
                                 CommandParameter="{Binding .}"
                                 HeightRequest="100"
                                 Source="{Binding CaminhoImagem}"
-                                WidthRequest="80"/>
+                                WidthRequest="80" />
                         </DataTemplate>
                     </BindableLayout.ItemTemplate>
                 </AbsoluteLayout>
             </ScrollView>
+            <Button
+                Margin="50,10,0,0"
+                BackgroundColor="#FF0000"
+                Command="{Binding LoadTilesCommand}"
+                FontFamily="zCool"
+                FontSize="20"
+                HeightRequest="10"
+                HorizontalOptions="Start"
+                Text="Carregar peças"
+                WidthRequest="180" />
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>
