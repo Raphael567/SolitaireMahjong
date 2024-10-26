@@ -7,13 +7,27 @@
     Title="MahjongView"
     BackgroundImageSource="fundo_mahjong.png">
 
-    <ScrollView>
-        <VerticalStackLayout>
-            <Grid
-                Margin="50,0,0,0"
-                Padding="10"
-                RowDefinitions="Auto">
-                <HorizontalStackLayout Spacing="50">
+    <Grid>
+        <ScrollView>
+            <Grid Margin="50,0,0,0" Padding="10" RowDefinitions="Auto, Auto, Auto, *">
+
+                <!-- Temporizador e Pontuação -->
+                <VerticalStackLayout HorizontalOptions="End">
+                    <Label
+                        FontFamily="zCool"
+                        FontSize="60"
+                        Text="{Binding TimerText}"
+                        TextColor="White" />
+
+                    <Label
+                        FontFamily="zCool"
+                        FontSize="50"
+                        Text="{Binding ScoreText}"
+                        TextColor="White"/>
+                </VerticalStackLayout>
+
+                <!-- Header com Botões PAUSE e Dica -->
+                <HorizontalStackLayout Spacing="30">
                     <Button
                         BackgroundColor="#FF0000"
                         FontFamily="zCool"
@@ -22,7 +36,9 @@
                         HorizontalOptions="Start"
                         Text="PAUSE"
                         TextColor="White"
-                        WidthRequest="150" />
+                        WidthRequest="150"
+                        Command="{Binding PauseCommand}" />
+
                     <Button
                         BackgroundColor="#FF0000"
                         Command="{Binding HintCommand}"
@@ -31,34 +47,16 @@
                         HeightRequest="65"
                         Text="Dica"
                         TextColor="White"
-                        WidthRequest="110" />
+                        HorizontalOptions="Start"
+                        WidthRequest="110"/>
                 </HorizontalStackLayout>
-                <Grid
-                    Margin="0,10,50,0"
-                    RowDefinitions="1*,1*"
-                    RowSpacing="10">
-                    <Label
-                        Grid.Row="0"
-                        FontFamily="zCool"
-                        FontSize="60"
-                        HorizontalOptions="EndAndExpand"
-                        Text="{Binding TimerText}"
-                        TextColor="White" />
-                    <Label
-                        Grid.Row="1"
-                        FontFamily="zCool"
-                        FontSize="50"
-                        HorizontalOptions="EndAndExpand"
-                        Text="{Binding ScoreText}"
-                        TextColor="White" />
-                </Grid>
-            </Grid>
-            <ScrollView>
-                <AbsoluteLayout
-                    Margin="110,0,0,0"
-                    BindableLayout.ItemsSource="{Binding Tiles}"
-                    HorizontalOptions="Center"
-                    VerticalOptions="FillAndExpand">
+
+                <!-- Área de Peças com AbsoluteLayout -->
+                <AbsoluteLayout Margin="110,0,0,0"
+                        BindableLayout.ItemsSource="{Binding Tiles}"
+                        HorizontalOptions="Center"
+                        VerticalOptions="FillAndExpand"
+                        Grid.Row="2">
                     <BindableLayout.ItemTemplate>
                         <DataTemplate>
                             <ImageButton
@@ -74,17 +72,30 @@
                         </DataTemplate>
                     </BindableLayout.ItemTemplate>
                 </AbsoluteLayout>
-            </ScrollView>
-            <Button
-                Margin="50,10,0,0"
-                BackgroundColor="#FF0000"
-                Command="{Binding LoadTilesCommand}"
-                FontFamily="zCool"
-                FontSize="20"
-                HeightRequest="10"
-                HorizontalOptions="Start"
-                Text="Carregar peças"
-                WidthRequest="180" />
-        </VerticalStackLayout>
-    </ScrollView>
+
+                <!-- Botão Carregar Peças -->
+                <Button
+                    Margin="50,10,0,0"
+                    BackgroundColor="#FF0000"
+                    Command="{Binding LoadTilesCommand}"
+                    FontFamily="zCool"
+                    FontSize="20"
+                    HeightRequest="10"
+                    HorizontalOptions="Start"
+                    Text="Carregar peças"
+                    WidthRequest="180"
+                    Grid.Row="4" />
+            </Grid>
+        </ScrollView>
+        
+        <!-- Overlay Pause -->
+        <AbsoluteLayout IsVisible="{Binding IsPaused}" BackgroundColor="Black" Opacity="0.8" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+            <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="20">
+                <Label Text="Jogo Pausado" TextColor="White" FontSize="24" HorizontalOptions="Center" />
+                <Button Text="Continuar" Command="{Binding ResumeCommand}" />
+                <Button Text="Encerrar Jogo" Command="{Binding EndGameCommand}" />
+            </VerticalStackLayout>
+        </AbsoluteLayout>
+        
+    </Grid>
 </ContentPage>

@@ -28,17 +28,28 @@ namespace SolitaireMahjongApp.ViewModels
         [ObservableProperty]
         private ObservableCollection<Tile> _tiles;
 
+        [ObservableProperty]
+        private bool isPaused = false;
+
         private Tile _firstTileSelected = null;
         private Tile _secondTileSelected = null;
         private int _score = 0;
         private int _timeLeft = 3600;
         private bool shuffleTiles = false;
+        private bool pauseTimer = false;
 
         private List<int[,]> layers;
         private Dictionary<(int layer, int row, int col), Tile> tileMap;
         private (Tile, Tile)? lastHintPair = null;
 
         public ICommand TileCommand { get; }
+
+        public IAsyncRelayCommand LoadTilesCommand { get; }
+        public IAsyncRelayCommand HintCommand { get; }
+
+        public IRelayCommand PauseCommand { get; }
+        public IRelayCommand ResumeCommand { get; }
+        public IRelayCommand EndGameCommand { get; }
 
         public MahjongViewModel(SessionService sessionService)
         {
@@ -51,6 +62,9 @@ namespace SolitaireMahjongApp.ViewModels
             TileCommand = new RelayCommand<Tile>(OnTileClicked);
             LoadTilesCommand = new AsyncRelayCommand(LoadTilesAsync);
             HintCommand = new AsyncRelayCommand(ShowHint);
+            PauseCommand = new RelayCommand(PauseGame);
+            ResumeCommand = new RelayCommand(ResumeGame);
+            EndGameCommand = new RelayCommand(EndGame);
 
             tileMap = new Dictionary<(int layer, int row, int col), Tile>();
 
@@ -60,9 +74,6 @@ namespace SolitaireMahjongApp.ViewModels
                 StartTimer();
             });
         }
-
-        public IAsyncRelayCommand LoadTilesCommand { get; }
-        public IAsyncRelayCommand HintCommand { get; }
 
         public async Task InitializePlayerAsync()
         {
@@ -419,6 +430,11 @@ namespace SolitaireMahjongApp.ViewModels
             Debug.WriteLine("Iniciando o temporizador.");
             while (_timeLeft > 0 && Tiles.Count != 0)
             {
+                while(IsPaused || pauseTimer)
+                {
+                    await Task.Delay(10);
+                }
+
                 await Task.Delay(1000);
                 _timeLeft--;
                 TimerText = $"{TimeSpan.FromSeconds(_timeLeft):mm\\:ss}";
@@ -440,6 +456,8 @@ namespace SolitaireMahjongApp.ViewModels
 
             if (freeTilesPairs.Count == 0)
             {
+                pauseTimer = true;
+
                 shuffleTiles = await Application.Current.MainPage.DisplayAlert(
                               "Jogo encerrado",
                               "Não há mais pares disponíveis. Deseja embaralhar as peças?",
@@ -448,7 +466,8 @@ namespace SolitaireMahjongApp.ViewModels
 
                 if(shuffleTiles)
                 {
-                    _score = 0;
+                    pauseTimer = false;
+                    _score -= 10;
                     ScoreText = $"Score: {_score}";
 
                     var shuffledTiles = await ShuffleTiles();
@@ -459,7 +478,6 @@ namespace SolitaireMahjongApp.ViewModels
                 }
                 else
                     GameOver();
-
             }
 
             else if (_timeLeft == 0)
@@ -473,6 +491,8 @@ namespace SolitaireMahjongApp.ViewModels
         {
             try
             {
+                pauseTimer = true;
+
                 Debug.WriteLine("Tentando encerrar o jogo...");
 
                 if (currentPlayer == null)
@@ -493,30 +513,41 @@ namespace SolitaireMahjongApp.ViewModels
                     });
                 }
 
-                Debug.WriteLine($"Tentando salvar a pontuação do jogador com o id {currentPlayer.id}");
-                bool isSuccess = await _playerService.UpdatePlayerAsync(currentPlayer);
-                if (isSuccess)
+                if(!IsPaused)
                 {
-                    Debug.WriteLine("Pontuação salva com sucesso.");
+                    Debug.WriteLine($"Tentando salvar a pontuação do jogador com o id {currentPlayer.id}");
+                    bool isSuccess = await _playerService.UpdatePlayerAsync(currentPlayer);
+                    if (isSuccess)
+                    {
+                        Debug.WriteLine("Pontuação salva com sucesso.");
+                        Application.Current.Dispatcher.Dispatch(async () =>
+                        {
+                            await Application.Current.MainPage.DisplayAlert("Fim de Jogo", "Pontuação salva com sucesso", "OK");
+                        });
+                    }
+                    else
+                    {
+                        Debug.WriteLine("Erro ao salvar a pontuação.");
+                        Application.Current.Dispatcher.Dispatch(async () =>
+                        {
+                            await Application.Current.MainPage.DisplayAlert("Erro", "Não foi possível salvar a pontuação", "OK");
+                        });
+                    }
+
+                    Debug.WriteLine("Navegando para PlayerView...");
                     Application.Current.Dispatcher.Dispatch(async () =>
                     {
-                        await Application.Current.MainPage.DisplayAlert("Fim de Jogo", "Pontuação salva com sucesso", "OK");
+                        await Application.Current.MainPage.Navigation.PushAsync(new PlayerView());
                     });
-                }
+                } 
                 else
                 {
-                    Debug.WriteLine("Erro ao salvar a pontuação.");
                     Application.Current.Dispatcher.Dispatch(async () =>
                     {
-                        await Application.Current.MainPage.DisplayAlert("Erro", "Não foi possível salvar a pontuação", "OK");
+                        await Application.Current.MainPage.DisplayAlert("Jogo encerrado", "O jogo foi encerrado", "OK");
+                        await Application.Current.MainPage.Navigation.PushAsync(new PlayerView());
                     });
                 }
-
-                Debug.WriteLine("Navegando para PlayerView...");
-                Application.Current.Dispatcher.Dispatch(async () =>
-                {
-                    await Application.Current.MainPage.Navigation.PushAsync(new PlayerView());
-                });
             }
             catch (COMException comEx)
             {
@@ -538,6 +569,22 @@ namespace SolitaireMahjongApp.ViewModels
             {
                 Debug.WriteLine("Finalizando o jogo.");
             }
+        }
+
+        private void PauseGame()
+        {
+            IsPaused = true;
+        }
+
+        private void ResumeGame()
+        {
+            IsPaused = false;
+        }
+
+        private void EndGame()
+        {
+            IsPaused = false;
+            GameOver();
         }
     }
 }
