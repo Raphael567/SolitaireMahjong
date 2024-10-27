@@ -96,6 +96,18 @@
                 <Button Text="Encerrar Jogo" Command="{Binding EndGameCommand}" />
             </VerticalStackLayout>
         </AbsoluteLayout>
-        
+
+        <!-- Overlay GameOver -->
+        <AbsoluteLayout IsVisible="{Binding IsGameOver}" BackgroundColor="Black" Opacity="0.8" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+            <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="20">
+                <Label Text="Fim de jogo!" TextColor="White" FontSize="24" HorizontalOptions="Center" />
+                <VerticalStackLayout Spacing="20">
+                    <Label Text="Sua pontuação final: " TextColor="White" FontSize="24" HorizontalOptions="Center" />
+                    <Label Text="{Binding ScoreText}" TextColor="White" FontSize="24" HorizontalOptions="Center" />
+                </VerticalStackLayout>
+                <Button Text="Voltar a página inicial" Command="{Binding GameOverCommand}" />
+            </VerticalStackLayout>
+        </AbsoluteLayout>
+
     </Grid>
 </ContentPage>

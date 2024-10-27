@@ -5,6 +5,7 @@ using SolitaireMahjongApp.Services;
 using SolitaireMahjongApp.Views;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Input;
 
@@ -31,6 +32,9 @@ namespace SolitaireMahjongApp.ViewModels
         [ObservableProperty]
         private bool isPaused = false;
 
+        [ObservableProperty]
+        private bool isGameOver = false;
+
         private Tile _firstTileSelected = null;
         private Tile _secondTileSelected = null;
         private int _score = 0;
@@ -50,6 +54,7 @@ namespace SolitaireMahjongApp.ViewModels
         public IRelayCommand PauseCommand { get; }
         public IRelayCommand ResumeCommand { get; }
         public IRelayCommand EndGameCommand { get; }
+        public IRelayCommand GameOverCommand { get; }
 
         public MahjongViewModel(SessionService sessionService)
         {
@@ -62,9 +67,11 @@ namespace SolitaireMahjongApp.ViewModels
             TileCommand = new RelayCommand<Tile>(OnTileClicked);
             LoadTilesCommand = new AsyncRelayCommand(LoadTilesAsync);
             HintCommand = new AsyncRelayCommand(ShowHint);
+
             PauseCommand = new RelayCommand(PauseGame);
             ResumeCommand = new RelayCommand(ResumeGame);
             EndGameCommand = new RelayCommand(EndGame);
+            GameOverCommand = new RelayCommand(GameOver);
 
             tileMap = new Dictionary<(int layer, int row, int col), Tile>();
 
@@ -111,6 +118,8 @@ namespace SolitaireMahjongApp.ViewModels
 
                 // Mapeia as peças
                 MapTilesToLayers(shuffledTiles, layers);
+
+                await Task.Delay(500);
             }
             catch(Exception ex)
             {
@@ -265,6 +274,14 @@ namespace SolitaireMahjongApp.ViewModels
                 Debug.WriteLine("Tile clicada não encontrada no mapa de tiles.");
                 return;
             }
+
+            //var freeTiles = GetFreeTiles();
+
+            //if (!freeTiles.Any(pair => pair.Item1 == mappedTile))
+            //{
+            //    Debug.WriteLine("Peça não está livre e não pode ser selecionada.");
+            //    return;
+            //}
 
             if (_firstTileSelected == mappedTile)
             {
@@ -440,7 +457,7 @@ namespace SolitaireMahjongApp.ViewModels
                 TimerText = $"{TimeSpan.FromSeconds(_timeLeft):mm\\:ss}";
             }
 
-            if (_timeLeft == 0)
+            if (_timeLeft == 0 && !IsGameOver)
             {
                 Debug.WriteLine("O tempo acabou.");
                 CheckGameOver();
@@ -449,10 +466,19 @@ namespace SolitaireMahjongApp.ViewModels
 
         private async void CheckGameOver()
         {
+            if (IsGameOver) return;
+
             var freeTilesPairs = GetFreeTiles();
 
             // Linha para testar o embaralhmento do tabuleiro caso não haja mais pares disponíveis
             //freeTilesPairs.Clear();
+
+            if (_timeLeft <= 0)
+            {
+                Debug.WriteLine("O tempo acabou.");
+                IsGameOver = true;
+                return;
+            }
 
             if (freeTilesPairs.Count == 0)
             {
@@ -464,9 +490,8 @@ namespace SolitaireMahjongApp.ViewModels
                               "Embaralhar",
                               "Encerrar Jogo");
 
-                if(shuffleTiles)
+                if (shuffleTiles)
                 {
-                    pauseTimer = false;
                     _score -= 10;
                     ScoreText = $"Score: {_score}";
 
@@ -475,15 +500,16 @@ namespace SolitaireMahjongApp.ViewModels
                     Tiles.Clear();
 
                     MapTilesToLayers(shuffledTiles, layers);
+                    pauseTimer = false;
                 }
                 else
-                    GameOver();
+                    IsGameOver = true;
             }
 
             else if (_timeLeft == 0)
             {
                 Debug.WriteLine("O tempo acabou");
-                GameOver();
+                IsGameOver = true;
             }
         }
 
@@ -574,16 +600,17 @@ namespace SolitaireMahjongApp.ViewModels
         private void PauseGame()
         {
             IsPaused = true;
+            pauseTimer = true;
         }
 
         private void ResumeGame()
         {
             IsPaused = false;
+            pauseTimer = false;
         }
 
         private void EndGame()
         {
-            IsPaused = false;
             GameOver();
         }
     }
