@@ -80,11 +80,11 @@
                                     Color="{Binding Color}" 
                                     IsVisible="{Binding IsHighlighted}"
                                     InputTransparent="True" 
-                                    Opacity="0.5"
+                                    Opacity="0.8"
                                     HorizontalOptions="FillAndExpand" 
                                     VerticalOptions="FillAndExpand"
                                     CornerRadius="10"
-                                    AbsoluteLayout.LayoutBounds="0,0,65,90"
+                                    AbsoluteLayout.LayoutBounds="0,0,66,90"
                                     AbsoluteLayout.LayoutFlags="None"/>
                                 
                             </AbsoluteLayout>
