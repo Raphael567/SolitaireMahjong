@@ -40,7 +40,7 @@ namespace SolitaireMahjongApp.ViewModels
         private int _score = 0;
         private int _timeLeft = 3600;
         private bool shuffleTiles = false;
-        private bool pauseTimer = false;
+        private bool pauseTimer = false;        
 
         private List<int[,]> layers;
         private Dictionary<(int layer, int row, int col), Tile> tileMap;
@@ -174,7 +174,7 @@ namespace SolitaireMahjongApp.ViewModels
         {
             int tileWidth = 60;
             int tileHeight = 75;
-            int zSpacing = 10; // Espaçamento entre as camadas
+            int zSpacing = 15; // Espaçamento entre as camadas
 
             // Ajusta ao centro da tela
             double centerX = 300;
@@ -292,6 +292,7 @@ namespace SolitaireMahjongApp.ViewModels
             {
                 _firstTileSelected = mappedTile;
                 mappedTile.Color = Colors.Blue;
+                mappedTile.IsHighlighted = true;
                 Debug.WriteLine($"Primeira peça selecionada: Layer: {mappedTile.Layer}, Row: {mappedTile.Row}, Col: {mappedTile.Col}");
             }
 
@@ -299,6 +300,7 @@ namespace SolitaireMahjongApp.ViewModels
             {
                 _secondTileSelected = mappedTile;
                 mappedTile.Color = Colors.Blue;
+                mappedTile.IsHighlighted = true;
                 Debug.WriteLine($"Segunda peça selecionada: Layer: {mappedTile.Layer}, Row: {mappedTile.Row}, Col: {mappedTile.Col}");
                 CheckForMatch(mappedTile, _firstTileSelected, _secondTileSelected);
             }
@@ -333,10 +335,12 @@ namespace SolitaireMahjongApp.ViewModels
                     if (tilesMatch)
                     {
                         Debug.WriteLine("Removendo as peças correspondentes!");
-
+ 
                         // Remover as peças correspondentes
+                        //await AnimateTileMatching(tileToRemove1.ImageButton);
                         Tiles.Remove(tileToRemove1);
                         RemoveTile(firstTilePos.layer, firstTilePos.row, firstTilePos.col, layers);
+
                         Tiles.Remove(tileToRemove2);
                         RemoveTile(secondTilePos.layer, secondTilePos.row, secondTilePos.col, layers);
 
@@ -361,8 +365,10 @@ namespace SolitaireMahjongApp.ViewModels
                     else
                     {
                         Debug.WriteLine("As peças não correspondem, resetando seleção.");
+
                         // Resetar a cor se não houver correspondência
                         _firstTileSelected.Color = Colors.Transparent;
+                        _firstTileSelected.IsHighlighted = false;
 
                         // Manter a segunda peça como a primeira para a próxima tentativa
                         _firstTileSelected = _secondTileSelected;
@@ -372,9 +378,12 @@ namespace SolitaireMahjongApp.ViewModels
                 else
                 {
                     Debug.WriteLine("Uma ou ambas as peças não estão livres, desmarcando seleção.");
+
                     // Se uma das peças não estiver livre, desmarcar a seleção
                     _firstTileSelected.Color = Colors.Transparent;
                     _secondTileSelected.Color = Colors.Transparent;
+                    _firstTileSelected.IsHighlighted = false;
+                    _secondTileSelected.IsHighlighted = false;
 
                     _firstTileSelected = null;
                     _secondTileSelected = null;
@@ -429,6 +438,9 @@ namespace SolitaireMahjongApp.ViewModels
 
                 hintPair.Item1.Color = Colors.Green;
                 hintPair.Item2.Color = Colors.Green;
+
+                hintPair.Item1.IsHighlighted = true;
+                hintPair.Item2.IsHighlighted = true;
 
                 lastHintPair = hintPair;
                 _score--;

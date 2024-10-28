@@ -20,5 +20,8 @@ namespace SolitaireMahjongApp.Models
 
         [ObservableProperty]
         public Color color;
+
+        [ObservableProperty]
+        public bool isHighlighted = false;
     }
 }

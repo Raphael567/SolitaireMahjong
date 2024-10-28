@@ -52,23 +52,42 @@
                 </HorizontalStackLayout>
 
                 <!-- Área de Peças com AbsoluteLayout -->
-                <AbsoluteLayout Margin="110,0,0,0"
-                        BindableLayout.ItemsSource="{Binding Tiles}"
-                        HorizontalOptions="Center"
-                        VerticalOptions="FillAndExpand"
-                        Grid.Row="2">
+                <AbsoluteLayout 
+                    Margin="110,0,0,0"
+                    BindableLayout.ItemsSource="{Binding Tiles}"
+                    HorizontalOptions="Center"
+                    VerticalOptions="FillAndExpand"
+                    Grid.Row="2">
                     <BindableLayout.ItemTemplate>
                         <DataTemplate>
-                            <ImageButton
-                                x:Name="AnimatedImageButton"
-                                AbsoluteLayout.LayoutBounds="{Binding LayoutBounds}"
-                                BackgroundColor="{Binding Color}"
-                                Clicked="AnimatedImageButton_Clicked"
-                                Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.TileCommand}"
-                                CommandParameter="{Binding .}"
-                                HeightRequest="100"
-                                Source="{Binding CaminhoImagem}"
-                                WidthRequest="80" />
+                            <AbsoluteLayout AbsoluteLayout.LayoutBounds="{Binding LayoutBounds}"
+                                            AbsoluteLayout.LayoutFlags="None">
+                                
+                                <ImageButton
+                                    x:Name="AnimatedImageButton"
+                                    BackgroundColor="Transparent"
+                                    Clicked="AnimatedImageButton_Clicked"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.TileCommand}"
+                                    CommandParameter="{Binding .}"
+                                    HeightRequest="100"
+                                    Source="{Binding CaminhoImagem}"
+                                    WidthRequest="80"
+                                    AbsoluteLayout.LayoutBounds="0,0,80,100"
+                                    AbsoluteLayout.LayoutFlags="None"/>
+
+                                <!-- Camada de seleção com cor semi-transparente -->
+                                <BoxView
+                                    Color="{Binding Color}" 
+                                    IsVisible="{Binding IsHighlighted}"
+                                    InputTransparent="True" 
+                                    Opacity="0.5"
+                                    HorizontalOptions="FillAndExpand" 
+                                    VerticalOptions="FillAndExpand"
+                                    CornerRadius="10"
+                                    AbsoluteLayout.LayoutBounds="0,0,65,90"
+                                    AbsoluteLayout.LayoutFlags="None"/>
+                                
+                            </AbsoluteLayout>
                         </DataTemplate>
                     </BindableLayout.ItemTemplate>
                 </AbsoluteLayout>
