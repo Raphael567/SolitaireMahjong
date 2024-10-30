@@ -251,14 +251,21 @@ namespace SolitaireMahjongApp.ViewModels
                 return false;
             }
 
-            // Verificar se está bloqueada por cima (camada acima)
-            if (layer < layers.Count - 1) // Há uma camada superior
+            //Verificar se está bloqueada por cima(camada acima)
+            if (layer + 1 < layers.Count) // Há uma camada superior
             {
-                bool topBlocked = layers[layer + 1][row, col] == 1;  // Se a peça acima está presente
-                if (topBlocked)
+                // Verificar se row e col estão dentro dos limites da camada superior
+                int rowsInLayerAbove = layers[layer + 1].GetLength(0);
+                int colsInLayerAbove = layers[layer + 1].GetLength(1);
+
+                if (row < rowsInLayerAbove && col < colsInLayerAbove)
                 {
-                    Debug.WriteLine($"Peça bloqueada por cima ({row}, {col}) na camada {layer}.");
-                    return false;
+                    bool topBlocked = layers[layer + 1][row, col] == 1;  // Se a peça acima está presente
+                    if (topBlocked)
+                    {
+                        Debug.WriteLine($"Peça bloqueada por cima ({row}, {col}) na camada {layer}.");
+                        return false;
+                    }
                 }
             }
 
