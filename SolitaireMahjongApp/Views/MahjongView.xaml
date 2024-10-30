@@ -9,11 +9,15 @@
 
     <Grid>
         <ScrollView>
-            <Grid Margin="50,0,0,0" Padding="10" RowDefinitions="Auto, Auto, Auto, *">
+            <Grid
+                Margin="50,0,0,0"
+                Padding="10"
+                RowDefinitions="Auto, Auto, Auto, *">
 
-                <!-- Temporizador e Pontuação -->
-                <VerticalStackLayout HorizontalOptions="End">
+                <!--  Temporizador e Pontuação  -->
+                <VerticalStackLayout Margin="0,0,50,0" HorizontalOptions="End">
                     <Label
+                        Margin="50,0,0,0"
                         FontFamily="zCool"
                         FontSize="60"
                         Text="{Binding TimerText}"
@@ -23,21 +27,21 @@
                         FontFamily="zCool"
                         FontSize="50"
                         Text="{Binding ScoreText}"
-                        TextColor="White"/>
+                        TextColor="White" />
                 </VerticalStackLayout>
 
-                <!-- Header com Botões PAUSE e Dica -->
+                <!--  Header com Botões PAUSE e Dica  -->
                 <HorizontalStackLayout Spacing="30">
                     <Button
                         BackgroundColor="#FF0000"
+                        Command="{Binding PauseCommand}"
                         FontFamily="zCool"
                         FontSize="25"
                         HeightRequest="65"
                         HorizontalOptions="Start"
                         Text="PAUSE"
                         TextColor="White"
-                        WidthRequest="150"
-                        Command="{Binding PauseCommand}" />
+                        WidthRequest="150" />
 
                     <Button
                         BackgroundColor="#FF0000"
@@ -45,56 +49,56 @@
                         FontFamily="zCool"
                         FontSize="30"
                         HeightRequest="65"
+                        HorizontalOptions="Start"
                         Text="Dica"
                         TextColor="White"
-                        HorizontalOptions="Start"
-                        WidthRequest="110"/>
+                        WidthRequest="110" />
                 </HorizontalStackLayout>
 
-                <!-- Área de Peças com AbsoluteLayout -->
-                <AbsoluteLayout 
+                <!--  Área de Peças com AbsoluteLayout  -->
+                <AbsoluteLayout
+                    Grid.Row="2"
                     Margin="110,0,0,0"
                     BindableLayout.ItemsSource="{Binding Tiles}"
                     HorizontalOptions="Center"
-                    VerticalOptions="FillAndExpand"
-                    Grid.Row="2">
+                    VerticalOptions="FillAndExpand">
                     <BindableLayout.ItemTemplate>
                         <DataTemplate>
-                            <AbsoluteLayout AbsoluteLayout.LayoutBounds="{Binding LayoutBounds}"
-                                            AbsoluteLayout.LayoutFlags="None">
-                                
+                            <AbsoluteLayout AbsoluteLayout.LayoutBounds="{Binding LayoutBounds}" AbsoluteLayout.LayoutFlags="None">
+
                                 <ImageButton
                                     x:Name="AnimatedImageButton"
+                                    AbsoluteLayout.LayoutBounds="0,0,80,100"
+                                    AbsoluteLayout.LayoutFlags="None"
                                     BackgroundColor="Transparent"
+                                    BindingContext="{Binding .}"
                                     Clicked="OnTileClicked"
                                     Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.TileCommand}"
                                     CommandParameter="{Binding .}"
-                                    BindingContext="{Binding .}"
                                     HeightRequest="100"
                                     Source="{Binding CaminhoImagem}"
-                                    WidthRequest="80"
-                                    AbsoluteLayout.LayoutBounds="0,0,80,100"
-                                    AbsoluteLayout.LayoutFlags="None"/>
+                                    WidthRequest="80" />
 
-                                <!-- Camada de seleção com cor semi-transparente -->
+                                <!--  Camada de seleção com cor semi-transparente  -->
                                 <BoxView
-                                    Color="{Binding Color}" 
-                                    IsVisible="{Binding IsHighlighted}"
-                                    InputTransparent="True" 
-                                    Opacity="0.8"
-                                    HorizontalOptions="FillAndExpand" 
-                                    VerticalOptions="FillAndExpand"
-                                    CornerRadius="10"
                                     AbsoluteLayout.LayoutBounds="0,0,66,90"
-                                    AbsoluteLayout.LayoutFlags="None"/>
-                                
+                                    AbsoluteLayout.LayoutFlags="None"
+                                    CornerRadius="10"
+                                    HorizontalOptions="FillAndExpand"
+                                    InputTransparent="True"
+                                    IsVisible="{Binding IsHighlighted}"
+                                    Opacity="0.8"
+                                    VerticalOptions="FillAndExpand"
+                                    Color="{Binding Color}" />
+
                             </AbsoluteLayout>
                         </DataTemplate>
                     </BindableLayout.ItemTemplate>
                 </AbsoluteLayout>
 
-                <!-- Botão Carregar Peças -->
+                <!--  Botão Carregar Peças  -->
                 <Button
+                    Grid.Row="4"
                     Margin="50,10,0,0"
                     BackgroundColor="#FF0000"
                     Command="{Binding LoadTilesCommand}"
@@ -103,31 +107,158 @@
                     HeightRequest="10"
                     HorizontalOptions="Start"
                     Text="Carregar peças"
-                    WidthRequest="180"
-                    Grid.Row="4" />
+                    WidthRequest="180" />
             </Grid>
         </ScrollView>
-        
-        <!-- Overlay Pause -->
-        <AbsoluteLayout IsVisible="{Binding IsPaused}" BackgroundColor="Black" Opacity="0.8" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
-            <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="20">
-                <Label Text="Jogo Pausado" TextColor="White" FontSize="24" HorizontalOptions="Center" />
-                <Button Text="Continuar" Command="{Binding ResumeCommand}" />
-                <Button Text="Encerrar Jogo" Command="{Binding EndGameCommand}" />
-            </VerticalStackLayout>
-        </AbsoluteLayout>
 
-        <!-- Overlay GameOver -->
-        <AbsoluteLayout IsVisible="{Binding IsGameOver}" BackgroundColor="Black" Opacity="0.8" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
-            <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="20">
-                <Label Text="Fim de jogo!" TextColor="White" FontSize="24" HorizontalOptions="Center" />
-                <VerticalStackLayout Spacing="20">
-                    <Label Text="Sua pontuação final: " TextColor="White" FontSize="24" HorizontalOptions="Center" />
-                    <Label Text="{Binding ScoreText}" TextColor="White" FontSize="24" HorizontalOptions="Center" />
-                </VerticalStackLayout>
-                <Button Text="Voltar a página inicial" Command="{Binding GameOverCommand}" />
-            </VerticalStackLayout>
-        </AbsoluteLayout>
+        <!--  Overlay Pause  -->
+        <Grid
+            BackgroundColor="black"
+            IsVisible="{Binding IsPaused}"
+            Opacity="0.45" />
 
+        <Border
+            Margin="0,0,0,300"
+            BackgroundColor="#FFEBC5"
+            HeightRequest="400"
+            HorizontalOptions="Center"
+            IsVisible="{Binding IsPaused}"
+            Stroke="Transparent"
+            VerticalOptions="End"
+            WidthRequest="380">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="10,10,10,10" />
+            </Border.StrokeShape>
+            <Grid>
+                <Label
+                    Margin="0,25,0,0"
+                    FontFamily="zCool"
+                    FontSize="48"
+                    HorizontalOptions="Center"
+                    Text="PAUSADO"
+                    TextColor="#A70003" />
+                <Label
+                    Margin="0,106,0,0"
+                    FontFamily="zCool"
+                    FontSize="30"
+                    HorizontalOptions="Center"
+                    Text="Pontos"
+                    TextColor="#3C587D" />
+                <Grid>
+                    <Label
+                        Margin="0,180,0,0"
+                        FontFamily="zCool"
+                        FontSize="40"
+                        HorizontalOptions="Center"
+                        Text="{Binding ScoreText}"
+                        TextColor="#832520"
+                        ZIndex="1" />
+                    <Image
+                        Margin="0,5,0,0"
+                        HeightRequest="110"
+                        Source="fundo_pont.png"
+                        WidthRequest="260"
+                        ZIndex="0" />
+                </Grid>
+                <Button
+                    Margin="40,0,0,40"
+                    BackgroundColor="#3C587D"
+                    Command="{Binding ResumeCommand}"
+                    FontFamily="zCool"
+                    FontSize="20"
+                    HeightRequest="50"
+                    HorizontalOptions="Start"
+                    Text="Continuar"
+                    TextColor="White"
+                    VerticalOptions="End"
+                    WidthRequest="130" />
+
+                <Button
+                    Margin="0,0,40,40"
+                    BackgroundColor="#A70003"
+                    Command="{Binding EndGameCommand}"
+                    FontFamily="zCool"
+                    FontSize="20"
+                    HeightRequest="50"
+                    HorizontalOptions="End"
+                    Text="Encerrar"
+                    TextColor="White"
+                    VerticalOptions="End"
+                    WidthRequest="130" />
+            </Grid>
+        </Border>
+
+        <!--  Overlay GameOver  -->
+        <Grid
+            BackgroundColor="black"
+            IsVisible="{Binding IsGameOver}"
+            Opacity="0.45" />
+
+        <Border
+            Margin="0,0,0,280"
+            BackgroundColor="#FFEBC5"
+            HeightRequest="430"
+            HorizontalOptions="Center"
+            IsVisible="{Binding IsGameOver}"
+            Stroke="Transparent"
+            VerticalOptions="End"
+            WidthRequest="380">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="10,10,10,10" />
+            </Border.StrokeShape>
+            <Grid>
+                <Label
+                    Margin="0,25,0,0"
+                    FontFamily="zCool"
+                    FontSize="48"
+                    HorizontalOptions="Center"
+                    Text="ÓTIMO JOGO!!"
+                    TextColor="#3C587D" />
+                <Label
+                    Margin="0,116,0,0"
+                    FontFamily="zCool"
+                    FontSize="30"
+                    HorizontalOptions="Center"
+                    Text="Pontos"
+                    TextColor="#832520" />
+                <Grid>
+                    <Label
+                        Margin="0,196,0,0"
+                        FontFamily="zCool"
+                        FontSize="40"
+                        HorizontalOptions="Center"
+                        Text="{Binding ScoreText}"
+                        TextColor="#832520"
+                        ZIndex="1" />
+                    <Image
+                        Margin="0,5,0,0"
+                        HeightRequest="110"
+                        Source="fundo_pont.png"
+                        WidthRequest="260"
+                        ZIndex="0" />
+                </Grid>
+
+                <Button
+                    Margin="10,0,0,40"
+                    BackgroundColor="#3C587D"
+                    Command="{Binding GameOverCommand}"
+                    FontFamily="zCool"
+                    FontSize="20"
+                    HeightRequest="50"
+                    HorizontalOptions="Center"
+                    Text="Voltar"
+                    TextColor="White"
+                    VerticalOptions="End"
+                    WidthRequest="130" />
+
+                <Image
+                    Margin="8,0,0,0"
+                    HeightRequest="160"
+                    HorizontalOptions="Start"
+                    Source="dragao.png"
+                    VerticalOptions="End"
+                    WidthRequest="110" />
+            </Grid>
+        </Border>
     </Grid>
 </ContentPage>
