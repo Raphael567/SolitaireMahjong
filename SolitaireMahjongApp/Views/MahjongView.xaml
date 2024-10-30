@@ -66,9 +66,10 @@
                                 <ImageButton
                                     x:Name="AnimatedImageButton"
                                     BackgroundColor="Transparent"
-                                    Clicked="AnimatedImageButton_Clicked"
+                                    Clicked="OnTileClicked"
                                     Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.TileCommand}"
                                     CommandParameter="{Binding .}"
+                                    BindingContext="{Binding .}"
                                     HeightRequest="100"
                                     Source="{Binding CaminhoImagem}"
                                     WidthRequest="80"

@@ -16,6 +16,7 @@ namespace SolitaireMahjongApp.ViewModels
         private readonly TileService _tileService;
         private readonly PlayerService _playerService;
         private readonly SessionService _sessionService;
+        private readonly IAnimationService _animationService;
 
         [ObservableProperty]
         private string timerText;
@@ -35,8 +36,8 @@ namespace SolitaireMahjongApp.ViewModels
         [ObservableProperty]
         private bool isGameOver = false;
 
-        private Tile _firstTileSelected = null;
-        private Tile _secondTileSelected = null;
+        public Tile _firstTileSelected = null;
+        public Tile _secondTileSelected = null;
         private int _score = 0;
         private int _timeLeft = 3600;
         private bool shuffleTiles = false;
@@ -45,6 +46,7 @@ namespace SolitaireMahjongApp.ViewModels
         private List<int[,]> layers;
         private Dictionary<(int layer, int row, int col), Tile> tileMap;
         private (Tile, Tile)? lastHintPair = null;
+        public Dictionary<Tile, ImageButton> TileButtonMapping { get; set; }
 
         public ICommand TileCommand { get; }
 
@@ -56,11 +58,15 @@ namespace SolitaireMahjongApp.ViewModels
         public IRelayCommand EndGameCommand { get; }
         public IRelayCommand GameOverCommand { get; }
 
-        public MahjongViewModel(SessionService sessionService)
+        public MahjongViewModel(SessionService sessionService, IAnimationService animationService)
         {
             _tileService = new TileService();
             _playerService = new PlayerService();
             _sessionService = sessionService;
+            _animationService = animationService;
+
+            Tiles = new ObservableCollection<Tile>();
+            TileButtonMapping = new Dictionary<Tile, ImageButton>();
 
             InitializePlayerAsync();
 
@@ -105,6 +111,22 @@ namespace SolitaireMahjongApp.ViewModels
             return shuffledTiles;
         }
 
+        public void MapTileToButton(Tile tile, ImageButton button)
+        {
+            if (tile == null) throw new ArgumentNullException(nameof(tile), "Tile cannot be null.");
+            if (button == null) throw new ArgumentNullException(nameof(button), "Button cannot be null.");
+
+            if (!TileButtonMapping.ContainsKey(tile))
+            {
+                TileButtonMapping[tile] = button;
+                Debug.WriteLine($"Tile {tile.id} mapeado para o botão.");
+            }
+            else
+            {
+                Debug.WriteLine($"Tile {tile.id} já está mapeado.");
+            }
+        }
+
         private async Task LoadTilesAsync()
         {
             try
@@ -118,6 +140,9 @@ namespace SolitaireMahjongApp.ViewModels
 
                 // Mapeia as peças
                 MapTilesToLayers(shuffledTiles, layers);
+
+                //// Inicializa o mapeamento de tiles para botões
+                //InitializeTileButtonMapping(shuffledTiles, layers);
 
                 await Task.Delay(500);
             }
@@ -151,10 +176,13 @@ namespace SolitaireMahjongApp.ViewModels
                         if (layers[layer][row, col] == 1 && tileIndex < shuffledTiles.Count)
                         {
                             var tile = shuffledTiles[tileIndex];
+                            var button = new ImageButton();
+
                             tile.Layer = layer;
                             tile.Row = row;
                             tile.Col = col;
                             tileMap.Add((layer, row, col), tile);
+                            MapTileToButton(tile, button);
                             tileIndex++;
 
                             Debug.WriteLine($"Tile mapeado: Layer: {layer}, Row: {row}, Col: {col}, Tile ID: {tile.id}");
@@ -335,9 +363,22 @@ namespace SolitaireMahjongApp.ViewModels
                     if (tilesMatch)
                     {
                         Debug.WriteLine("Removendo as peças correspondentes!");
- 
-                        // Remover as peças correspondentes
-                        //await AnimateTileMatching(tileToRemove1.ImageButton);
+
+                        var imageButton1 = TileButtonMapping[tileToRemove1];
+                        var imageButton2 = TileButtonMapping[tileToRemove2];
+
+                        if (imageButton1.IsVisible && imageButton2.IsVisible)
+                        {
+                            await MainThread.InvokeOnMainThreadAsync(async () =>
+                            {
+                                await _animationService.AnimateButtonAsync(imageButton1);
+                                await Task.Delay(100);
+                                await _animationService.AnimateButtonAsync(imageButton2);
+                            });
+                        }
+
+                        await Task.Delay(200);
+
                         Tiles.Remove(tileToRemove1);
                         RemoveTile(firstTilePos.layer, firstTilePos.row, firstTilePos.col, layers);
 
@@ -357,7 +398,6 @@ namespace SolitaireMahjongApp.ViewModels
                         {
                             Application.Current.MainPage.DisplayAlert("Você Ganhou", "Todas as peças foram removidas", "OK");
                         }
-
 
                         _firstTileSelected = null;
                         _secondTileSelected = null;
