@@ -7,21 +7,15 @@
     Title="SolitaireMahjongApp"
     Shell.FlyoutBehavior="Disabled">
 
-    <TabBar>
-        <ShellContent
-            Title="Cadastro dos jogadores"
-            ContentTemplate="{DataTemplate local:PlayerView}"
-            Route="PlayerView" />
+    <ShellContent
+        ContentTemplate="{DataTemplate local:PlayerView}"
+        Route="PlayerView" />
 
-        <ShellContent
-            Title="Ranking dos Jogadores"
-            ContentTemplate="{DataTemplate local:RankingView}"
-            Route="RankingView" />
+    <ShellContent
+        ContentTemplate="{DataTemplate local:RankingView}"
+        Route="RankingView" />
 
-        <ShellContent
-            Title="Mahjong Solitaire"
-            ContentTemplate="{DataTemplate local:MahjongView}"
-            Route="MahjongView" />
-    </TabBar>
-
+    <ShellContent
+        ContentTemplate="{DataTemplate local:MahjongView}"
+        Route="MahjongView" />
 </Shell>
