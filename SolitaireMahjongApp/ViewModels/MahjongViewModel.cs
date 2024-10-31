@@ -60,47 +60,56 @@ namespace SolitaireMahjongApp.ViewModels
 
         public MahjongViewModel(SessionService sessionService, IAnimationService animationService)
         {
-            _tileService = new TileService();
-            _playerService = new PlayerService();
-            _sessionService = sessionService;
-            _animationService = animationService;
-
-            Tiles = new ObservableCollection<Tile>();
-            TileButtonMapping = new Dictionary<Tile, ImageButton>();
-
-            InitializePlayerAsync();
-
-            TileCommand = new RelayCommand<Tile>(OnTileClicked);
-            LoadTilesCommand = new AsyncRelayCommand(LoadTilesAsync);
-            HintCommand = new AsyncRelayCommand(ShowHint);
-
-            PauseCommand = new RelayCommand(PauseGame);
-            ResumeCommand = new RelayCommand(ResumeGame);
-            EndGameCommand = new RelayCommand(EndGame);
-            GameOverCommand = new RelayCommand(GameOver);
-
-            tileMap = new Dictionary<(int layer, int row, int col), Tile>();
-
-            Task.Run(async () =>
+            try
             {
-                await LoadTilesAsync();
-                StartTimer();
-            });
+
+                _tileService = new TileService();
+                _playerService = new PlayerService();
+                _sessionService = sessionService;
+                _animationService = animationService;
+
+                InitializePlayerAsync();
+
+                Tiles = new ObservableCollection<Tile>();
+                TileButtonMapping = new Dictionary<Tile, ImageButton>();
+
+
+                TileCommand = new RelayCommand<Tile>(OnTileClicked);
+                LoadTilesCommand = new AsyncRelayCommand(LoadTilesAsync);
+                HintCommand = new AsyncRelayCommand(ShowHint);
+
+                PauseCommand = new RelayCommand(PauseGame);
+                ResumeCommand = new RelayCommand(ResumeGame);
+                EndGameCommand = new RelayCommand(EndGame);
+                GameOverCommand = new RelayCommand(GameOver);
+
+                tileMap = new Dictionary<(int layer, int row, int col), Tile>();
+
+                Task.Run(async () =>
+                {
+                    await LoadTilesAsync();
+                    StartTimer();
+                });
+            }
+            catch (COMException ex)
+            {
+                Debug.WriteLine($"Erro ao inciar o jogo: {ex.Message}");
+            }
         }
 
-        public async Task InitializePlayerAsync()
+        public async void InitializePlayerAsync()
         {
-            currentPlayer = _sessionService.currentPlayer;
+            CurrentPlayer = _sessionService.currentPlayer;
 
-            if (currentPlayer == null || currentPlayer.id == 0)
+            if (CurrentPlayer == null || CurrentPlayer.id == 0)
             {
-                await _playerService.CreatePlayerAsync(currentPlayer);
-                _sessionService.currentPlayer = currentPlayer;
-                Debug.WriteLine($"Jogador existente carregado: ID {currentPlayer.id} com o nome {currentPlayer.nome}");
+                await _playerService.CreatePlayerAsync(CurrentPlayer);
+                _sessionService.currentPlayer = CurrentPlayer;
+                Debug.WriteLine($"Jogador existente carregado: ID {CurrentPlayer.id} com o nome {CurrentPlayer.nome}");
             }
             else
             {
-                Debug.WriteLine($"Jogador existente carregado: ID {currentPlayer.id} com o nome {currentPlayer.nome}");
+                Debug.WriteLine($"Jogador existente carregado: ID {CurrentPlayer.id} com o nome {CurrentPlayer.nome}");
             }
         }
 
@@ -131,12 +140,19 @@ namespace SolitaireMahjongApp.ViewModels
         {
             try
             {
-                var tilesFromApi = await _tileService.GetTilesAsync();
-                var shuffledTiles = tilesFromApi.OrderBy(t => Guid.NewGuid()).ToList();
-                var layerManager = new LayerManager();
+                Debug.WriteLine("Iniciando a carga de tiles...");
 
-                Tiles = new ObservableCollection<Tile>();
+                var tilesFromApi = await _tileService.GetTilesAsync();
+                Debug.WriteLine($"Tiles recebidos: {tilesFromApi.Count}");
+
+                var shuffledTiles = tilesFromApi.OrderBy(t => Guid.NewGuid()).ToList();
+                Debug.WriteLine("Tiles embaralhados.");
+
+                var layerManager = new LayerManager();
                 layers = layerManager.GetRandomLayer();
+                Debug.WriteLine("Camadas geradas.");
+
+                //Tiles = new ObservableCollection<Tile>();
 
                 // Mapeia as peças
                 MapTilesToLayers(shuffledTiles, layers);
@@ -146,7 +162,11 @@ namespace SolitaireMahjongApp.ViewModels
 
                 await Task.Delay(500);
             }
-            catch(Exception ex)
+            catch (COMException ex)
+            {
+                Debug.WriteLine($"Erro na navegação das peças: {ex.Message}");
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine($"Erro ao carregar peças: {ex.Message}");
             }
@@ -200,6 +220,8 @@ namespace SolitaireMahjongApp.ViewModels
 
         private void SetTileLayout(List<int[,]> layers)
         {
+            Tiles.Clear();
+
             int tileWidth = 60;
             int tileHeight = 75;
             int zSpacing = 15; // Espaçamento entre as camadas
@@ -228,7 +250,11 @@ namespace SolitaireMahjongApp.ViewModels
                                 double posY = centerY - (layer.GetLength(0) * tileHeight / 2) + y * tileHeight - z * zSpacing;
 
                                 tile.LayoutBounds = new Rect(posX, posY, tileWidth, tileHeight);
-                                Tiles.Add(tile); // Adiciona à coleção que deve estar ligada à UI
+
+                                Application.Current.Dispatcher.Dispatch(() =>
+                                {
+                                    Tiles.Add(tile);
+                                });
 
                                 Debug.WriteLine($"Tile ID: {tile.id}, Layer: {tile.Layer}, Row: {tile.Row}, Col: {tile.Col}, Posição: X: {posX}, Y: {posY}");
                             }

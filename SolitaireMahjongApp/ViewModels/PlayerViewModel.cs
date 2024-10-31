@@ -5,6 +5,7 @@ using SolitaireMahjongApp.Services;
 using SolitaireMahjongApp.Views;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace SolitaireMahjongApp.ViewModels
 {
@@ -65,7 +66,16 @@ namespace SolitaireMahjongApp.ViewModels
 
                     Debug.WriteLine($"Id do player {_sessionService.currentPlayer.id}");
 
-                    await Application.Current.MainPage.Navigation.PushAsync(new MahjongView(_sessionService));
+                    try
+                    {
+                        var newMahjongView = new MahjongView(_sessionService);
+                        await Task.Delay(100);
+                        await Application.Current.MainPage.Navigation.PushAsync(newMahjongView);
+                    }
+                    catch (COMException ex)
+                    {
+                        Debug.WriteLine($"Erro na navegação: {ex.Message}");
+                    }
                 }
             }
             catch(ArgumentNullException ex) 
