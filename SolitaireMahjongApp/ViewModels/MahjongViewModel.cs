@@ -39,9 +39,10 @@ namespace SolitaireMahjongApp.ViewModels
         public Tile _firstTileSelected = null;
         public Tile _secondTileSelected = null;
         private int _score = 0;
-        private int _timeLeft = 125;
+        private int _timeLeft = 25;
         private bool shuffleTiles = false;
-        private bool pauseTimer = false;        
+        private bool pauseTimer = false;
+        private bool forcedGameOver = false;
 
         private List<int[,]> layers;
         private Dictionary<(int layer, int row, int col), Tile> tileMap;
@@ -62,7 +63,6 @@ namespace SolitaireMahjongApp.ViewModels
         {
             try
             {
-
                 _tileService = new TileService();
                 _playerService = new PlayerService();
                 _sessionService = sessionService;
@@ -151,8 +151,6 @@ namespace SolitaireMahjongApp.ViewModels
                 var layerManager = new LayerManager();
                 layers = layerManager.GetRandomLayer();
                 Debug.WriteLine("Camadas geradas.");
-
-                //Tiles = new ObservableCollection<Tile>();
 
                 // Mapeia as peças
                 MapTilesToLayers(shuffledTiles, layers);
@@ -402,12 +400,19 @@ namespace SolitaireMahjongApp.ViewModels
 
                         if (imageButton1.IsVisible && imageButton2.IsVisible)
                         {
-                            await MainThread.InvokeOnMainThreadAsync(async () =>
+
+                            if (imageButton1.IsVisible && imageButton2.IsVisible)
                             {
-                                await _animationService.AnimateButtonAsync(imageButton1);
-                                await Task.Delay(100);
-                                await _animationService.AnimateButtonAsync(imageButton2);
-                            });
+                                await Task.Run(() =>
+                                {
+                                    Application.Current?.Dispatcher.Dispatch(() =>
+                                    {
+                                        // Este código é executado na UI thread
+                                        _animationService.AnimateButtonAsync(imageButton1);
+                                        _animationService.AnimateButtonAsync(imageButton2);
+                                    });
+                                });
+                            }
                         }
 
                         await Task.Delay(200);
@@ -477,6 +482,22 @@ namespace SolitaireMahjongApp.ViewModels
                 }
             }
 
+            return freeTiles;
+        }
+
+        public List<(Tile, Tile)> GetFreePairs()
+        {
+            var freeTiles = new List<(Tile, Tile)>();
+
+            foreach (var tile in Tiles)
+            {
+                var tilePos = tileMap.FirstOrDefault(x => x.Value.id == tile.id).Key;
+                if (IsTileFree(layers, tilePos.layer, tilePos.row, tilePos.col))
+                {
+                    freeTiles.Add((tile, tile));
+                }
+            }
+
             var pairs = new List<(Tile, Tile)>();
 
             for (int i = 0; i < freeTiles.Count; i++)
@@ -501,7 +522,7 @@ namespace SolitaireMahjongApp.ViewModels
                 lastHintPair = null;
             }
 
-            var freeTilesPairs = GetFreeTiles();
+            var freeTilesPairs = GetFreePairs();
 
             if (freeTilesPairs.Count > 0)
             {
@@ -553,7 +574,7 @@ namespace SolitaireMahjongApp.ViewModels
         {
             if (IsGameOver) return;
 
-            var freeTilesPairs = GetFreeTiles();
+            var freeTilesPairs = GetFreePairs();
 
             // Linha para testar o embaralhmento do tabuleiro caso não haja mais pares disponíveis
             //freeTilesPairs.Clear();
@@ -585,7 +606,20 @@ namespace SolitaireMahjongApp.ViewModels
                     Tiles.Clear();
 
                     MapTilesToLayers(shuffledTiles, layers);
+
                     pauseTimer = false;
+
+                    var freeTiles = GetFreeTiles();
+
+                    if (freeTiles.Count == 0)
+                    {
+                        Application.Current.Dispatcher.Dispatch(async () =>
+                        {
+                            await Application.Current.MainPage.DisplayAlert("Fim de jogo", "Não há mais peças disponíveis após embaralhamento", "OK");
+                        });
+
+                        IsGameOver = true;
+                    }
                 }
                 else
                     IsGameOver = true;
@@ -606,13 +640,13 @@ namespace SolitaireMahjongApp.ViewModels
 
                 Debug.WriteLine("Tentando encerrar o jogo...");
 
-                if (currentPlayer == null)
+                if (CurrentPlayer == null)
                 {
                     Debug.WriteLine("currentPlayer é nulo.");
                     return;
                 }
 
-                currentPlayer.pontuacao = _score;
+                CurrentPlayer.pontuacao = _score;
                 _score = 0;
                 ScoreText = $"Score: {_score}";
 
@@ -653,6 +687,8 @@ namespace SolitaireMahjongApp.ViewModels
                 } 
                 else
                 {
+                    await _playerService.DeletePlayerAsync(CurrentPlayer.id);
+
                     Application.Current.Dispatcher.Dispatch(async () =>
                     {
                         await Application.Current.MainPage.DisplayAlert("Jogo encerrado", "O jogo foi encerrado", "OK");
@@ -696,6 +732,7 @@ namespace SolitaireMahjongApp.ViewModels
 
         private void EndGame()
         {
+            forcedGameOver = true;
             GameOver();
         }
     }

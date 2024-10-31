@@ -94,5 +94,28 @@ namespace SolitaireMahjongApp.Services
                 throw;
             }
         }
+
+        public async Task DeletePlayerAsync(int id)
+        {
+            try
+            {
+                var response = await _httpClient.DeleteAsync($"players/{id}");
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    Debug.WriteLine($"Falha ao deletar jogador: {response.StatusCode} - {response.ReasonPhrase}");
+                }
+            }
+            catch (HttpRequestException httpEx)
+            {
+                Debug.WriteLine($"Erro de requisição ao deletar jogador: {httpEx.Message}");
+                throw;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine($"Erro ao deletar jogador: {e.Message}");
+                throw;
+            }
+        }
     }
 }
