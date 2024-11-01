@@ -28,6 +28,9 @@ namespace SolitaireMahjongApp.ViewModels
         [ObservableProperty]
         private string _playerName;
 
+        [ObservableProperty]
+        private bool isLoading = false;
+
         public IAsyncRelayCommand CreatePlayerCommand { get; }
         public IAsyncRelayCommand NavigateCommand { get; }
 
@@ -40,7 +43,7 @@ namespace SolitaireMahjongApp.ViewModels
         {
             try
             {
-                if(_players == null)
+                if (_players == null)
                 {
                     await LoadPlayerAsync();
                 }
@@ -53,6 +56,9 @@ namespace SolitaireMahjongApp.ViewModels
                 }
                 else
                 {
+                    IsLoading = true;
+                    await Task.Delay(2000);
+
                     var newPlayer = new Player
                     {
                         nome = PlayerName,
@@ -76,6 +82,8 @@ namespace SolitaireMahjongApp.ViewModels
                     {
                         Debug.WriteLine($"Erro na navegação: {ex.Message}");
                     }
+
+                    IsLoading = false;
                 }
             }
             catch(ArgumentNullException ex) 
@@ -90,7 +98,9 @@ namespace SolitaireMahjongApp.ViewModels
 
         private async Task NavigateAsync()
         {
+            IsLoading = true;
             await Application.Current.MainPage.Navigation.PushAsync(new RankingView());
+            IsLoading = false;
         }
     }
 }

@@ -187,6 +187,15 @@
             </Grid>
         </Border>
 
+        <!--  Overlay Loading  -->
+        <Grid IsVisible="{Binding IsLoading}" BackgroundColor="Black" Opacity="0.8" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Grid.ColumnSpan="2">
+            <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center">
+                <Image Source="logo.png" WidthRequest="250" HeightRequest="250" />
+                <ActivityIndicator IsRunning="True" Color="White" />
+                <Label Text="Carregando, por favor aguarde..." TextColor="White"/>
+            </VerticalStackLayout>
+        </Grid>
+
         <!--  Overlay GameOver  -->
         <Grid
             BackgroundColor="black"

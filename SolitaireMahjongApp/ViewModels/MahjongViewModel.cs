@@ -36,6 +36,9 @@ namespace SolitaireMahjongApp.ViewModels
         [ObservableProperty]
         private bool isGameOver = false;
 
+        [ObservableProperty]
+        private bool isLoading = false;
+
         public Tile _firstTileSelected = null;
         public Tile _secondTileSelected = null;
         private int _score = 0;
@@ -73,7 +76,6 @@ namespace SolitaireMahjongApp.ViewModels
                 Tiles = new ObservableCollection<Tile>();
                 TileButtonMapping = new Dictionary<Tile, ImageButton>();
 
-
                 TileCommand = new RelayCommand<Tile>(OnTileClicked);
                 LoadTilesCommand = new AsyncRelayCommand(LoadTilesAsync);
                 HintCommand = new AsyncRelayCommand(ShowHint);
@@ -87,8 +89,11 @@ namespace SolitaireMahjongApp.ViewModels
 
                 Task.Run(async () =>
                 {
+                    IsLoading = true;
                     await LoadTilesAsync();
+                    IsLoading = false;
                     StartTimer();
+                    
                 });
             }
             catch (COMException ex)
