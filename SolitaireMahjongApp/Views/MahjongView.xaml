@@ -94,19 +94,6 @@
                         </DataTemplate>
                     </BindableLayout.ItemTemplate>
                 </AbsoluteLayout>
-
-                <!--  Botão Carregar Peças  -->
-                <Button
-                    Grid.Row="4"
-                    Margin="50,10,0,0"
-                    BackgroundColor="#FF0000"
-                    Command="{Binding LoadTilesCommand}"
-                    FontFamily="zCool"
-                    FontSize="20"
-                    HeightRequest="10"
-                    HorizontalOptions="Start"
-                    Text="Carregar peças"
-                    WidthRequest="180" />
             </Grid>
         </ScrollView>
 
